@@ -1,0 +1,25 @@
+Chef is now a corporate person. He has to attend office regularly. But chef does not want to go to office, rather he wants to stay home and discover different recipes 
+and cook them.
+
+In the office where chef works, has two guards who count how many times a person enters into the office building. Though the duty of a guard is 24 hour in a day, 
+but sometimes they fall asleep during their duty and could not track the entry of a person in the office building. But one better thing is that they never fall asleep 
+at the same time. At least one of them remains awake and counts who enters into the office.
+
+Now boss of Chef wants to calculate how many times Chef has entered into the building. He asked to the guard and they give him two integers A and B, 
+count of first guard and second guard respectively.
+
+Help the boss to count the minimum and maximum number of times Chef could have entered into the office  
+
+-------------------------------------------------------------------------
+
+Maximum Case - 
+	There is no overlap in between the counts of the two guards. Only one is asleep at a time.
+	Maximum = A + B
+
+Minimum Case - 
+	We have to maximise the overlap. Atleast one of the guards makes all his observations alongside the other guard.
+	So, if A < B, then all of A's observations are made along with B. Then the no of entries is simply B.
+
+	If B < A, then the number of entries is A. Minimum = max{A, B}
+
+Note - I got wrong answer when I used unsigned long long but correct when I used int.
