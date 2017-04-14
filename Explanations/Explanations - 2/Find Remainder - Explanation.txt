@@ -1,0 +1,5 @@
+Write a program to find the remainder when two given numbers are divided.
+
+------------------------
+
+C has an inbuilt operation to find remainder - a%b
