@@ -1,0 +1,16 @@
+Consider an infinite full binary tree (each node has two children except the leaf nodes) defined as follows. 
+For a node labelled v its left child will be labelled 2*v and its right child will be labelled 2*v+1. The root is labelled as 1.
+
+You are given N queries of the form i j. For each query, you have to print the length of the shortest path between node labelled i and node labelled j.
+
+----------------------------------------------------------------------
+
+Number all the nodes in binary. Root is 1. Left child has a 0 appended at the end and right child has a 1 appended at the end of it.
+    Any two nodes will have a common ancestor. We choose the lowest common ancestor. (It is possible for a node to be the LCA of itself and another node.)
+    (i, j) = (i, LCA) + (LCA, j)
+
+    Now, dividing by 2 makes the binary string b_0b_1... b_n to b_0b_1...b_{n-1}. In other words dividing by 2 takes us to the parent node.
+    We divide both x and y by 2 until they are equal i.e. when the LCA has been reached.
+
+
+	while(i != j){ max{i,j} = max{i,j} >> 1, no_of_steps++}
