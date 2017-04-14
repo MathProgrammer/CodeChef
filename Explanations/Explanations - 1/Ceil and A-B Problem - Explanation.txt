@@ -1,0 +1,16 @@
+All submissions for this problem are available.
+In Ciel's restaurant, a waiter is training. Since the waiter isn't good at arithmetic, sometimes he gives guests wrong change. Ciel gives him a simple problem. 
+What is A-B (A minus B) ?
+
+Surprisingly, his answer is wrong. To be more precise, his answer has exactly one wrong digit. Can you imagine this? Can you make the same mistake in this problem?
+
+------------------------------------------------------
+
+Calculate Ans = A - B
+
+Change the last digit of Ans.
+
+It is sufficient to add 1 to Ans provided the last digit is not 9, else subtract 1.
+
+(Ans mod 10) = 9, then Ans = Ans - 1, 
+		  else Ans = Ans + 1
