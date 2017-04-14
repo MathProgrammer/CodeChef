@@ -1,0 +1,14 @@
+Chef Zidane likes the number 9. He has a number N, and he wants to turn it into a multiple of 9. He cannot add or remove digits, and he can only change one digit at a time.
+ The only allowed operation is to increment or decrement a digit by one, and doing this takes exactly one second. 
+Note that he cannot increase a digit 9 or decrease a digit 0, and the resulting number must not contain any leading zeroes unless N has a single digit.
+
+Chef Zidane wants to know the minimum amount of time (in seconds) needed to accomplish this. Please help him, before his kitchen gets overwhelmed with mist!
+-------------------------------------------------------------------------
+
+The first idea I got was to simply find the remainder with 9 and perform max{n(mod 9), 9 - n(mod 9)} operations. The first corresponds with subtractions and the other 
+additions.
+
+However, - 100000300000. Subtracting 3 and then 1 leads to a number with leading 0s.
+
+An additional test needs to be performed - If The sum of digits is less than 9 and the number itself is greater than 9, then the answer is always 9 - n mod 9. 
+Else it is max{n mod 9, 9 - n mod 9}
