@@ -1,0 +1,21 @@
+Alice and Bob play the following game. They choose a number N to play with. The rules are as follows :
+
+1) Alice plays first, and the two players alternate.
+
+2) In his/her turn, a player can subtract from N any proper divisor (not equal to N) of N. The number thus obtained is the new N.
+
+3) The person who cannot make a move in his/her turn loses the game.
+
+Assuming both play optimally, who wins the game ?
+
+------------------------------------------------------------
+
+n = 1, Player 2 wins.
+n = 2, Player 1 wins by taking 1 coin and making it a n = 1 game where he goes second.
+
+Hypothesis - Player 1 wins on all even n, and Player 2 wins on odd n.
+
+When Player 1 gets an even number subtract 1. Player 2 gets an odd number. Player 2 can either subtract 1 or any of it's odd divisors.
+
+So, Player 1 will always get an even number. The number 1 can never be reached in Player 2's turn.
+If Player 1 gets an odd number = 1, Player 1 loses. Otherwise, Player 1 is forced to give Player 2 an even number which Player 2 replicates the strategy.
