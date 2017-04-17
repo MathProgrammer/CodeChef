@@ -1,0 +1,19 @@
+Chef likes problems related to numbers a lot. He is generally quite good at solving these kinds of problems, but today he got stuck at one number theory problem, 
+and so he asks your help to solve it.
+
+Given a positive integer N, find out how many positive integers X satisfy the equation X + S(X) + S(S(X)) = N, where S(X) denoting sum of digits of X in decimal 
+(base 10) representation.
+
+------------------------------------------------------
+
+x can be at most 10^8  so s(x) can be at most 81. s(s(x)) can be 16 at most - 79 is the maximum
+s(x) + s(s(x)) <= 97, so any value of x less than n - 97 cannot satisfy the equation and neither can any value of x greater than n.
+
+    lower_limit = (n < 97 ? 1 : n - 97);
+    for(x = lower_limit; x <= n; x++)
+    {
+        if(x + sum_of_digits(x) + sum_of_digits(sum_of_digits(x)) == n)
+        {
+            solution_count++;
+        }
+    }
