@@ -1,0 +1,18 @@
+Chef is a farmer and a pet lover. He has a lot of his favorite pets cats and dogs in the barn. He does not know their exact count. 
+But he knows that there are C cats and D dogs in the barn. 
+Also, one day went to field and found that there were L legs of the animals touching the ground. Chef knows that cats love to ride on the dogs. 
+So, they might ride on the dogs, and their legs won't touch the ground and Chef would miss counting their legs. 
+Chef's dogs are strong enough to ride at max two cats on their back.
+
+It was a cold foggy morning, when Chef did this counting. So he is now wondering whether he counted the legs properly or not. 
+Specifically, he is wondering is there a some possibility of his counting being correct. Please help Chef in finding it.
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+    correct_counting = NO;
+    if(no_of_legs%4 == 0 && no_of_legs >= 4*no_of_dogs && no_of_legs <= 4*(no_of_cats + no_of_dogs))
+    {
+        correct_counting = YES;
+    }
+
+L has to be a multiple of 4, has to count all the dogs at least and can count all the dogs and cats at most.
