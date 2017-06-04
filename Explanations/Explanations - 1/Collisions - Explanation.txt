@@ -1,0 +1,36 @@
+Once N boys and M girls attended a party. You are given a matrix A of N rows and M columns where Aij is 1 if the i-th boy likes the j-th girl, 
+otherwise it will be 0. Note that it is not necessary that if a boy x likes girl y, then girl y should like boy x.
+
+You know that if there are two different boys x and y, who both like girl z, then there will be a collision. 
+Can you calculate the number of different collisions at this party? Note that order of boys in the collision doesn't matter.
+
+Input
+The first line contains a single integer T denoting the number of test cases. Then T test cases follow.
+
+The first line of each test case contains two space separated integers N, M denoting the number of boys and girls, respectively.
+
+Each of the following N lines contain M characters, each of them is either '0' or '1'.
+
+Output
+For each test case output a single line containing an integer corresponding to the number of collisions at the party.
+
+-----------------------------------------------------------------------------------
+
+Instead of storing the matrix, store the column sums in an array. This is O(n) memory instead of O(mn).
+
+    scanf("%d %d", &no_of_boys, &no_of_girls);
+    for(i = 0; i < no_of_boys; i++)
+    {
+        for(j = 0; j < no_of_girls; j++)
+        {
+            scanf("%1d", &liking);
+
+            if(liking == true)
+                no_of_boys_liking_girl[j]++;
+        }
+    }
+
+    for(i = 0; i < no_of_girls; i++)
+    {
+        no_of_collisions += (no_of_boys_liking_girl[i] > 1 ? (no_of_boys_liking_girl[i]*(no_of_boys_liking_girl[i] - 1) )/2 : 0);
+    }
