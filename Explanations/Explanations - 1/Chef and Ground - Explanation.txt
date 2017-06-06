@@ -1,0 +1,35 @@
+Today Chef wants to clean his garden. Chef has N columns of ground. Each column has it's height . 
+Chef can choose any column and increase its height by 1 using 1 cube of ground.
+
+Chef wants to spend exactly M cubes. Can he make this in such way that the heights of all columns will become equal?
+
+-------------------------------------------------------------------------------------------------------------------
+
+There is an array of N numbers. Check if it is possible to distribute M among the N numbers to make them all equal.
+
+My first idea - 
+
+    for(i = 0; i < no_of_columns; i++)
+        total_difference += tallest_column - heights_of_columns[i];
+
+    printf(total_difference == no_of_cubes ? "Yes\n" : "No\n");
+
+--------------------
+
+But, this overlooks a case.
+
+Consider n = 3, m = 5
+
+A = 3, 4, 3
+
+To make the array equal to the highest, we take two operations, A = 4, 4, 4
+
+We can increase the heights of all the trees to make them all equal to some other number (5). But, the first logic says this is wrong. 
+
+So, the case (m - total_difference) must be a multiple of n. First, we make all the trees equal to the maximum tree and use up total_difference cubes. 
+Then increase the heights of all n trees by 1 till m cubes are exhausted.
+
+    for(i = 0; i < no_of_columns; i++)
+        total_difference += tallest_column - heights_of_columns[i];
+
+    printf(total_difference == no_of_cubes || (total_difference - no_of_cubes)%no_of_columns == 0 ? "Yes\n" : "No\n");
