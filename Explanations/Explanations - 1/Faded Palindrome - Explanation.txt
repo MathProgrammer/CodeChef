@@ -1,0 +1,34 @@
+Chef likes strings a lot but he likes palindromic strings even more. Today he found an old string s in his garage. 
+The string is so old that some of its characters have faded and are unidentifiable now. Faded characters in the string are represented by '.' 
+whereas other characters are lower case Latin alphabets i.e ['a'-'z'].
+
+Chef being the palindrome lover decided to construct the lexicographically smallest palindrome by filling each of the faded character ('.') with a lower case Latin alphabet. 
+Can you please help him completing the task?
+
+----------------------------------------------------------------------------
+
+If both s(x) and s(n - x) are faded, make them both equal to 'a'.
+Otherwise, if one of them is faded, make it equal to the other
+If both are not faded and not equal, it is not a palindrome.
+
+    for(front_i = 0, back_i = strlen(string) - 1; front_i <= back_i; front_i++, back_i--)
+    {
+        if(string[front_i] == '.' && string[back_i] == '.')
+        {
+            string[front_i] = string[back_i] = 'a';
+        }
+        else if(string[front_i] == '.' && string[back_i] != '.')
+        {
+            string[front_i] = string[back_i];
+        }
+        else if(string[front_i] != '.' && string[back_i] == '.')
+        {
+            string[back_i] = string[front_i];
+        }
+        else if(string[front_i] != string[back_i])
+        {
+            strcpy(string, "-1");
+            break;
+        }
+    }
+    printf("%s\n",string);
