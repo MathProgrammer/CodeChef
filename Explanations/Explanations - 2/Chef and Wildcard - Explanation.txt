@@ -1,0 +1,27 @@
+Chef wants to implement wildcard pattern matching supporting only the wildcard '?'. 
+The wildcard character '?' can be substituted by any single lower case English letter for matching. 
+He has two strings X and Y of equal length, made up of lower case letters and the character '?'. He wants to know whether the strings X and Y can be matched or not.
+
+------------------------------------------------------------------------
+
+Check if x and y have the same length,
+
+Check if x[i] = y[i]  or x[i] = ? or y[i] = ?, for all i,
+
+    if(strlen(string_x) != strlen(string_y))
+    {
+        can_be_made_equal = false;
+    }
+    else
+    {
+        for(i = 0; string_x[i] != '\0'; i++)
+        {
+             if(string_x[i] != '?' && string_y[i] != '?' && string_x[i] != string_y[i])
+            {
+                can_be_made_equal = false;
+                break;
+            }
+        }
+    }
+
+    printf(can_be_made_equal ? "Yes\n" : "No\n");
