@@ -1,0 +1,16 @@
+Chef and Roma are playing a game. Rules of the game are quite simple.
+Initially there are N piles of stones on the table.
+In each turn, a player can choose one pile and remove it from the table.
+Each player want to maximize the total number of stones removed by him.
+Chef takes the first turn.
+
+Please tell Chef the maximum number of stones he can remove assuming that both players play optimally.
+
+--------------------------------------------------------------
+
+The answer is all the odd piles, when the piles are arranged in descending order of height
+
+     sort(no_of_stones_in_pile, no_of_stones_in_pile + no_of_piles);//Ascending order
+
+    for(i = no_of_piles - 1; i >= 0; i = i - 2)
+        chef_stones += no_of_stones_in_pile[i];
