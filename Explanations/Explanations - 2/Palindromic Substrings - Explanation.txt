@@ -1,0 +1,31 @@
+Chef likes strings a lot but he likes palindromic strings more. Today, Chef has two strings A and B, each consisting of lower case alphabets.
+
+Chef is eager to know whether it is possible to choose some non empty strings s1 and s2 where s1 is a substring of A, s2 is a substring of B 
+such that s1 + s2 is a palindromic string. Here '+' denotes the concatenation between the strings.
+
+---------------------------------------------------------------------
+
+If s1 and s2 have even one common letter then a palindrome can be constructed with that common alphabet alone.
+
+The only way a palindrome can't be constructed is if they have a null intersection or no common alphabets. 
+
+----------------------------------------
+
+    alphabet_present_1[NO_OF_ALPHABETS] = {false}, alphabet_present_2[NO_OF_ALPHABETS] = {false}, same_alphabet_present = false
+
+    for(i = 0; string_1[i] != '\0'; i++)
+        alphabet_present_1[string_1[i] - 'a'] = true;
+
+    for(i = 0; string_2[i] != '\0'; i++)
+        alphabet_present_2[string_2[i] - 'a'] = true;
+
+    for(i = 0; i < NO_OF_ALPHABETS; i++)
+    {
+        if(alphabet_present_1[i] && alphabet_present_2[i])
+        {
+            same_alphabet_present = true;
+            break;
+        }
+    }
+
+    printf(same_alphabet_present ? "Yes\n" : "No\n"); 
