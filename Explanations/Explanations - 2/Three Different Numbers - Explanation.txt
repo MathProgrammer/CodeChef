@@ -1,0 +1,42 @@
+This is probably the simplest problem ever. 
+You just need to count the number of ordered triples of different numbers (X1, X2, X3), where Xi could be any positive integer from 1 to Ni, inclusive (i = 1, 2, 3).
+
+No, wait. I forgot to mention that numbers N1, N2, N3 could be up to 1018. Well, in any case it is still quite simple :)
+
+By the way, because of this the answer could be quite large. Hence you should output it modulo 109 + 7. 
+That is you need to find the remainder of the division of the number of required triples by 109 + 7.
+
+----------------------------------------------------
+
+The triplet is ordered. So, let N1 <= N2 <= N3
+The number of different triplets is N1(N2-1)(N3-2).
+
+It's important to have them sorted. 
+
+    sorted_N_1 = min(N_1, min(N_2, N_3));
+    sorted_N_3 = max(N_1, max(N_2, N_3));
+    sorted_N_2 = (N_1 + N_2 + N_3) - (sorted_N_1 + sorted_N_3);
+
+    number_of_triplets = (number_of_triplets*sorted_N_1)%MOD;
+    number_of_triplets = (number_of_triplets*(sorted_N_2-1))%MOD;
+    number_of_triplets = (number_of_triplets*(sorted_N_3-2))%MOD;
+
+Care has to be taken to avoid overflow. 
+
+Firstly, the numbers N have to be replaced by their residues. 
+	Otherwise, in the second step, no_of_triplets can be 1e9, and sortedN_2 can be 1e18, answer will be 1e27 so it will lead to overflow.
+Secondly, subtraction may lead to negative numbers. Add MOD to keep it positive. 
+
+Here's the working code - 
+
+    sorted_N_1 = min(N_1, min(N_2, N_3));
+    sorted_N_3 = max(N_1, max(N_2, N_3));
+    sorted_N_2 = (N_1 + N_2 + N_3) - (sorted_N_1 + sorted_N_3);
+
+    sorted_N_1 %= MOD;
+    sorted_N_2 %= MOD;
+    sorted_N_3 %= MOD;
+
+    number_of_triplets = (number_of_triplets*sorted_N_1)%MOD;
+    number_of_triplets = (number_of_triplets*(sorted_N_2-1 + MOD))%MOD;
+    number_of_triplets = (number_of_triplets*(sorted_N_3-2 + MOD))%MOD;
