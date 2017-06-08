@@ -1,0 +1,7 @@
+If Give an integer N . Write a program to obtain the sum of the first and last digit of this number.
+
+-------------------------------------
+
+I didn't feel like extracting the digits so I just treated the number as a string. Easily generalises to bigger numbers (More than 64 bit)
+
+printf("%d\n", (number[0] - '0' + number[strlen(number) - 1] - '0') );
