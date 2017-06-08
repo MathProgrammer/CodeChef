@@ -1,0 +1,34 @@
+After a long time, Chef has finally decided to renovate his house. Chef's house has N rooms in it numbered from 1 to N. 
+Each room is currently painted in one of the red, blue or green colors. 
+Your are given configuration of colors of his house by a string S consisting of N characters. In this string, color red will be denoted by 'R', green by 'G' and blue by 'B'.
+
+Chef does not like current painting configuration that much and would like to repaint the house such that each room has same color.
+
+For painting, Chef has all the 3 color paints available and mixing any 2 color paints will result into 3rd color paint i.e
+
+R + B = G
+B + G = R
+G + R = B
+For example, painting a room having red color before with green color paint will make the color of room blue.
+
+Also, Chef has many buckets of paint of each color. Simply put, you can assume that he will not run out of paint.
+
+Being extraordinary lazy, our little chef does not want to work much and therefore, 
+he has asked you to find the minimum number of rooms he has to repaint (possibly zero) in order to have all the rooms with same color. Can you please help him?
+
+------------------------------------------------------------------
+the ways of mixing aren't important. Display the sum of the two colours which aren't maximum.
+
+
+    for(i = 0; i < no_of_rooms; i++)
+    {
+        if(room_colour[i] == 'R')
+            no_of_red++;
+        else if(room_colour[i] == 'G')
+            no_of_green++;
+        else if(room_colour[i] == 'B')
+            no_of_blue++;
+    }
+
+    repainted_rooms = no_of_rooms - max(no_of_blue, max(no_of_green, no_of_red));
+    printf("%d\n",repainted_rooms);
