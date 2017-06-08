@@ -1,0 +1,10 @@
+Print the number of 4s in the number
+
+---------------------------------------------
+
+    while(number > 0)
+    {
+        number_of_4s += (number%10 == 4 ? 1 : 0);
+        number = number/10;
+    }
+    printf("%d\n",number_of_4s);
