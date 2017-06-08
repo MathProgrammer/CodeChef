@@ -1,0 +1,20 @@
+Chef has a standard chocolate of n by m pieces. More formally, chocolate is a rectangular plate consisting of n rows and m columns.
+
+Here you can see an example of a standard 5 by 7 chocolate.
+
+
+He has two friends and they will play with this chocolate. First friend takes the chocolate and cuts it into two parts by making either a horizontal or vertical cut. 
+Then, the second friend takes one of the available pieces and divides into two parts by either making a horizontal or vertical cut. 
+Then the turn of first friend comes and he can pick any block of the available chocolates and do the same thing again. The player who cannot make a turn loses.
+
+Now Chef is interested in finding which of his friends will win if both of them play optimally. Output "Yes", if the friend who plays first will win, otherwise print "No"
+
+----------------------------------------------------------------------------------------------------------
+
+The number of pieces is initially odd(1). 
+Each turn increases the number of pieces by 1. 
+The number of pieces is even after the first players turns. So, if mn is even, the first player wins. 
+
+    first_player_wins = (no_of_rows*1LL*no_of_columns%2 == 0 ? true : false);
+
+    printf(first_player_wins ? "Yes\n" : "No\n");
