@@ -1,0 +1,16 @@
+    
+Check if a number is a palindrome
+--------------------------------------------------------------------------
+
+    int front_i, back_i, is_palindrome = true;
+    char number[MAX_LENGTH];
+    scanf("%s",number);
+
+    for(front_i = 0, back_i = strlen(number)-1; front_i < back_i; front_i++, back_i--)
+        if(number[front_i] != number[back_i])
+        {
+            is_palindrome = false;
+            break;
+        }
+
+    printf(is_palindrome ? "wins\n" : "losses\n");
