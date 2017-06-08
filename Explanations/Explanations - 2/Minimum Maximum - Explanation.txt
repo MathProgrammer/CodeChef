@@ -1,0 +1,25 @@
+Chef loves to play with arrays by himself. Today, he has an array A consisting of N distinct integers. He wants to perform the following operation on his array A.
+
+Select a pair of adjacent integers and remove the larger one of these two. This decreases the array size by 1. Cost of this operation will be equal to the smaller of them.
+Find out minimum sum of costs of operations needed to convert the array into a single element.
+
+
+-------------------------------------------------------------------
+
+To minimise cost, we need to choose the minimum number and some other number every time. 
+Each operation eliminates one number. We need to eliminate N-1 numbers.
+
+So, total cost = (N-1)*min
+
+    int number_of_numbers, i, current_number, minimum = INFINITY;
+    long long total_cost;
+    scanf("%d", &number_of_numbers);
+
+    for(i = 1; i <= number_of_numbers; i++)
+    {
+        scanf("%d", &current_number);
+        minimum = min(minimum, current_number);
+    }
+
+    total_cost = (number_of_numbers - 1)*1LL*minimum;
+    printf("%lld\n",total_cost);
