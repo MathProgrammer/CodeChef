@@ -1,0 +1,6 @@
+Write a program, which takes an integer N and if the number is less than 10 then display "What an obedient servant you are!" otherwise print "-1".
+
+-------------------------------------------------
+
+printf(n < 10 ? "What an obedient servant you are!\n" : "-1\n");
+    
