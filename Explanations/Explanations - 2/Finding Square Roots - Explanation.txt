@@ -1,0 +1,18 @@
+In olden days finding square roots seemed to be difficult but nowadays it can be easily done using in-built functions available across many languages .
+
+Assume that you happen to hear the above words and you want to give a try in finding the square root of any given integer using in-built functions. So here's your chance.
+
+-----------------------------------
+
+Didn't want to use an in-built function. So, just print the greatest number i, that satisfies i*i <= number
+
+
+    int square_root = 1, number;
+    scanf("%d",&number);
+
+    while(square_root*square_root <= number)
+        square_root++;
+
+    square_root--;
+    printf("%d\n",square_root);
+
