@@ -1,0 +1,19 @@
+Now Harrenhal is too dangerous since it's a nice place for bandits to hide, or even for rebels to start planning overthrowing of the king. 
+So, the current Lord of the Seven Kingdoms has decided, that it's time to completely ruin the castle. For that puposes, he's planning to send some military troops.
+
+In this problem we assume, that Harrenhal can be described as a string H, which consists only of symbols 'a' and 'b'. Harrenhal is completely ruined if and only if the 
+length of H is equal to zero.
+
+So, how to make H empty? Send a military troop! When a military troop of the king reach the castle, they delete some palindromic subsequence S of H.
+ For example, let H = 'abbabaab'. Then the current military troop can choose S = 'ababa'(Let's make symbols of S bold in H: 'abbabaab'). 
+After deleting S, H will be equal to 'bab'. Military troops are free to choose any possible palindromic subsequence of H.
+
+Your task is pretty simple: determine the minimal number of military troops, that the Lord of the Seven Kingdoms has to send in order to ruin Harrenhal.
+
+---------------------------------------------------------------------------
+
+If the string is a palindrome, delete the entire string.
+
+Else, choose all the a's - this is a palindromic subsequence
+Then, choose all the b's - This is another palindromic subsequence.
+It takes at most 2 steps.
