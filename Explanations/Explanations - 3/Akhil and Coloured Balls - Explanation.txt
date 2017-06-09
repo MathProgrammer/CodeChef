@@ -1,0 +1,35 @@
+Akhil has many balls of white and black colors. One day, he was playing with them. During the play, 
+he arranged the balls into two rows both consisting of N number of balls. 
+These two rows of balls are given to you in the form of strings X, Y. 
+Both these string consist of 'W' and 'B', where 'W' denotes a white colored ball and 'B' a black colored.
+
+Other than these two rows of balls, Akhil has an infinite supply of extra balls of each color. he wants to create another row of N balls, Z in such a way that the 
+sum of hamming distance between X and Z, and hamming distance between Y and Z is maximized.
+-----------------------------------------
+
+Apply the following strategy -
+
+If both strings have the same letter, put the other letter. Distance will be 2.
+If both strings have different letters, then put any letter in that position of Z. Distance will be 1 + 0 in either case. But, they want the lexicographically smaller one - B
+
+
+    char ball_line_1[MAX_BALLS], ball_line_2[MAX_BALLS];
+    int i;
+    scanf("%s %s",ball_line_1, ball_line_2);
+
+    for(i = 0; ball_line_1[i] != '\0'; i++)
+    {
+        if(ball_line_1[i] == ball_line_2[i])
+        {
+            if(ball_line_1[i] == 'W')
+                printf("B");
+            else
+                printf("W");
+        }
+        else
+        {
+            printf("B"); 
+        }
+    }
+
+    printf("\n");
