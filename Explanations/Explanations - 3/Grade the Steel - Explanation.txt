@@ -1,0 +1,45 @@
+A certain grade of steel is graded according to the following conditions.
+
+Hardness must be greater than 50.
+Carbon content must be less than 0.7.
+Tensile strength must be greater than 5600.
+
+
+
+The grades are as follows:
+
+
+Grade is 10 if all three conditions are met.
+Grade is 9 if conditions (i) and (ii) are met.
+Grade is 8 if conditions (ii) and (iii) are met.
+Grade is 7 if conditions (i) and (iii) are met.
+Garde is 6 if only one condition is met.
+Grade is 5 if none of three conditions are met.
+
+----------------------------------------------------------
+
+    const int minimum_hardness = 50, minimum_tensile_strength = 5600;
+    const float maximum_carbon_content = 0.7;
+    
+    int hardness_met, carbon_content_met, tensile_strength_met;
+    int hardness, tensile_strength;
+    float carbon_content;
+    
+    scanf("%d %f %d",&hardness, &carbon_content, &tensile_strength);
+
+    hardness_met = (hardness > minimum_hardness ? true : false);
+    carbon_content_met = (carbon_content < maximum_carbon_content ? true : false);
+    tensile_strength_met = (tensile_strength > minimum_tensile_strength ? true : false);
+
+    if(hardness_met && carbon_content_met && tensile_strength_met)
+        printf("%d\n",10);
+    else if(hardness_met && carbon_content_met)
+        printf("%d\n",9);
+    else if(carbon_content_met && tensile_strength_met)
+        printf("%d\n",8);
+    else if(hardness_met && tensile_strength_met)
+        printf("%d\n",7);
+    else if(hardness_met || carbon_content_met || tensile_strength_met)
+        printf("%d\n",6);
+    else
+        printf("%d\n",5);
