@@ -1,0 +1,38 @@
+Some programming contest problems are really tricky: not only do they require a different output format from what you might have expected, 
+but also the sample output does not show the difference. For an example, let us look at permutations.
+A permutation of the integers 1 to n is an ordering of these integers. So the natural way to represent a permutation is to list the integers in this order. 
+With n = 5, a permutation might look like 2, 3, 4, 5, 1. 
+However, there is another possibility of representing a permutation: You create a list of numbers where the i-th number is the position of the integer i in the permutation. 
+Let us call this second possibility an inverse permutation. The inverse permutation for the sequence above is 5, 1, 2, 3, 4. 
+An ambiguous permutation is a permutation which cannot be distinguished from its inverse permutation. 
+The permutation 1, 4, 3, 2 for example is ambiguous, because its inverse permutation is the same. 
+To get rid of such annoying sample test cases, you have to write a program which detects if a given permutation is ambiguous or not.
+
+------------------------------------------------------------------------------------
+
+If a permutation is ambiguous, then either p[i] = i (i is in the i-th position) or p[p[i]] = i, (i is in the p[i]-th position)
+
+Both conditions can be condensed to p[p[i]] = i,
+
+Note - This problem had different input structure than most CodeChef problems.
+
+        ambiguous = true;
+
+        scanf("%d", &length_of_permutation);
+
+        if(length_of_permutation == 0)
+            return 0;
+
+        for(i = 1; i <= length_of_permutation; i++)
+            scanf("%d", &p[i]);
+
+        for(i = 1; i <= length_of_permutation; i++)
+        {
+            if(p[p[i]] != i)
+            {
+                ambiguous = false;
+                break;
+            }
+        }
+
+        printf(ambiguous ? "ambiguous\n" : "not ambiguous\n");
