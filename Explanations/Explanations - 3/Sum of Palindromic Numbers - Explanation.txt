@@ -1,0 +1,16 @@
+A number is called palindromic if its decimal representation is a palindrome. You are given a range, described by a pair of integers L and R. 
+Find the sum of all palindromic numbers lying in the range [L, R], inclusive of both the extrema.
+
+------------------------------------------------------------------------
+
+Another way of doing this is to store the sum of all palindromic numbers from 1 to i, in T(i) in a look up table. Display T(r) - T(l) + 1 
+
+T(1) = 1;
+T(i) = (is_Palindrome(i) ? T(i-1) + i : T(i-1) )
+
+But, I didn't want to store this in memory. 
+
+    for(i = left; i <= right ; i++)
+    {
+        sum += (is_Palindrome(i) ? i : 0);
+    }
