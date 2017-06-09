@@ -1,0 +1,20 @@
+In a company an emplopyee is paid as under: If his basic salary is less than Rs. 1500, then HRA = 10% of base salary and DA = 90% of basic salary. 
+If his salary is either equal to or above Rs. 1500, then HRA = Rs. 500 and DA = 98% of basic salary. If the Employee's salary is input, 
+write a program to find his gross salary. 
+
+--------------------------------------------------------------------------
+
+I had to use %g to get the correct answer
+
+    if(basic_salary < 1500)
+    {
+        //gross_salary = 2*basic_salaryda = 10, hra = 90 ... da + hra = basic
+        printf("%d\n", (2*basic_salary));
+    }
+    else
+    {
+        da = 0.98*basic_salary;
+        hra = 500;
+        gross_salary = basic_salary + da + hra;
+        printf("%g\n",gross_salary);
+    }
