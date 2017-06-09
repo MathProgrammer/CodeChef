@@ -1,0 +1,15 @@
+You're given an integer N. Write a program to calculate the sum of all the digits of N.
+
+-------------------------
+
+    const int base = 10;
+    int sum = 0, number;
+    scanf("%d",&number);
+
+    while(number > 0)
+    {
+        sum += (number%base);
+        number /= base;
+    }
+
+    printf("%d\n",sum);

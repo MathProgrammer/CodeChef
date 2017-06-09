@@ -1,0 +1,15 @@
+If an Integer N, write a program to reverse the given number.
+
+-----------------
+
+    const int base = 10;
+    int reverse = 0, number;
+    scanf("%d",&number);
+
+    while(number > 0)
+    {
+        reverse = reverse*base + (number%base);
+        number /= base;
+    }
+
+    printf("%d\n",reverse);
