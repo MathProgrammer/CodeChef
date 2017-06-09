@@ -1,0 +1,23 @@
+Help Limak and check if all the '1' digits form a single non-empty segment (consecutive subsequence) in the string. For each test case, print "YES" or "NO" accordingly.
+
+-----------------------------------------------
+
+It is invalid if there are 0s in between two 1s and if there are no 1s in the segment.
+
+    char segment[MAX_LENGTH];
+    int valid = true, i, last_1_index = -1;
+    scanf("%s", segment);
+
+    for(i = 0; segment[i] != '\0' ; i++)
+    {
+        if(segment[i] == '1')
+        {
+            if(last_1_index != -1 && last_1_index != i-1)
+            {
+                valid = false; break;
+            }
+            last_1_index = i;
+        }
+    }
+
+    printf(valid && last_1_index != -1 ? "YES\n" : "NO\n");
