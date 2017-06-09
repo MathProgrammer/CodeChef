@@ -1,0 +1,29 @@
+
+----------------------------------------------------------
+
+Using break inside a switch inside a while loop causes a break from the while loop. So, I put it in another function and used return instead of break
+
+   char id;
+    scanf(" %c", &id);
+
+    switch(id)
+    {
+        case 'b':
+        case 'B': printf("BattleShip\n");
+                  return;
+        case 'c':
+        case 'C': printf("Cruiser\n");
+                  return;
+        case 'd':
+        case 'D': printf("Destroyer\n");
+                  return;
+        case 'f':
+        case 'F': printf("Frigate\n");
+                  return;
+    }
+
+
+-------------------------------------
+
+Also, take care to put a space before %c in scanf otherwise it will consider newline as a character... So, if there are 8 test cases, there will effectively only be 4 
+since the spaces will be treated as another character. 
