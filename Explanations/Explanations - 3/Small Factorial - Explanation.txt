@@ -1,0 +1,30 @@
+You are asked to calculate factorials of some small positive integers.
+
+----------------------------------------------
+
+Simulate multiplication by hand. Keep track of carry.
+
+    first_digit = 0;
+    factorial[first_digit] = 1;
+
+    while(num >= 1)
+    {
+        carry = 0;
+        for(digit_i = 0; digit_i <= first_digit; digit_i++)
+        {
+            product = num*factorial[digit_i] + carry;
+            replace = product%base;
+            carry = product/base;
+
+            factorial[digit_i] = replace;
+
+            if( (digit_i == first_digit) && (carry > 0) )
+            {
+                first_digit++;
+            }
+        }
+
+        num--;
+    }
+
+Don't forget to initialise the factorial array to {0} !
