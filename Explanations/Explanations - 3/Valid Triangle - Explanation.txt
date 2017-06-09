@@ -1,0 +1,4 @@
+Write a program to check whether a triangle is valid or not, when the three angles of the triangle 
+are the inputs. A triangle is valid if the sum of all the three angles is equal to 180 degress.
+
+printf( (angle_a > 0 && angle_b > 0 && angle_c > 0) && (angle_a + angle_b + angle_c == 180) ? "YES\n" : "NO\n");
