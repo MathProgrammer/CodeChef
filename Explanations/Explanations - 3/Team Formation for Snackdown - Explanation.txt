@@ -1,0 +1,11 @@
+There are n people who want to take part in SnackDown. 
+In the competition in this problem, a team should consist of exactly two people (as opposed to the real contest, where single-member teams are allowed). 
+Of course, a person can only participate in a single team. Out of these, 2 * m people have already formed their teams, i.e. there are m teams already formed. 
+The remaining people want to participate and make teams amongst themselves. 
+Can you please tell whether it is possible to divide them into teams so that all the n people can participate?
+
+----------------------------------------------
+
+m is irrelevant. All that matters is the parity of n. If n is odd, then teams can't be made. 
+
+printf(no_of_people%2 == 1 ? "no\n" : "yes\n");
