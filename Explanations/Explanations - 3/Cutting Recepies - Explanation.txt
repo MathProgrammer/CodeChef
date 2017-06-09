@@ -1,0 +1,19 @@
+The chef has a recipe he wishes to use for his guests, but the recipe will make far more food than he can serve to the guests. 
+The chef therefore would like to make a reduced version of the recipe which has the same ratios of ingredients, but makes less food. 
+The chef, however, does not like fractions. The original recipe contains only whole numbers of ingredients, 
+and the chef wants the reduced recipe to only contain whole numbers of ingredients as well. 
+Help the chef determine how much of each ingredient to use in order to make as little food as possible.
+
+--------------------------------------------------------------------------------------------
+
+All the ingredients can be reduced at most, by their gcd. 
+
+    for(i = 0; i < number_of_elements; i++)
+    {
+        scanf("%d", &ingredient[i]);
+
+        array_gcd = (i == 0 ? ingredient[i] : gcd(array_gcd, ingredient[i]));
+    }
+
+    for(i = 0; i < number_of_elements; i++)
+        printf("%d ",ingredient[i]/array_gcd);
