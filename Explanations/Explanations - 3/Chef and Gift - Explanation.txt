@@ -1,0 +1,26 @@
+Today is chef's friend's birthday. He wants to give a gift to his friend. So he was desperately searching for some gift here and there.
+
+Fortunately, he found an array a of size n lying around. The array contains positive integers. Chef's friend likes even numbers very much. 
+So for the gift, chef will choose a consecutive non-empty segment of the array. The segment should contain exactly k even integers. 
+Though it can have any number of odd integers.
+He will then pick that segment and gift it to his friend.
+
+But there is a problem. It might not be always possible for the chef to choose such a segment. Please tell whether it is possible for chef to select some gift or not?
+
+---------------------------------------------------------------------------------------------
+
+
+I had overlooked a case. If k = 0, and all the numbers are even, Chef cannot give a gift. 
+
+    for(i = 1; i <= number_of_numbers ; i++)
+    {
+        scanf("%d", &number_i);
+        number_of_even_numbers += (number_i%2 == 0 ? 1 : 0);
+    }
+
+    //If k = 0, and all the numbers are even, Chef cannot give a gift
+    printf(number_of_even_numbers >= k && !(k == 0 && number_of_even_numbers == number_of_numbers) ? "YES\n" : "NO\n");
+
+or
+
+   printf(number_of_even_numbers < k || (k == 0 && number_of_even_numbers == number_of_numbers) ? "NO\n" : "YES\n");
