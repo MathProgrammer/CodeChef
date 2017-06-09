@@ -1,0 +1,27 @@
+Bears love candies and games involving eating them. Limak and Bob play the following game. 
+Limak eats 1 candy, then Bob eats 2 candies, then Limak eats 3 candies, then Bob eats 4 candies, and so on. Once someone can't eat what he is supposed to eat, he loses.
+
+Limak can eat at most A candies in total (otherwise he would become sick), while Bob can eat at most B candies in total. Who will win the game? 
+Print "Limak" or "Bob" accordingly.
+
+----------------------------------------------------------------------------
+
+Limak has eaten the sum of n odd numbers after n turns - this is n^2. ... Can be visualised by dots and squares or by adding an AP with symmetry.
+
+Bob has eaten the sum of n even nunmbers after n turns = 2( 1 + 2 + ... + n) = n(n+1) = 2T_n
+
+Find out the number of turns Limak can take and the number Bob can take. 
+
+Limak wins if he can make more turns than Bob. If they can make the same number of turns, Bob wins. 
+
+    //Limak has always eaten n^2 candies after n turns
+    for(no_of_limak_turns = 0; no_of_limak_turns*no_of_limak_turns <= max_limak_candies; no_of_limak_turns++);
+
+    no_of_limak_turns--;
+
+    //Bob has eaten n(n+1) i.e. 2T_n candies after n turns
+    for(no_of_bob_turns = 0; no_of_bob_turns*(no_of_bob_turns + 1) <= max_bob_candies; no_of_bob_turns++);
+
+    no_of_bob_turns--;
+
+    printf(no_of_limak_turns > no_of_bob_turns ? "Limak\n" : "Bob\n");
