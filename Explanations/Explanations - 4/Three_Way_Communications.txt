@@ -1,0 +1,46 @@
+The Chef likes to stay in touch with his staff. So, the Chef, the head server, and the sous-chef all carry two-way transceivers so they can stay in constant contact. 
+Of course, these transceivers have a limited range so if two are too far apart, they cannot communicate directly.
+
+The Chef invested in top-of-the-line transceivers which have a few advanced features. One is that even if two people cannot talk directly because they are out of range, 
+if there is another transceiver that is close enough to both, 
+then the two transceivers can still communicate with each other using the third transceiver as an intermediate device.
+
+There has been a minor emergency in the Chef's restaurant and he needs to communicate with both the head server and the sous-chef right away. 
+Help the Chef determine if it is possible for all three people to communicate with each other, even if two must communicate through the third because they are too far apart.
+
+---------------------------------------------------------------------------------
+
+I didn't want to call the sqrt function because of rounding off errors so instead of checking d <= r, I checked d^2 <= r^2,
+
+
+int can_communicate(int point_1[], int point_2[], int range)
+{
+    int x1 = point_1[0], x2 = point_2[0], y1 = point_1[1], y2 = point_2[1];
+
+    if((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1) <= range*range)
+        return true;
+    else
+        return false;
+}
+
+void solve()
+{
+    int range, can_1_and_2_communicate, can_2_and_3_communicate, can_1_and_3_communicate, three_way_communication_possible = false;
+    int point_1[2], point_2[2], point_3[2];
+
+    scanf("%d", &range);
+    scanf("%d %d", &point_1[0], &point_1[1]);
+    scanf("%d %d", &point_2[0], &point_2[1]);
+    scanf("%d %d", &point_3[0], &point_3[1]);
+
+    can_1_and_2_communicate = can_communicate(point_1, point_2, range);
+    can_2_and_3_communicate = can_communicate(point_2, point_3, range);
+    can_1_and_3_communicate = can_communicate(point_3, point_1, range);
+
+    if( ( can_1_and_2_communicate && can_2_and_3_communicate ) || ( can_2_and_3_communicate && can_1_and_3_communicate ) ||
+        ( can_1_and_2_communicate && can_1_and_3_communicate ) )
+    {
+        three_way_communication_possible = true;
+    }
+    printf(three_way_communication_possible ? "yes\n" : "no\n");
+}
