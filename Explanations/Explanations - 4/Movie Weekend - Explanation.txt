@@ -1,0 +1,12 @@
+Since we're going through the array in ascending order, we only need to maximise product and rating when product is equal.
+
+    for(i = 0; i < number_of_movies ; i++)
+    {
+        if(length[i]*rating[i] > deciding_factor || (length[i]*rating[i] == deciding_factor && rating[i] > rating[movie_chosen]))
+        {
+            deciding_factor = length[i]*rating[i];
+            movie_chosen = i ;
+        }
+    }
+
+    printf("%d\n",movie_chosen + 1);
