@@ -1,0 +1,31 @@
+Given an array consisting of N integers, you have to do the following operation K times.
+
+Find out the sum of all the elements in the array. Denote it by S. Insert an integer in the array strictly greater than S. 
+Hence, size of the array will increase by one.
+Thus, at the end of the K operations, the array will have N + K elements. Find out the smallest possible value of the last number inserted in the array. 
+Since this number can be very large, you just have to tell whether it will be odd or even.
+
+---------------------------------------------------------------------------
+
+Let's say the sum of the array is even. 
+
+We must insert an odd number. Now, the sum is odd. Insert an even number. Sum remains odd, insert another even number and so on ...
+
+
+Case 1: Array sum is even
+
+	The first element inserted is even. All others are odd.
+
+Case 2: Array sum is odd. 
+
+	All inserted elements are even and don't change the sum.
+
+-------------------------------------------------------------------------------
+
+   for(i = 1; i <= number_of_elements; i++)
+    {
+        scanf("%d", &number_i);
+        parity_of_array = parity_of_array + number_i%2;
+    }
+
+    printf( parity_of_array%2 == 0 && number_of_operations == 1 ? "odd\n" : "even\n");
