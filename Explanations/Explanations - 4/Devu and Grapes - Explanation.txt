@@ -1,0 +1,25 @@
+Grapes of Coderpur are very famous. Devu went to the market and saw that there were N people selling grapes. He didn’t like it because things were not very structured. 
+So, he gave a task to Dhinwa to make things better. If Dhinwa successfully completes the task, Devu will be happy.
+
+Devu wants to change the number of grapes in a bucket of zero or more sellers in such a way that the GCD of all the number of grapes is divisible by K. 
+Dhinwa can add or remove any number of grapes from each of the buckets. Adding or removing a grape will be counted as an operation. 
+Also after the operation, none of the seller’s bucket should be empty.
+
+Help Dhinwa in finding the minimum number of operations needed to make Devu happy.
+
+-----------------------------------------------------------------------------------------------
+
+So, every number has to be made a multiple of k. We have to round it off to the nearest multiple of k. 
+
+The answer is min(i%k, k - i%k)
+
+Logically, I had overlooked the fact that the grapes can't be 0. So, if it's less than i, we have to round it off to k.
+
+Computationally, there was an overflow error until the number of operations was long
+
+    for(i = 1; i <= number_of_grapes; i++)
+    {
+        scanf("%d", &grapes_i);
+
+        number_of_operations += ( k >= grapes_i ? (k - grapes_i) : min(grapes_i%k, (k - grapes_i%k) ) );
+    }
