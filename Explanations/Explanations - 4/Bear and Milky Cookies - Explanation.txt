@@ -1,0 +1,30 @@
+Limak is a little polar bear, who loves eating cookies and drinking milk. For this reason he often visits Chef's kitchen.
+
+Limak is going to spend N minutes in the kitchen. Each minute he either eats a cookie or drinks milk. 
+Cookies are very sweet and thus Limak's parents have instructed him, that after eating a cookie, he has to drink milk in the next minute.
+
+You are given whether he ate a cookie or drank milk in each of the N minutes. Your task is to check if Limak followed his parents' instructions. 
+That is, you need to verify whether after each eaten cookie he drinks milk in the next minute. Print "YES" or "NO" for each test case accordingly.
+
+----------------------------------------------------------------------
+
+There cannot be two consecutive cookie sessions and a trick I had missed was that the last activity cannot be cookie. It has to end with milk.
+
+    int number_of_minutes, i, previous_activity = -1, rules_followed = true;
+    char current_activity[MAX_LENGTH];
+    scanf("%d", &number_of_minutes);
+
+    for(i = 1; i <= number_of_minutes; i++)
+    {
+        scanf("%s", current_activity);
+
+        if(strcmp(current_activity, "cookie") == 0 && previous_activity == 1)
+            rules_followed = false;
+
+        previous_activity = (strcmp(current_activity, "cookie") == 0 ? 1 : 2); //1 Denotes Cookie and 2 Denotes Milk
+    }
+
+    if(previous_activity == 1)
+        rules_followed = false;
+
+    printf(rules_followed == true ? "YES\n" : "NO\n");
