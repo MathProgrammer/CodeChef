@@ -1,0 +1,39 @@
+A version control system(VCS) is a repository of files, often the files for the source code of computer programs, with monitored access. 
+Every change made to the source is tracked, along with who made the change, why they made it, and references to problems fixed, or enhancements introduced, by the change.
+
+Version control systems are essential for any form of distributed, collaborative development. 
+Whether it is the history of a wiki page or large software development project, the ability to track each change as it was made, and to reverse changes
+ when necessary can make all the difference between a well managed and controlled process and an uncontrolled ‘first come, first served’ system. 
+It can also serve as a mechanism for due diligence for software projects.
+
+In this problem we'll consider a simplified model of a development project. Let's suppose, that there are N source files in the project. 
+All the source files are distinct and numbered from 1 to N.
+
+A VCS, that is used for maintaining the project, contains two sequences of source files. The first sequence contains the source files, that are ignored by the VCS. 
+If a source file is not in the first sequence, then it's considered to be unignored. The second sequence contains the source files, that are tracked by the VCS. 
+If a source file is not in the second sequence, then it's considered to be untracked. A source file can either be or not be in any of these two sequences.
+
+Your task is to calculate two values: the number of source files of the project, that are both tracked and ignored, and the number of source files of the project, 
+that are both untracked and unignored.
+
+------------------------------------------------------------------------------------------------
+
+    for(i = 1; i <= number_of_ignored_files; i++)
+    {
+        scanf("%d", &file_i);
+        actions_on_file[file_i]++;
+    }
+
+    for(i = 1; i <= number_of_tracked_files; i++)
+    {
+        scanf("%d", &file_i);
+        actions_on_file[file_i]++;
+    }
+
+    for(i = 1; i <= number_of_files; i++)
+    {
+        number_of_ignored_and_tracked_files += (actions_on_file[i] == 2 ? 1 : 0);
+        number_of_neither_ignored_nor_tracked_files += (actions_on_file[i] == 0 ? 1 : 0);
+    }
+    printf("%d %d\n",number_of_ignored_and_tracked_files, number_of_neither_ignored_nor_tracked_files);
+
