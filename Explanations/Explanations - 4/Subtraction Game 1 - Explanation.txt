@@ -1,0 +1,31 @@
+Chef is playing a game on a sequence of N positive integers, say A1, A2, ... AN. The game is played as follows.
+
+If all the numbers are equal, the game ends.
+Otherwise
+Select two numbers which are unequal
+Subtract the smaller number from the larger number
+Replace the larger number with the result from above (see the explanation section for clarity)
+Chef has already figured out that the game always terminates. He also knows, for a given sequence of integers, the game will always terminate on the same value, 
+no matter how the game is played. 
+Chef wants you to simulate the game for him and tell him on which value will the game terminate for a given sequence of integers.
+
+-----------------------------------------------------------------------------------
+
+Very elegant question. The idea is to find an invariant. 
+
+(a, b) is replace by (a, b-a), where b is greater than a.
+
+Notice that gcd(a, b) = gcd(a, b-a) ... The stopping condition is when all elements are equal.
+
+The gcd of the array is invariant and the answer is the gcd of the array !
+
+------------------------------------
+
+    for(i = 1; i <= number_of_elements; i++)
+    {
+        scanf("%d", &number);
+
+        array_gcd = (i == 1 ? number : gcd(array_gcd, number));
+    }
+
+    printf("%d\n",array_gcd)
