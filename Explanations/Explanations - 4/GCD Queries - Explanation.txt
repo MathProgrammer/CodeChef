@@ -1,0 +1,40 @@
+You are given an array A of integers of size N. You will be given Q queries where each query is represented by two integers L, R. 
+You have to find the gcd(Greatest Common Divisor) of the array after excluding the part from range L to R inclusive (1 Based indexing). 
+You are guaranteed that after excluding the part of the array remaining array is non empty.
+
+-------------------------------------------------------------------------------------
+
+Very interesting question. If all the queries were answered naively, then the complexity is O(N*Q), but there is a way to answer each query faster with precomputation.
+This question required me to use two auxiliary data structures - a prefix array and a suffix array for gcd.
+
+The prefix array, P[i] = gcd(A[1], A[2], ... ,A[i])
+The suffix array, S[i] = gcd(A[i], A[i+1], ..., A[n])
+
+Prefix array holds the gcd of all elements till the i-th element and suffix array holds the gcd of all elements after the i-th element.
+
+Answer is gcd(P[L-1], P[R+1]) ... Of course the boundary conditions need to be handled
+This is probably the first question where I got to use prefix and suffix arrays in precompuation to answer queries faster ! Quite Exciting !
+
+------------------------------------------------------------
+
+    for(i = 1; i <= number_of_elements; i++)
+        prefix_gcd[i] = (i == 1 ? array[i] : gcd(prefix_gcd[i-1], array[i]) );
+
+    for(i = number_of_elements; i >= 1; i--)
+        suffix_gcd[i] = (i == number_of_elements ? array[i] : gcd(suffix_gcd[i + 1], array[i]) );
+
+	
+    for(i = 1; i <= number_of_queries; i++)
+    	{
+        	scanf("%d %d", &left, &right);
+
+        //We are guaranteed we never get an empty range for query so the first two conditions never occur together
+        	if(left == 1)
+          	     answer = suffix_gcd[right+1];
+       	 	else if(right == number_of_elements)
+           	    answer = prefix_gcd[left-1];
+        	else
+                    answer = gcd(prefix_gcd[left-1], suffix_gcd[right+1]);
+
+        printf("%d\n", answer);
+      }
