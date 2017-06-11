@@ -1,0 +1,28 @@
+Andrash study in Uzhland National University. Now is the time of exam results. 
+Andrash similar to other students, hopes that this scores in the exam could fetch him a scholarship/stipendium for his studies.
+
+There are following simple rules to receive stipendium:
+
+University follows 5 point grading system. In an exam, a student can receive any score from 2 to 5. 2 is called an F grade, meaning that student has failed that exam.
+Student should not have fail any of the exams.
+Student must obtain a full score in some of his/her exams to show that he/she is excellent in some of the subjects.
+He/She must have a grade point average not less than 4.0
+You are given information regarding the exams and how Andrash performed in those. Can you help him figure out whether he will receive the stipendium or not!! 
+  
+------------------------------------------------------------------------------
+
+    for(i = 1; i <= number_of_subjects; i++)
+    {
+        scanf("%d", &marks_i);
+
+        total += marks_i;
+
+        if(marks_i == 2)
+            failed = true;
+
+        if(marks_i == 5)
+            one_full = true;
+    }
+    average = total/(1.0*number_of_subjects);
+
+    printf(!(failed) && one_full && average >= 4.0 ? "Yes\n" : "No\n");
