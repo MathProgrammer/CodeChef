@@ -1,0 +1,22 @@
+Now that Chef has finished baking and frosting his cupcakes, it's time to package them. Chef has N cupcakes, and needs to decide how many cupcakes to place in each package. 
+Each package must contain the same number of cupcakes. Chef will choose an integer A between 1 and N, inclusive, and place exactly A cupcakes into each package. 
+Chef makes as many packages as possible. 
+Chef then gets to eat the remaining cupcakes. Chef enjoys eating cupcakes very much. Help Chef choose the package size A that will let him eat as many cupcakes as possible.
+
+-----------------------------------------------------------------------------------------------------------
+
+Given an N, find the number which gives the maximum remainder with N. Ceil(N/2) + 1 is the answer.
+
+Case 1 : N is even. 
+
+Firstly, no number can give a remainder greater than itself. So, N/2 + 1 is already greater than all numbers up to N/2. 
+
+If N = 2m, N/2 + 1 gives a remainder = m - 1, All numbers after N/2 + 1 have to give a smaller remainder because the difference in between N and the number is less than 
+m - 1
+
+Case 2 - N is odd
+
+N = 2m + 1, answer = m+1, 
+
+All numbers smaller than m+1 must give a remainder smaller than m+1.
+All numbers after m+1 cannot give m+1 as the remainder because m+1 > N-x, where x is any number in between m+1 and N. Adding m+1 to x will always exceed N. 
