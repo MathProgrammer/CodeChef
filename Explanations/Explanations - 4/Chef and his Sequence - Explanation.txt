@@ -1,0 +1,20 @@
+Chef has a sequence of N numbers. He like a sequence better if the sequence contains his favorite sequence as a substring.
+
+Given the sequence and his favorite sequence(F) check whether the favorite sequence is contained in the sequence
+
+-----------------------------------------------------
+
+     for(i = 0; i < length_of_sequence; i++)
+     {
+         if(sequence[i] == subsequence[subsequence_i])
+         {
+             subsequence_i++;
+             if(subsequence_i == length_of_subsequence)
+             {
+                 subsequence_present = true;
+                 break;
+             }
+         }
+     }
+
+     printf(subsequence_present ? "Yes\n" : "No\n");
