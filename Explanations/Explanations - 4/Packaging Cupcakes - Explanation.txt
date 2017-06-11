@@ -5,7 +5,7 @@ Chef then gets to eat the remaining cupcakes. Chef enjoys eating cupcakes very m
 
 -----------------------------------------------------------------------------------------------------------
 
-Given an N, find the number which gives the maximum remainder with N. Ceil(N/2) + 1 is the answer.
+Given an N, find the number which gives the maximum remainder with N. Floor(N/2) + 1 is the answer.
 
 Case 1 : N is even. 
 
