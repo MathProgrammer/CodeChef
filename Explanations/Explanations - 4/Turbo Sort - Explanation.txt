@@ -1,0 +1,16 @@
+Given the list of numbers, you are to sort them in non decreasing order.
+
+----------------------------------------------
+
+Used the STL sort.
+
+    int number_of_elements, number[MAX_SIZE], i;
+    scanf("%d", &number_of_elements);
+
+    for(i = 0; i < number_of_elements; i++)
+        scanf("%d", &number[i]);
+
+    sort(number, number + number_of_elements);
+
+    for(i = 0; i < number_of_elements; i++)
+        printf("%d\n",number[i]);
