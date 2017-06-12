@@ -1,0 +1,36 @@
+The snakes want to build a temple for Lord Cobra. There are multiple strips of land that they are looking at, but not all of them are suitable. 
+They need the strip of land to resemble a coiled Cobra. You need to find out which strips do so.
+
+Formally, every strip of land, has a length. Suppose the length of the i-th strip is is Ni, then there will be Ni integers, Hi1, Hi2, .. HiNi, 
+which represent the heights of the ground at various parts of the strip, in sequential order. 
+That is, the strip has been divided into Ni parts and the height of each part is given. This strip is valid, if and only if all these conditions are satisfied:
+
+There should be an unique 'centre' part. This is where the actual temple will be built. 
+By centre, we mean that there should be an equal number of parts to the left of this part, and to the right of this part.
+Hi1 = 1
+The heights keep increasing by exactly 1, as you move from the leftmost part, to the centre part.
+The heights should keep decreasing by exactly 1, as you move from the centre part to the rightmost part. Note that this means that HiNi should also be 1.
+Your job is to look at every strip and find if it's valid or not.
+------------------------------------------
+
+Firstly, the number of parts has to be odd.
+
+If h_i is in the first half, h_i = i
+Else, h_i = n - i + 1
+
+    if(number_of_parts%2 == 0)
+         valid = false;
+
+    for(i = 1; i <= number_of_parts; i++)
+    {
+        scanf("%d", &height_i);
+
+        //If h_i is in first half = i, else it is, n - i + 1
+        if(i <= number_of_parts/2 + 1 && height_i != i)
+            valid = false;
+
+        if(i > number_of_parts/2 + 1 && height_i != number_of_parts - i + 1 )
+            valid = false;
+    }
+
+    printf(valid ? "yes\n" : "no\n");
