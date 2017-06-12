@@ -1,0 +1,30 @@
+Bearland has infinitely many cities, numbered starting from 1. Some pairs of cities are connected with bidirectional roads:
+
+There are roads 1-2, 3-4, 5-6, 7-8, and so on (there is a road between cities 2*i+1 and 2*i+2 for every non-negative integer i).
+There are roads 1-3, 3-5, 5-7, 7-9, ... (between every two consecutive odd numbers).
+There are roads 2-4, 4-6, 6-8, 8-10, ... (between every two consecutive even numbers).
+
+You are given Q queries. 
+In each query, for the given pair of different cities a and b, you should check if there is a road between them. For each query, print "YES" or "NO" accordingly.
+
+-----------------------------------------------------
+
+Case 1 : Cities have the same parity - 
+	They are connected if their absolute difference is 2.
+
+Case 2 : Different parity
+	They are connected if their absolute difference is 1 and the larger number is even. 
+------------------------------------------------------------------
+
+    if( (city_1%2 == 0 && city_2%2 == 0) || (city_1%2 == 1 && city_2%2 == 1) )
+    {
+        if(abs(city_1 - city_2) == 2)
+            connected = true;
+    }
+    else //Different parity
+    {
+        if(abs(city_1 - city_2) == 1 && max(city_1, city_2)%2 == 0)
+            connected = true;
+    }
+
+    printf(connected ? "YES\n" : "NO\n");
