@@ -1,0 +1,72 @@
+Rahul and Rashi are off to the wedding of a close relative. This time they have to travel without their guardians. 
+Rahul got very interested in the arrangement of seats inside the train coach.
+
+The entire coach could be viewed as an arrangement of consecutive blocks of size 8.
+
+
+Berth Number   	Compartment
+
+ 1 -  8               1  
+ 9 - 16               2  
+17 - 24               3  
+... and so on
+Each of these size-8 blocks are further arranged as:
+
+
+ 1LB,  2MB,  3UB,  4LB,  5MB,  6UB,  7SL,  8SU  
+ 9LB, 10MB, ...
+ ...   
+ ...
+Here LB denotes lower berth, MB middle berth and UB upper berth.
+The following berths are called Train-Partners:
+
+
+3UB   |  6UB  
+2MB   |  5MB  
+1LB   |  4LB  
+7SL   |  8SU  
+and the pattern is repeated for every set of 8 berths.
+
+Rahul and Rashi are playing this game of finding the train partner of each berth. Can you write a program to do the same?
+
+--------------------------------------------------
+
+Just an implemention problem
+
+int get_partner(int seat_number)
+{
+    switch(seat_number%8)
+    {
+        case 1:
+        case 2 :
+        case 3 :
+                return (seat_number + 3);
+
+        case 4:
+        case 5 :
+        case 6 :
+                return (seat_number - 3);
+
+        case 7: return (seat_number + 1);
+
+        case 0: return (seat_number - 1);
+    }
+}
+
+void solve()
+{
+    char seat_position[NO_OF_SEATS][MAX_LENGTH];
+    int seat_number, partner_seat_number;
+
+    scanf("%d", &seat_number);
+
+    strcpy(seat_position[1], "LB"); strcpy(seat_position[4], "LB");
+    strcpy(seat_position[2], "MB"); strcpy(seat_position[5], "MB");
+    strcpy(seat_position[3], "UB"); strcpy(seat_position[6], "UB");
+    strcpy(seat_position[7], "SL");
+    strcpy(seat_position[0], "SU");
+
+    partner_seat_number = get_partner(seat_number);
+
+
+    printf("%d%s\n", partner_seat_number, seat_position[partner_seat_number%8]);
