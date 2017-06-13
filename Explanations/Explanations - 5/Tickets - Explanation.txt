@@ -1,0 +1,25 @@
+Every day, Mike goes to his job by a bus, where he buys a ticket. On the ticket, there is a letter-code that can be represented as a string of upper-case Latin letters.
+
+Mike believes that the day will be successful in case exactly two different letters in the code alternate. Otherwise, he believes that the day will be unlucky. 
+Please see note section for formal definition of alternating code.
+
+You are given a ticket code. Please determine, whether the day will be successful for Mike or not. Print "YES" or "NO" (without quotes) corresponding to the situation.
+
+------------------------------------------------------------------------
+
+    first_character = ticket[0];
+    second_character = ticket[1];
+
+    if(first_character == second_character)
+        successful = false;
+
+    for(i = 2; ticket[i] != '\0'; i++)
+    {
+        if( (i%2 == 0 && ticket[i] != first_character) || (i%2 == 1 && ticket[i] != second_character) )
+        {
+            successful = false;
+            break;
+        }
+    }
+
+    printf(successful ? "YES\n" : "NO\n");
