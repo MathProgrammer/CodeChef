@@ -1,0 +1,22 @@
+Robot Bunny is lost. It wants to reach its home as soon as possible. Currently it is standing at coordinates (x1, y1) in 2-D plane. Its home is at coordinates (x2, y2). 
+Bunny is extremely worried. Please help it by giving a command by telling the direction in which it should to go so as to reach its home. I
+f you give it a direction, it will keep moving in that direction till it reaches its home. 
+There are four possible directions you can give as command - "left", "right", "up", "down". 
+It might be possible that you can't instruct the robot in such a way that it reaches its home. In that case, output "sad".
+
+-------------------------------------------------------------------------------------
+
+Simple Implementation
+
+    if(x_1 != x_2 && y_1 != y_2)
+    {
+        printf("sad\n");
+    }
+    else if(x_1 == x_2)
+    {
+        printf(y_1 < y_2 ? "up\n" : "down\n");
+    }
+    else if(y_1 == y_2)
+    {
+        printf(x_1 < x_2 ? "right\n" : "left\n");
+    }
