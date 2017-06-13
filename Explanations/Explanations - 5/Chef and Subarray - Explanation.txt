@@ -1,0 +1,54 @@
+Chef likes problems involving arrays. Unfortunately, the last one he tried to solve didn't quite get solved.
+
+Chef has an array A of N positive numbers. He wants to find the number of subarrays for which the sum and product of elements are equal.
+
+Please help Chef find this number.
+
+----------------------------------------------------------
+
+Editorial recommends a brute-force O(n^2) solution for the small constraints. 
+
+Even the brute force solution is interesting. It's not immediately obvious how to visit every subarray. (A subarray is contiguous, unlike a subsequence).
+
+    for(i = 0; i < number_of_elements; i++)
+    {
+        sum = 0;
+        product = 1;
+
+        for(j = i; j >= 0; j--)
+        {
+            sum += numbers[j];
+            product *= numbers[j];
+
+            number_of_good_subarrays += (sum == product);
+        }
+
+    }
+
+Every subarray must end at an index i. For a given i, we visit all subarrays ending at i
+
+It is very important that the j loop goes DOWN, because we see new sums and products instead of revisiting the old ones.
+
+If j went up from 1 to i, then we would keep visiting the same subarrays ...
+
+a b c d
+
+We would visit
+
+a
+a, ab
+a, ab, abc
+a, ab, abc, abcd
+
+We are missing out on b, c, d, bc, bcd, cd ...
+
+If j goes down, then, 
+
+a
+b, ba
+c, cb, cba
+d, dc, dcb, dcba
+
+All subarrays have been visited like this.
+
+Although it's brute force, it's very interesting. 
