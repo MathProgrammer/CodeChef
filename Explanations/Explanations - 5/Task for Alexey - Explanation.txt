@@ -1,0 +1,36 @@
+Alexey is trying to develop a program for a very simple microcontroller. It makes readings from various sensors over time, and these readings must happen at specific regular 
+times. Unfortunately, if two of these readings occur at the same time, the microcontroller freezes and must be reset.
+
+There are N different sensors that read data on a regular basis. For each i from 1 to N, the reading from sensor i will occur every Ai milliseconds with the 
+first reading occurring exactly Ai milliseconds after the microcontroller is powered up. Each reading takes precisely one millisecond on Alexey's microcontroller.
+
+Alexey wants to know when the microcontroller will freeze after he turns it on.
+
+----------------------------------------------------------------------------------
+
+So, the answer is the smallest lcm of any two numbers in the array. I thought there was a quick trick and a slick solution but even the editorial sugggested 
+an O(n^2) solution.
+
+-------------------------------------------------
+
+int gcd(int a, int b)
+{
+    if(a == 0 || b == 0)
+        return (a + b);
+    else
+        return gcd(min(a, b), (max(a, b)%min(a, b)) );
+}
+
+long long lcm(int a, int b)
+{
+    return  (a*1LL*b)/gcd(a, b) ;
+}
+
+    long long min_lcm = 1e18
+    for(i = 0; i < number_of_microcontrollers; i++)
+    {
+        for(j = i + 1; j < number_of_microcontrollers; j++)
+        {
+            min_lcm = min(min_lcm, lcm(microcontroller_timing[i], microcontroller_timing[j]) );
+        }
+    }
