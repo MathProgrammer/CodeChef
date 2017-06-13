@@ -1,0 +1,11 @@
+Find the intersection of AA and BB and return its size.
+
+-----------------------------------------------------------------------------------
+
+Choose to take every element of Alice and do binary search in Berta so that the complexity will be O(N log N).
+
+    sort(alice, alice + number_of_alice_elements);
+    sort(berta, berta + number_of_berta_elements);
+
+    for(i = 0; i < number_of_alice_elements; i++)
+        number_of_common_elements += (bin_search(0, number_of_berta_elements - 1, alice[i]));
