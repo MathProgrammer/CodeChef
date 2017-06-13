@@ -1,0 +1,39 @@
+Donald Drumpf has spent the entire summer lobbying to gather votes for the upcoming student government election. At his University, there are a total of N students. 
+Each student in the university casts a vote. The size of student government is determined by the number of students that get at least K votes.
+
+Each person that receives at least K votes is given a post in the student government. The Dean noticed that every year, there are a few students who vote for themselves. 
+He decided to add a rule to disqualify any such individuals who vote for themselves i.e they cannot be part of the student government.
+
+You are given an array A, where Ai denotes the person who the i-th person voted for. Can you compute the size of the student government?
+
+-------------------------------------------------------------------------
+
+Maintain an array containing the votes each candidate has got. If someone votes for himself, set his votes to -INFINITY. Check how many candidates have votes >= k,
+
+#define MINUS_INFINITY -200
+
+void solve()
+{
+    int number_of_students, i, vote_i, minimum_votes, size_of_student_body = 0;
+    int candidate_votes[MAX_CANDIDATES] = {0};
+
+    scanf("%d %d", &number_of_students, &minimum_votes);
+
+    for(i = 1; i <= number_of_students; i++)
+    {
+        scanf("%d", &vote_i);
+
+        candidate_votes[vote_i] = (vote_i == i ? MINUS_INFINITY : candidate_votes[vote_i] + 1); //Disqualified if he votes for himself
+    }
+
+    for(i = 1; i <= number_of_students; i++)
+        size_of_student_body += (candidate_votes[i] >= minimum_votes);
+
+    printf("%d\n", size_of_student_body);
+}
+
+--------------------------------------------------------------
+
+I made a mistake while counting votes, I first wrote candidates_votes[i] = ....,
+
+This is wrong. It should be candidates_votes[vote_i] ... Increase the votes of the person who got voted for, not the person who voted.
