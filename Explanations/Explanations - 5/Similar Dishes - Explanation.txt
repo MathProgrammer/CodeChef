@@ -1,0 +1,16 @@
+There are two arrays aa and bb each consisting of four strings.
+ No two strings in each of the arrays are same. You have to tell whether the number of common strings in the arrays are more than or equal two or not.
+
+--------------------------------------------------------------
+
+Brute force comparisons
+
+    for(i = 0; i < NUMBER_OF_INGREDIENTS; i++)
+    {
+        for(j = 0; j < NUMBER_OF_INGREDIENTS; j++)
+        {
+            if(strcmp(ingredient_1[i], ingredient_2[j]) == 0)
+                similarity_count++;
+        }
+    }
+    printf(similarity_count >= NUMBER_OF_INGREDIENTS/2 ? "similar\n" : "dissimilar\n");
