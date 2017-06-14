@@ -31,9 +31,9 @@ void solve()
 
 int main()
 {
-    int no_of_dishes;
-    scanf("%d", &no_of_dishes);
-    while(no_of_dishes-- != 0)
+    int no_of_test_cases;
+    scanf("%d", &no_of_test_cases);
+    while(no_of_test_cases-- != 0)
         solve();
 
     return 0;
