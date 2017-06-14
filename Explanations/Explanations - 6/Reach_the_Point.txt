@@ -1,0 +1,62 @@
+Recently Chef bought a bunch of robot-waiters. And now he needs to know how much to pay for the electricity that robots use for their work. 
+All waiters serve food from the kitchen (which is in the point (0, 0)) and carry it to some table (which is in some point (x, y)) in a shortest way. 
+But this is a beta version of robots and they can only do the next moves: turn right and make a step forward or turn left and make a step forward. 
+Initially they look in direction of X-axis. Your task is to calculate for each query the number of moves they’ll do to reach corresponding table.
+
+-----------------------------------------------------------------------------
+
+Formally, we have to move till (x, y) by going one step in a direction at a time.
+
+Firstly, sign doesn't matter. It is symmetric so we can just solve the problem for x,y in the first quadrant.
+
+Secondly, first, we go from 0, 0 to (t, t) where t = min(x, y) because it is possible to go from (i, i) to (i + 1, i + 1) in 2 steps.
+
+Then we travel along (0,0) to (x, 0) or (0, y) in a square wave fashion with the first step in y direction.
+
+Case 1 - (0, y)
+
+It is a series of ULUR... All in all, we must go up y times. We finish one L-R cycle on every odd point. (after reaching two points.)
+If we go up y times, we take y - 1 additional steps, and need a R on every even term
+
+So, if y is odd, steps = 2y - 1
+      y is even, steps = 2y
+
+Case 2 - (x, 0)
+
+It is a series of URDR
+
+We go right x times ... We finish up U_D cycle every time we go one R,
+If we go right x times, we take x  additional steps and need a D on every odd term
+
+So, if x is odd, steps = 2x + 1 
+      x  is even, steps = 2x
+
+(Drawing the square wave is an easy way to understand this)
+
+---------------------------------------------
+
+There are many ways to implement this but I found the editorial both elegant and intuitive so I followed it.
+
+int straight_line(int x, int y)
+{
+    int x_steps, y_steps;
+
+    x_steps = (x%2 == 0 ? 2*x : 2*x + 1);
+    y_steps = (y%2 == 0 ? 2*y : 2*y - 1);
+
+    return (x_steps + y_steps);
+}
+
+void solve()
+{
+    int x, y, z, number_of_steps;
+    scanf("%d %d",&x, &y);
+    x = abs(x);
+    y = abs(y);
+    z = min(x, y);
+
+     //It is possible to go from (0,0) to (1,1) in 2 moves ... So, we go till (min, min) first ... After that, go like a square wave
+    number_of_steps = 2*z + straight_line(x-z, y-z);
+
+    printf("%d\n",number_of_steps);
+}
