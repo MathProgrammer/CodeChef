@@ -1,0 +1,43 @@
+Lajuk is a little girl who loves playing with array. In her 10th birthday, she got two arrays as presents. 
+Let’s call them A and B. Both arrays have the same size n and contains integers between 0 to 30000.
+
+Lajuk’s hard-drive is almost full of presents and she barely has any space to keep the arrays. She discovered a brilliant function to merge the array into one:
+
+
+int encodeInteger(int x, int n){
+	n = n<<(1<<(1<<(1<<1)));
+	x = x | n;
+	return x;
+}
+void encodeArray(int *A, int *B, int n){
+	for(int i=0;i<n;i++) {
+    	    A[i] = encodeInteger(A[i], B[i]);
+	}
+}
+Lajuk passed A and B into the encodeArray function. After that she discarded array B and saved the modified version of array A in the hard-drive.
+
+Now in her 15th birthday Lajuk wants to play with those arrays again. 
+She found the modified version of array A in the hard-drive but she forgot how to recover the original arrays from it. Being upset, she asked for your help. 
+Can you help her to recover the original arrays?
+
+----------------------------------------------------------------------------------------------
+
+n is right shifted by 16 ... (I mistakenly thought it was 8)
+
+So, in binary, b is the first 16 digits and a is the last 16 digits
+
+Another way to do this was to divide the number by 2^{17}. Quotient is B, remainder is A. I prefered binary operations to division and remainder
+
+--------------------------------
+
+    const int DECODER = 0b00000000000000001111111111111111;
+    int array_a[MAX_LENGTH], array_b[MAX_LENGTH], number_of_elements, i, num;
+
+    scanf("%d", &number_of_elements);
+    for(i = 0; i < number_of_elements; i++)
+    {
+        scanf("%d", &num);
+
+        array_b[i] = num >> 16; //First 16 digits
+        array_a[i] = num&DECODER; //Last 16 digits
+    }
