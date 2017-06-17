@@ -1,0 +1,61 @@
+Find the gcd(a, b), where a is an integer upto 4e6 and b can have 250 digits.
+
+--------------------------------------------------------------------------
+
+So, two observations are needed - 
+
+1. gcd(a, b) = gcd(a, b%a)
+
+2. b%a is smaller than a.
+
+So, initially b is stored in a 250 digit string. 
+
+After we do b%a, b is smaller than a and can be stored in a 32 bit data type. So, we only need to write a special function to do b%a the first time
+
+----------------------------------------------------------------------------------
+
+int get_remainder(char b[], int a)
+{
+    int i, r = 0, no_of_digits = strlen(b);
+
+    //Evaluate big num like a polynomial mod small num
+    for(i = 0; i <  no_of_digits; i++)
+    {
+        r = r*10 + (b[i] - '0');
+        r %= a;
+    }
+
+    return r;
+}
+
+-------------------------------
+
+int gcd(int a, int b) //b is always smaller than a
+{
+    if(b == 0)
+        return a;
+    else
+        return gcd(b, a%b);
+}
+
+---------------------
+
+int main()
+{
+    char b[MAX_LENGTH];
+    int t, a;
+    scanf("%d", &t);
+
+    while(t--)
+    {
+        scanf("%d %s",&a, b);
+
+        if(a == 0)
+            printf("%s\n",b);
+        else
+            printf("%d\n", gcd(a, get_remainder(b, a)) );
+
+    }
+
+    return 0;
+}
