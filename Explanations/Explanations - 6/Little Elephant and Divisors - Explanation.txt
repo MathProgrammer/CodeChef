@@ -1,0 +1,31 @@
+Find the smallest factor of the array gcd that is not one.
+
+If the gcd is 1, print -1. 
+
+-----------------------------------------------------------------
+
+    for(i = 1; i <= number_of_elements; i++)
+    {
+        scanf("%d", &number_i);
+        array_gcd = (i == 1 ? number_i : gcd(array_gcd, number_i));
+    }
+
+    printf("%d\n", (array_gcd == 1 ? -1 : smallest_divisor(array_gcd)));
+
+---------------------------------------------------------
+
+int smallest_divisor(int num)
+{
+    int divisor;
+
+    for(divisor = 2; divisor*divisor <= num; divisor++)
+        if(num%divisor == 0)
+            return divisor;
+
+    return num;
+}
+
+-----------------------------------------------------
+
+I wrote a O(root (n)) function to find the smallest divisor. Faster algorithms wrote a pre computed list of primes using a sieve. 
+

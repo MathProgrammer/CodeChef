@@ -1,0 +1,25 @@
+He has N plates of meatballs, here the ith plate contains Pi meatballs. 
+You need to find the minimal number of plates Andrew needs to take to his trip to Las Vegas, if he wants to eat there at least M meatballs. 
+Note that each plate is already packed, i.e. he cannot change the amount of meatballs on any plate.
+
+---------------------------------------------------
+
+Sort the plates in descending order and then greedily eat as many plates as needed ...
+
+I choose to desrease k, instead of continue adding to a sum because overflow may occur. For example, if K = 1e11, p1 = 1e10, p2 = 1e10 ... Adding will give 1e20 ... Overflow!
+
+While descreasing won't give overflow.
+
+-------------------------------------------------------
+
+sort(no_of_meatballs_on_plate, no_of_meatballs_on_plate + no_of_plates);
+    reverse(no_of_meatballs_on_plate, no_of_meatballs_on_plate + no_of_plates);
+
+    for(i = 0; i < no_of_plates; i++)
+    {
+        target_meatballs -= no_of_meatballs_on_plate[i];
+        if(target_meatballs <= 0)
+            break;
+    }
+
+    cout << (target_meatballs <= 0 ? i + 1 : -1) << "\n";

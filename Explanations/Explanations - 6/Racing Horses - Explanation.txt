@@ -1,0 +1,12 @@
+Find the minimum absolute difference in the array ...
+
+If the elements are sorted, each element has the minimum difference with it's neighbours ... So, we sort it and solve the problem in O(n log n) time.
+
+----------------------------------------------------------------------
+
+sort(skill_of_horse, skill_of_horse + no_of_horses);
+
+    for(i = 1; i < no_of_horses; i++)
+        min_difference = min(min_difference, skill_of_horse[i] - skill_of_horse[i-1]);
+
+I wasn't getting an AC because I forgot to put a new line at the end ... Still getting used to cout lol.
