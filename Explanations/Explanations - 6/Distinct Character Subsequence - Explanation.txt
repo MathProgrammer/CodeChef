@@ -1,0 +1,11 @@
+The length of the maximum distinct character subsequence is the NUMBER of distinct characters ... Since, it only has lower case alphabets, the implementation was easy.
+
+    for(i = 0; line[i] != '\0'; i++)
+    {
+        if(alphabet_present[line[i] - 'a'] == false)
+            no_of_distinct_characters++;
+
+        alphabet_present[line[i] - 'a'] = true;
+    }
+
+    printf("%d\n",no_of_distinct_characters);
