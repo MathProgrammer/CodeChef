@@ -1,0 +1,22 @@
+Ada has an array of N crayons, some crayons are pointing upwards and some downwards. 
+Ada thinks that an array of crayons is beautiful if all the crayons are pointing in the same direction. 
+In one step you can flip any segment of consecutive crayons. After flipping a segment, all crayons pointing downwards will point upwards and visceversa
+What is the minimum number of steps to make the array of crayons beautiful? 
+
+-------------------------------------------------------------------------------------
+
+Count the number of alternating segments. 
+
+Flip every second segment starting from the second ... If n is even, answer is n/2, If n is odd answer is ceil(n/2).
+
+--------------------------------------------------
+
+    for(i = 0; crayons[i] != '\0'; i++)
+    {
+        if(crayons[i] != previous_orientation)
+            number_of_alternating_segments++;
+
+        previous_orientation = crayons[i];
+    }
+
+    printf("%d\n", number_of_alternating_segments/2);
