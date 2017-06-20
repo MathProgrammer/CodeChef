@@ -1,0 +1,36 @@
+Chef likes problems which using some math. Now he asks you to solve next one. You have 4 integers, Chef wondering is there non-empty subset which has sum equals 0.
+
+-------------------------------------------------------------------------------------------------------------
+
+4 is small enough to visit every subset manually but a good way to visit every subset is a bitmask.
+
+Number the elements of the set from 0 to N-1.
+
+A bitmask is a binary string of length N, bits numbered from 0 to N-1, representing a subset which has the elements at indices where the 1 is set.
+
+Here is how to go through it.
+
+For example, if the third and first elements are a subset, bitmask is 1010 ... To check if the third element is present AND it with 1000 ... We get a non-zero number.
+
+--------------------------------------------
+
+    vector <int> chef_set(4 + 1);
+    const int no_of_subsets = (4*4 - 1);
+    bool zero_sum_subset_exists = false;
+
+    for(int i = 0; i < 4; i++)
+        scanf("%d", &chef_set[i]);
+
+    for(int bitmask = 1; bitmask <= no_of_subsets; bitmask++)
+    {
+        int subset_sum = 0;
+
+        for(int i = 0; i < 4; i++)
+            if( (bitmask& (1 << i)) != 0 )
+               subset_sum += chef_set[i];
+
+        if(subset_sum == 0)
+            zero_sum_subset_exists = true;
+    }
+
+    printf(zero_sum_subset_exists ? "Yes\n" : "No\n");
