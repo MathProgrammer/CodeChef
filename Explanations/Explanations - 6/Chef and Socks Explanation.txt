@@ -1,0 +1,11 @@
+Chef has money rupees with him. He spends jacketCost rupees for buying a jacket. He buys as many socks as he can by the money left after purchasing the jacket. 
+Cost of a sock is given by sockCost. 
+Each day, he uses two socks. He never cleans his socks after using them. You have to find whether there will be a day in which Chef will have one sock remaining.
+
+----------------------------------------------------------------------------------------------
+
+We need to check if the number of socks is greater than 0 and is even. 
+
+     no_of_socks = (money - jacket_cost)/sock_cost;
+
+    printf( no_of_socks > 0 && no_of_socks%2 == 0 ? "Lucky Chef\n" : "Unlucky Chef\n");
