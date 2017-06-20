@@ -1,0 +1,39 @@
+Given an integer N, Chef wants to find the smallest positive integer M such that the bitwise XOR of M and M+1 is N. If no such M exists output -1.
+
+-------------------------------------------------------------
+
+I solved this problem almost entirely ... Just missed the case n = 1.
+
+1. Firstly, Let M be a binary string ending with 0(1*) where 1* denotes 0 or more occurences of 1. 
+   Then, M + 1 ends with 1(0*) ... The part of the string before the 0 remains unchanged.
+
+2. M xor( M+1) gives us a string of 1s ... The part before the 0 in M is identical and becomes 0 when it's XORed. And after that all the bits are different.
+
+Hence, N can be written as the XOR of consecutive numbers if and only if it is a string of all 1s.
+
+There is an easy way to check if N is a string of all 1s. (n + 1) is a power of 2.
+
+We can do this by checking that n&(n +1) = 0 ... If it is a string of all 1s we will get 0. 
+
+Special case N = 1, 0 is the smallest number but they are asking for positive numbers ... Hence the answer is 2.
+
+---------------------------------------------------------
+
+int is_power_of_2(int n)
+{
+    if( ( n&(n - 1) ) == 0)
+        return true;
+    else
+        return false;
+}
+
+void solve()
+{
+    int n;
+    scanf("%d", &n);
+
+    if(n == 1)
+        printf("2\n");
+    else
+        printf("%d\n", is_power_of_2(n + 1) ? (n >> 1) : -1);
+}
