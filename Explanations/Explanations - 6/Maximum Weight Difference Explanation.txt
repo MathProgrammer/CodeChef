@@ -1,0 +1,45 @@
+Chef has gone shopping with his 5-year old son. They have bought N items so far. The items are numbered from 1 to N, and the item i weighs Wi grams. 
+Chef's son insists on helping his father in carrying the items. He wants his dad to give him a few items. Chef does not want to burden his son. 
+But he won't stop bothering him unless he is given a few items to carry. So Chef decides to give him some items. Obviously, Chef wants to give the kid less weight to carry. 
+However, his son is a smart kid. To avoid being given the bare minimum weight to carry, he suggests that the items are split into two groups, 
+and one group contains exactly K items. Then Chef will carry the heavier group, and his son will carry the other group. 
+Help the Chef in deciding which items should the son take. Your task will be simple. 
+Tell the Chef the maximum possible difference between the weight carried by him and the weight carried by the kid. 
+
+-----------------------------------------------------------------
+
+We want to divide the array into two parts such that the difference in between the sums is maximised. 
+
+In other words, we want two sets such that the sum of one set is minimised, and the sum of the other set is maximised.
+
+It's quite clear that in the set we want maximised, we choose the largest numbers and the sets we want minimised, we choose the smallest numbers.
+
+So, the array is sorted first.
+
+Then there are two possibilities - either the small set is of size k or the large set is of size k ... We calculate the difference in both cases and output the larger value.
+
+Another way of doing this is to notice that to maximise the large set, we need to increase the number of elements in it. 
+So, the size of the large set is max(K, n - K). 
+This is not a different solution ... we just solve the problem of whether it is optimal to make the smaller set K, or the larger set K by making an observation 
+and in the first case, we're finding the actual sums.
+
+------------------------------------------------------------------------
+
+    vector <int> weight(number_of_weights + 1);
+    for(i = 1; i <= number_of_weights; i++)
+        scanf("%d", &weight[i]);
+
+    sort(weight.begin(), weight.end());
+
+    for(i = 1; i <= number_of_weights; i++)
+    {
+        total_weight += weight[i];
+
+        first_k_weights += (i <= k ? weight[i] : 0);
+        last_k_weights += (i > number_of_weights - k ? weight[i] : 0);
+    }
+
+    difference_1 = abs(first_k_weights - (total_weight - first_k_weights));
+    difference_2 = abs(last_k_weights - (total_weight - last_k_weights));
+
+    printf("%d\n", max(difference_1, difference_2) );
