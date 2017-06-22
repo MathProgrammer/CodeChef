@@ -1,0 +1,61 @@
+You might have heard about our new goodie distribution program aka the "Laddu Accrual System". This problem is designed to give you a glimpse of its rules. 
+You can read the page once before attempting the problem if you wish, nonetheless we will be providing all the information needed here itself. 
+Laddu Accrual System is our new goodie distribution program. In this program, we will be distributing Laddus in place of goodies for your winnings and 
+various other activities (described below), that you perform on our system. 
+Once you collect enough number of Laddus, you can then redeem them to get yourself anything from a wide range of CodeChef goodies. 
+Let us know about various activities and amount of laddus you get corresponding to them.
+Contest Win (CodeChef’s Long, Cook-Off, LTIME, or any contest hosted with us) : 300 + Bonus (Bonus = 20 - contest rank). 
+Note that if your rank is > 20, then you won't get any bonus.
+Top Contributor on Discuss : 300
+Bug Finder : 50 - 1000 (depending on the bug severity). It may also fetch you a CodeChef internship! 
+Contest Hosting : 50 
+You can do a checkout for redeeming laddus once a month. The minimum laddus redeemable at Check Out are 200 for Indians and 400 for the rest of the world. 
+You are given history of various activities of a user. The user has not redeemed any of the its laddus accrued.. 
+Now the user just wants to redeem as less amount of laddus he/she can, so that the laddus can last for as long as possible. 
+Find out for how many maximum number of months he can redeem the laddus. 
+----------------------------------------------------
+
+A simple implementation problem ... Was the first problem where I used maps/ associative arrays. Was so excited !
+
+void solve()
+{
+    int no_of_activities, laddus = 0;
+    char nationality[MAX_LENGTH];
+    
+    map <string, int> no_of_redeemable_points;
+    no_of_redeemable_points["INDIAN"] = 200;
+    no_of_redeemable_points["NON_INDIAN"] = 400;
+
+    scanf("%d %s", &no_of_activities, nationality);
+
+    for(int i = 1; i <= no_of_activities; i++)
+    {
+        char activity[MAX_LENGTH];
+        scanf("%s", activity);
+
+        if(strcmp(activity, "CONTEST_WON") == 0)
+        {
+            int contest_rank;
+            scanf("%d", &contest_rank);
+
+            laddus += 300 + (contest_rank <= 20 ? (20 - contest_rank) : 0);
+        }
+        else if(strcmp(activity, "TOP_CONTRIBUTOR") == 0)
+        {
+            laddus += 300;
+        }
+        else if(strcmp(activity, "BUG_FOUND") == 0)
+        {
+            int severity;
+            scanf("%d", &severity);
+
+            laddus += severity;
+        }
+        else if(strcmp(activity, "CONTEST_HOSTED") == 0)
+        {
+            laddus += 50;
+        }
+    }
+
+    printf("%d\n", laddus/no_of_redeemable_points[nationality]);
+}
