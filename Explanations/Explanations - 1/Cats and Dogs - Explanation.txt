@@ -10,9 +10,12 @@ Specifically, he is wondering is there a some possibility of his counting being 
 -------------------------------------------------------------------------------------------------------------------------------------
 
     correct_counting = NO;
-    if(no_of_legs%4 == 0 && no_of_legs >= 4*no_of_dogs && no_of_legs <= 4*(no_of_cats + no_of_dogs))
+    if(no_of_legs%4 == 0 && no_of_legs >= 4LL*no_of_dogs && no_of_legs <= 4LL*(no_of_cats + no_of_dogs) && cats_on_back <= 2LL*no_of_dogs)
     {
         correct_counting = YES;
     }
 
 L has to be a multiple of 4, has to count all the dogs at least and can count all the dogs and cats at most.
+
+Each dog can have at most 2 cats on shoulder and although no of dogs is int ... 4*no_of_dogs may not be ... May cause overflow for faulty results
+Typecast required.
