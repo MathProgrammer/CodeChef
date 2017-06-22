@@ -1,0 +1,35 @@
+Chef has recently got a broadband internet connection. His history of internet data usage is provided as below.
+During the first T1 minutes, the internet data used was D1 MBs per minute, and during the next T2 minutes, it was D2 MBs per minute, and so on till during last TN minutes 
+it was DN MBs per minute.
+The internet provider charges the Chef 1 dollar for every 1 MB data used, except for the first K minutes, when the internet data is free as part of the plan provided to Chef.
+Please find out the total amount that Chef has to pay the internet provider (in dollars).
+
+------------------------------------------------
+
+I was planning on keeping a variable that keeps track of total time but since time may be large, a long integer may be required...
+
+The editorial solution was nicer ... Keep decreasing k till it is less than the time period and then make it 0.
+
+-----------------------------------------------
+
+    for(int i = 1; i <= no_of_periods; i++)
+    {
+        int download_i, period_i;
+
+        cin >> period_i >> download_i;
+
+        if(free_time >= period_i)
+        {
+            free_time -= period_i;
+        }
+        else
+        {
+            bill += (period_i - free_time)*download_i;
+            free_time = 0;
+        }
+    }
+    cout << bill << "\n";
+
+--------------------------------------------
+
+If k is greater than the time period, k = k - t, if k is in between 0 and the time period, b = (t-k)*d ... That many downloads were made in one minute.
