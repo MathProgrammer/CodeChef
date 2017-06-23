@@ -1,0 +1,43 @@
+Chef likes playing with strings. The most interesting game are named "CHEF in string". The move of the game consists of the following: 
+Chef takes a subsequence of string's letters that form the word "CHEF" and then he removes that symbols. The goal of the game is to make the maximal number of moves. 
+Please, help Chef and tell him the maximal possible number of moves that he is able to make for the given string S.
+
+--------------------------------------------------------------------
+
+The idea is to use the first available C, then search for the next unused H, next unused E and next unused F.
+
+We need four pointers ... 
+
+Once we have reached position I and got a C, then we need to search for H from max(I, last_h) + 1 ... 
+The reason for this is that the H must be AFTER the C we have found ... We must also not hit the same H again since we aren't maintaining a boolean vector visited.
+So, to overshoot both the C and the H used in the last iteration, we use max ...
+
+Also, to prevent out of bound access and undefined behaviour, exit if any of the pointers reaches the end of the string.
+
+---------------------------------------------------------
+
+    int subsequence_count = 0, location_c, location_h = 0, location_e = 0, location_f = 0;
+    char sequence[MAX_LENGTH];
+    scanf("%s", sequence);
+
+    for(location_c = 0; sequence[location_c] != '\0'; location_c++)
+    {
+        if(sequence[location_c] == 'C')
+        {
+            for(location_h = max(location_c, location_h) + 1; sequence[location_h] != '\0' && sequence[location_h] != 'H'; location_h++);
+
+            if(sequence[location_h] == '\0') break;
+
+            for(location_e = max(location_h, location_e) + 1; sequence[location_e] != '\0' && sequence[location_e] != 'E'; location_e++);
+
+            if(sequence[location_e] == '\0') break;
+
+            for(location_f = max(location_e, location_f) + 1; sequence[location_f] != '\0' && sequence[location_f] != 'F'; location_f++);
+
+            if(sequence[location_f] == '\0') break;
+
+            subsequence_count++;
+        }
+    }
+
+    printf("%d\n", subsequence_count);
