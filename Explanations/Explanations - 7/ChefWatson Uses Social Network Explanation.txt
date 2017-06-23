@@ -1,0 +1,98 @@
+Chef Watson uses a social network called ChefBook, which has a new feed consisting of posts by his friends. 
+Each post can be characterized by f - the identifier of the friend who created the post, p - the popularity of the post
+(which is pre-calculated by ChefBook platform using some machine learning algorithm) and 
+s - the contents of the post which is a string of lower and uppercase English alphabets.
+Also, Chef has some friends, which he has marked as special.
+The algorithm used by ChefBook for determining the order of posts in news feed is as follows: 
+Posts of special friends should be shown first, irrespective of popularity. Among all such posts the popular ones should be shown earlier.
+Among all other posts, popular posts should be shown earlier.
+
+Given, a list of identifiers of Chef's special friends and a list of posts, you have to implement this algorithm for engineers of ChefBook and 
+output the correct ordering of posts in the new feed. 
+
+------------------------------------------------------------------------------------------
+
+This is the first problem where I've used structures ! I not only used structures ... I also used a custom sort for the first time !
+
+I created a vector of structures ... Push the data into the vector and then used std:: sort with my own custom sort so that the posts get sorted,
+
+first by speciality and then by popularity.
+
+--------------------------------------------
+
+struct post
+{
+    bool is_special;
+    int id;
+    int popularity;
+    char content[MAX_LENGTH];
+
+
+};
+
+-----------------------------------------
+
+The custom sort
+
+bool Compare_Posts(post const&A, post const&B)
+{
+    if(A.is_special == true && B.is_special == false)
+        return true;
+    else if(A.is_special == false && B.is_special == true)
+        return false;
+
+    if(A.popularity > B.popularity)
+        return true;
+    else if(A.popularity < B.popularity)
+        return false;
+}
+
+--------------------------------------------
+
+int main()
+{
+    int no_of_special_friends, no_of_posts;
+    scanf("%d %d", &no_of_special_friends, &no_of_posts);
+
+    set <int> special_friends;
+    for(int i = 1; i <= no_of_special_friends; i++)
+    {
+        int special_i;
+        scanf("%d", &special_i);
+        special_friends.insert(special_i);
+    }
+
+    vector <post> posts(no_of_posts);
+    for(int i = 0; i < no_of_posts; i++)
+    {
+        scanf("%d %d %s",&posts[i].id, &posts[i].popularity, posts[i].content);
+
+        posts[i].is_special = (special_friends.count(posts[i].id) == 1 ? true : false);
+    }
+
+    sort(posts.begin(), posts.end(), &Compare_Posts);
+
+    for(int i = 0; i < no_of_posts; i++)
+    {
+        printf("%s\n",posts[i].content);
+    }
+
+    return 0;
+}
+
+----------------------------------------------
+
+The question doesn't give any way to break the tie if two posts have the same speciality and the same popularity so it doesn't matter what happens in that case.
+
+This is another example where the use of a data structure greatly simplified the problem. 
+Even without the STL sort, data needs to be stored in a structure. Here's what the approach would have been like without the STL sort
+
+ ... Maintain two vectors ... One for special friends, one for others.
+Sort both the vectors by popularity ... 
+Print the special vector first and then the other vector.
+
+------------------------------------------------------
+
+The code for sorting a structure would become messy and hard to read so something simple like selection sort would have had to be used to maintain readability.
+The STL sort masks the messiness, increases the abstraction and allows us to add arbitrarily more conditions to the sort, maintaing the readability !
+For example, we can further sort posts by smaller ID, and smaller post length to break ties.
