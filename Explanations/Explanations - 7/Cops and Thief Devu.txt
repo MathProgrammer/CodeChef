@@ -1,0 +1,31 @@
+There are 100 houses located on a straight line. The first house is numbered 1 and the last one is numbered 100. Some M houses out of these 100 are occupied by cops.
+Thief Devu has just stolen PeePee's bag and is looking for a house to hide in.
+PeePee uses fast 4G Internet and sends the message to all the cops that a thief named Devu has just stolen her bag and ran into some house.
+Devu knows that the cops run at a maximum speed of x houses per minute in a straight line and they will search for a maximum of y minutes. 
+Devu wants to know how many houses are safe for him to escape from the cops. 
+Help him in getting this information.
+
+--------------------------------------------------------
+
+I was looking for an O(1) solution involving simple subtraction and multiplication only but all the solutions require maintaining a boolean array.
+
+    vector <int> cop_houses(no_of_cops + 1);
+    for(int i = 1; i <= no_of_cops; i++)
+        scanf("%d", &cop_houses[i]);
+
+    sort(cop_houses.begin(), cop_houses.end());
+
+    vector <int> reachable(no_of_houses + 1, false);
+    for(int cop = 1; cop <= no_of_cops; cop++)
+    {
+        for(int j = cop_houses[cop]; j <= cop_houses[cop] + houses_per_minutes*no_of_minutes && j <= no_of_houses; j++)
+            reachable[j] = true;
+
+        for(int j = cop_houses[cop]; j >= cop_houses[cop] - houses_per_minutes*no_of_minutes && j >= 1; j--)
+            reachable[j] = true;
+    }
+
+    for(int i = 1; i <= no_of_houses; i++)
+        safe_houses += (reachable[i] == false);
+
+    printf("%d\n", safe_houses);
