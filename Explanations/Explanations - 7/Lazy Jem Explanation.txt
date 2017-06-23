@@ -1,0 +1,36 @@
+Jem is famous for his laziness at school. He always leaves things to last minute. Now Jem has N problems in the assignment of "Advanced topics in algorithm" class to solved.
+ The assignment is due tomorrow and as you may guess he hasn't touch any of the problems. Fortunately he got a plan as always. 
+The first step will be buying a pack of Red Bull and then to work as hard as he can. Here is how he is going to spend the remaining time: 
+Jem will not take a break until he finishes at least half of the remaining problems. Formally, if N is even then he will take he first break after finishing N / 2 problems. 
+If N is odd then the break will be after he done (N + 1) / 2 problems. Each of his break will last for B minutes. 
+Initially, he takes M minutes in solving a problem, after each break he will take twice more time in solving a problem, i.e. 2 * M minutes per problem after the first break. 
+
+Jem will start working soon and ask you to help him calculate how much time it will take until he finish the last problem! 
+
+---------------------------------------------------------------
+
+Simple implementation problem ... Just be careful to avoid overflow ...
+Remember a break isn't taken at the end ... Also even though M is initially int ... It can grow quite quickly so store it in long.
+
+void solve()
+{
+    int no_of_problems, break_time;
+    int no_of_breaks, problems_solved;
+    long long total_time, problem_solving_time = 0LL, problem_solving_minutes;
+
+    scanf("%d %d %lld", &no_of_problems, &break_time, &problem_solving_minutes);
+
+    for(no_of_breaks = 0; no_of_problems != 0; no_of_breaks++, no_of_problems/=2)
+    {
+        problems_solved = no_of_problems/2 + (no_of_problems%2);
+
+        problem_solving_minutes *= (no_of_breaks == 0 ? 1LL : 2LL);
+
+        problem_solving_time += problems_solved*problem_solving_minutes;
+    }
+
+    no_of_breaks--; //We don't take a break after everything is over.
+
+    total_time = problem_solving_time + no_of_breaks*1LL*break_time;
+    printf("%lld\n",total_time);
+}
