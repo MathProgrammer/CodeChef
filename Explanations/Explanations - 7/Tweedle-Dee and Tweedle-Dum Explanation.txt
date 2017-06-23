@@ -1,0 +1,45 @@
+Tweedle-Dee and Tweedle-Dum are in a fierce battle playing even-odd nim. This novel game is played on N heaps. Heap i contains ai stones. 
+Like normal nim, Tweedle-Dee and Tweedle-Dum alternate taking a positive number of stones from any single one of the heaps, and the player that can't remove stones loses. 
+However Tweedle-Dee can only take an even number of stones, and Tweedle-Dum can only take an odd number of stones.
+Alice doesn't want to wait until the end of the game, so she asks you to determine the winner of the game. 
+Remember that Tweedle-Dee and Tweedle-Dum are legendary grandmasters of combinatorial games, so they always play optimally.
+
+---------------------------------------------------------------------------------------
+
+Very good problem !
+
+Consider the case n = 1, and the pile has an odd number of stones
+
+If the odd player, goes first he wins ... If the even player goes first, he leaves an odd number of stones, which the odd player collects in his next turn.
+
+If the pile has an even number of stones ...
+
+If the odd player goes first, he wins by leaving 1 stone which the even player can't collect.
+If the even player goes first, he wins ...
+
+We now prove that the ONLY situtation where the even player wins is when n = 1, and stones is even.
+
+Consider there are more than 1 pile ... Consider the piles mod 2 ... They will be 0, 0, 1, 1, 1, 0, 0 ... etc ...
+
+Notice how the even player's turn cannot change the parity of any of the piles. 
+
+On every turn the odd player gets, he flips the parity of any of the even piles increasing the number of odd piles by 1 until all the piles are odd and the even player
+has no moves left !
+
+It doesn't matter if the odd player goes first or second ... If the odd player gets a configuration where all the piles are odd, he merely empties one pile and wins.
+(Either because that was the only pile or because the even player has no move on his turn since all piles are odd.)
+
+If there is more than one pile, then the even player can either give the odd player the same configuration or empty one of the even piles completely.
+The odd player's strategy remains unchanged .. 
+
+The only time the even player can win is when there is only pile and it is even, since the odd player doesn't get a configuration where he can either empty a pile or 
+increase the number of odd piles.
+
+----------------------------------------------------------------------------------------------------------------------
+
+for(int i = 1; i <= no_of_piles; i++)
+        cin >> pile_i;
+
+    cout << ( (no_of_piles == 1 && pile_i%2 == 0 && first_player[1] == 'e') ? "Dee\n" : "Dum\n");
+
+Also, I avoided string comparison by noticing that each string can be uniquely identified by it's second letter.
