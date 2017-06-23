@@ -1,0 +1,16 @@
+How many 2x2 triangles fit in an isoceles right triangle ?
+
+-------------------------------------------------------------------------------
+
+Imagine we have a square of side B, we can tile it with B^2 squares of side 1 ... Remove the square on the diagonal ... There are B of them.
+
+(B^2 - B)/2 --- This is the number of squares on one side of the diagonal ...i.e. in the right angled isoceles triangle
+
+This is the answer for 1x1 ... We want 2x2 ... So halve the base.
+
+int base;
+        scanf("%d", &base);
+
+        base = base/2;
+
+        printf("%d\n", (base*base - base)/2);
