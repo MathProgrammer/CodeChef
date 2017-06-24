@@ -1,0 +1,41 @@
+Actually, the two sticks in a pair of chopsticks need not be of the same length. A pair of sticks can be used to eat as long as the difference in their length is at most D. 
+The Chef has N sticks in which the ith stick is L[i] units long. 
+A stick can't be part of more than one pair of chopsticks. Help the Chef in pairing up the sticks to form the maximum number of usable pairs of chopsticks.
+
+--------------------------------------------------------------
+
+I used A DP solution ... But, it isn't necessay. If the array is sorted, every stick has to be paired either with it's right or left neighbour ... I wasn't sure which was 
+better...
+
+But, it turns out that first stick can only be paired to the second stick and no other stick. If it is possible, we make the pair ...
+
+So, the solution can also look like ...
+
+for(i = 1; i <= N; i++)
+	(s(i+1) - s(i) <= D)
+		pairs++, i +=2;
+
+---------------------------
+
+Noticing that this greedy matching is optimal is the key.
+
+Anyway here is the DP solution ... Let f(i) be the maximum number of pairs upto stick i
+
+f(0) = f(1) = 0
+Else
+f(i) = max(f(i - 1), 1 + f(i - 2) ) , if s(i) and s(i-1) are within D.
+
+-------------------------------
+
+sort(all(chopstick_length));
+
+    vector <int> max_chopstick_pairs(no_of_sticks + 1, 0);
+    for(int i = 2; i <= no_of_sticks; i++)
+    {
+        max_chopstick_pairs[i] = max_chopstick_pairs[i - 1];
+
+        if(chopstick_length[i] - chopstick_length[i - 1] <= max_difference)
+            max_chopstick_pairs[i] = max(max_chopstick_pairs[i - 1], 1 + max_chopstick_pairs[i - 2]);
+    }
+
+    printf("%d\n", max_chopstick_pairs[no_of_sticks]);
