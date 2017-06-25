@@ -1,0 +1,16 @@
+Count the number of strings starting and ending with 1.
+
+----------------------------------------------------
+
+Let n denote the number of 1s in the string. Answer is choose(n, 2) + choose(n, 1) ... Every pair of 1s corresponds with one subsequence and all singleton 1s 
+satisfy the property.
+
+---------------------------------------
+
+    for(int i = 0; i < length; i++)
+        no_of_1s += (sequence[i] == '1');
+
+   
+    no_of_substrings = (no_of_1s*1LL*(no_of_1s - 1) )/2 + no_of_1s;
+
+    printf("%lld\n", no_of_substrings);
