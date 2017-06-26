@@ -1,0 +1,37 @@
+You are given a binary string S. You need to transform this string into another string of equal length consisting only of zeros, with the minimum number of operations.
+A single operation consists of taking some prefix of the string S and flipping all its values. That is, change all the 0s in this prefix to 1s, 
+and all the 1s in the prefix to 0s. 
+You can use this operation as many number of times as you want over any prefix of the string.
+
+---------------------------------------------------------------
+
+The example gave me an idea of what the strategy should be ... We need to always start flipping from the prefix ... 
+So, our objective is on each turn flip the string from i = 0 to i = l, where l is the last 1 in the sequence.
+
+We can think of our sequence as a concatenation of segments consisting of only 1s and only 0s .. Every time we flip the string, each such sequence is reversed.
+
+If the ending subsequence is 0, then we flip it one time less than the number of alternating segments because it doesn't need to be flipped ...
+Else it is the number of alternating segments.
+
+--------------------------------------------
+
+int main()
+{
+    char sequence[MAX_LENGTH], previous_character = 'X';
+    int no_of_alternating_segments = 0, no_of_operations, i;
+    scanf("%s", sequence);
+
+    for(i = 0; sequence[i] != '\0'; i++)
+    {
+        no_of_alternating_segments += (previous_character != sequence[i]);
+
+        previous_character = sequence[i];
+    }
+
+    //If last character is 0, no_of operations = 1 less than no of alternating segments. Otherwise, number of alternating segments.
+    no_of_operations = no_of_alternating_segments - (sequence[i - 1] == '0');
+
+    printf("%d\n", no_of_operations);
+
+    return 0;
+}
