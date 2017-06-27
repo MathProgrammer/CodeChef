@@ -1,0 +1,6 @@
+         scanf("%d\n",&i) ;
+-        if( i == 42 )
+-        {
+-            break;
+-        }
+-        printf("%d\n",i);
