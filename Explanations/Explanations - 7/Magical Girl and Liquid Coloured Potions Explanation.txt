@@ -1,0 +1,60 @@
+Naturally, the magical girl is very good at performing magic. She recently met her master wizard Devu, who gifted her R potions of red liquid,
+B potions of blue liquid, and G potions of green liquid. 
+
+The red liquid potions have liquid amounts given by r[1], ..., r[R] liters. 
+The green liquid potions have liquid amounts given by g[1], ..., g[G] liters. 
+The blue liquid potions have liquid amounts given by b[1], ..., b[B] liters. 
+
+She want to play with the potions by applying magic tricks on them. In a single magic trick, she will choose a particular color. 
+Then she will pick all the potions of the chosen color and decrease the amount of liquid in them to half (i.e. if initial amount
+of liquid is x, then the amount after decrement will be x / 2 where division is integer division, e.g. 3 / 2 = 1 and 4 / 2 = 2). 
+Because she has to go out of station to meet her uncle Churu, a wannabe wizard, only M minutes are left for her. In a single minute, she can perform at most one magic trick.
+ Hence, she can perform at most M magic tricks. 
+She would like to minimize the maximum amount of liquid among all of Red, Green and Blue colored potions. 
+Formally Let v be the maximum value of amount of liquid in any potion. We want to minimize the value of v.
+Please help her. 
+
+-------------------------------------------------------------
+
+The first observation we need to make is that it is enough to keep track of the maximum volume of each colour alone.
+If the maximum volume of any colour becomes 0, all other volumes will also be 0. 
+If it is greater than 0, it will remain the maximum volume of that colour.
+
+1. Create an array of length 3 .. containing the maximum of each colour.
+     
+    vector <int> max_potions(3,0);
+    int red_i, green_i, blue_i;
+
+    for(int i = 1; i <= no_of_red_potions; i++)
+    {
+        scanf("%d", &red_i);
+        max_potions[0] = max(max_potions[0], red_i);
+    }
+
+    for(int i = 1; i <= no_of_green_potions; i++)
+    {
+        scanf("%d", &green_i);
+        max_potions[1] = max(max_potions[1], green_i);
+    }
+
+    for(int i = 1; i <= no_of_blue_potions; i++)
+    {
+        scanf("%d", &blue_i);
+        max_potions[2] = max(max_potions[2], blue_i);
+
+    }
+2. Do the process for each minute ... In a given minute, choose the maximum volume and reduce it by 2 ...
+
+for(int minutes = 1; minutes <= no_of_minutes; minutes++)
+    {
+        sort(all(max_potions) );
+
+        max_potions[2] = max_potions[2] >> 1;
+
+    }
+
+3. Display the maximum volume.
+
+sort(all(max_potions) );
+
+    printf("%d\n", max_potions[2]);
