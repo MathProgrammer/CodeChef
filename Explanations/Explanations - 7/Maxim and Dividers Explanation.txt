@@ -1,0 +1,50 @@
+Maxim likes dividers of the numbers. Also Maxim is fond of lucky numbers of small elephant from Lviv city. 
+ 
+If you remember, lucky numbers are positive integers whose decimal representation contains only the lucky digits 4 and 7. For example, numbers 47, 744, 4 are lucky, 
+5, 17, 467 — aren't. 
+ 
+Now Maxim is interested in the next information: what is the number of the integer positive dividers of number n, which are overlucky. 
+ 
+We call number overlucky if it is possible to remove some, but not all, digits and during bonding the remaining digits we will receive a lucky number. 
+For example, number 72344 — overlucky, because it is possible to remove digits 2 and 3, and get number 744, which is lucky. 
+Number 223 isn't overlucky.
+
+---------------------------------------------------
+
+Basically, a number is overlucky if it least one of it's digits is 4 or 7.
+
+int is_overlucky(int n)
+{
+    while(n > 0)
+    {
+        if(n%10 == 4 || n%10 == 7)
+            return true;
+
+        n = n/10;
+    }
+
+    return false;
+}
+
+-------------------------------------------------------------
+
+Now, get all the divisors of n in O(root(n)) time.
+
+void solve()
+{
+    int number, overlucky_divisors = 0;
+    scanf("%d", &number);
+
+    for(int i = 1; i*i <= number; i++)
+    {
+        if(number%i == 0)
+        {
+            overlucky_divisors += (is_overlucky(i) == true);
+
+            if(i*i != number)
+                overlucky_divisors += (is_overlucky(number/i) == true);
+        }
+    }
+
+    printf("%d\n", overlucky_divisors);
+}
