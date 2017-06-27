@@ -1,0 +1,24 @@
+Find a factor i of n such that (n/i - i) is minimised.
+
+Start from the square root of n ... Because if i*i = n, difference = 0 ...
+
+Start from the square root and go downwards till you find an i that divides n. I thought of precomputing all squares till 10^4 and then binary searching to find the least 
+integer who's square is less than n .... But, that takes memory and adds more complexity .. Decided to try the inbuilt sqrt function itself ... The only problem is it returns
+double so I rounded it off to int. Fortunately, there was no loss of precision.
+
+Also there are more integers in the range (root(n) to (n)) than there are from (1 to root(n)) ... Hence, it is better to go from root(n) to 1 than from root(n) to n,
+even if the approaches seem equivalent.
+
+------------------------------------------
+
+void solve()
+{
+    int no_of_cupcakes, i;
+    scanf("%d", &no_of_cupcakes);
+
+    for(i = (int)sqrt(no_of_cupcakes); i >= 1; i--)
+        if(no_of_cupcakes%i == 0)
+            break;
+
+    printf("%d\n", (no_of_cupcakes/i - i));
+}
