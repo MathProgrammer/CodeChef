@@ -1,0 +1,45 @@
+Count the number of numbers in between A and B inclusive that have exactly k distinct prime factors 
+
+-------------------------------------------------------
+
+I used a coloured sieve ... If a number is marked 0, increase it and all of it's multiple's marks by 1. Precomputed ... Each query was answerable in O(B-A) time.
+
+I just made the same silly mistake I always do in the sieve ... I was incrementing the second loop in steps of 1 instead of in steps of i (so only multiples of i are hit).
+
+Also, in this sieve, the second loop starts from i, NOT 2i, because we want i to have 1 prime factor marked.'
+
+To answer the queries in O(1) time the editorial recommends building a prefix sum array for every i, F(a, k) where it denotes the sum of all k-primes till A.
+In that case, each query would be F(B) - F(A - 1).
+
+In the given range, k can be at most 7 ... So, building a 2D table is feasible.
+
+---------------------------------------
+
+vector <int> no_of_prime_factors(1e5 + 1, 0);
+
+void precompute_prime_factors()
+{
+    for(int i = 2; i <= 1e5; i++)
+    {
+        if(no_of_prime_factors[i] == 0)
+        {
+            for(int j = i; j <= 1e5; j+= i)
+            {
+                no_of_prime_factors[j]++;
+            }
+        }
+    }
+}
+
+void solve()
+{
+    int left, right, k;
+    scanf("%d %d %d", &left, &right, &k);
+
+    int no_of_k_primes = 0;
+    for(int i = left; i <= right; i++)
+        no_of_k_primes += (no_of_prime_factors[i] == k);
+
+    printf("%d\n",no_of_k_primes);
+
+}
