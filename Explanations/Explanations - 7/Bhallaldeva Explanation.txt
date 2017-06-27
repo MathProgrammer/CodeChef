@@ -1,0 +1,61 @@
+Bhallaladeva was an evil king who ruled the kingdom of Maahishmati. He wanted to erect a 100ft golden statue of himself and he looted gold from several places for this. 
+He even looted his own people, by using the following unfair strategy:
+There are N houses in Maahishmati, and the ith house has Ai gold plates. Each gold plate costs exactly 1 Nimbda, which is the unit of currency in the kingdom of Maahishmati.
+ Bhallaladeva would choose an integer K, and loots all the houses in several steps. 
+In each step:
+He would choose a house i which hasn't been looted yet, pay the owner exactly Ai Nimbdas, and take away all the gold plates in that house 
+(Hence, he also ends up looting this house).
+He would now choose atmost K houses which haven't been looted yet and take away all the gold plates from these houses without paying a single Nimbda 
+(Yes, he takes all of them for free). 
+He repeats the above steps until all the N houses have been looted. 
+Your task is to devise a strategy for Bhallaladeva to loot the houses in some order, so that the number of nimbdas he has to pay is minimium. 
+You'll also be given multiple values of K (Q of them to be precise), and you need to find the minimum number of nimbdas for each of these values.
+
+--------------------------------------------------
+
+Here's the idea ...
+
+At each step Bhallaldeva pays for one house and takes K houses for free ...
+
+The best strategy for him is to pay for the cheapest house available and then take the K most expensive houses for free. 
+
+He cannot avoid paying for one house at each step though ... For example, if 5 houses are available and K = 10, he still has to pay for one house and then take the 
+other 4 houses for free.
+
+So, first sort all the houses by the amount of gold in them. 
+
+--------------------------------------------------
+
+    vector <int> gold_in_house(number_of_houses);
+    for(int i = 0; i < number_of_houses; i++)
+        scanf("%d", &gold_in_house[i]);
+
+
+    sort(all(gold_in_house));
+
+--------------------------------
+
+Keep track of the amount of looted houses ... increases by K+1 at each step...
+Add the cheapest house's price to the total and increase the amount of looted houses by K + 1 till all houses are looted.
+
+---------------------------------------------
+
+    for(int i = 1; i <= number_of_queries; i++)
+    {
+        int no_of_free_houses, minimum_cost = 0;
+        scanf("%d", &no_of_free_houses);
+
+        int paid_house = 0;
+        int looted_houses = 0;
+
+        while(looted_houses < number_of_houses)
+        {
+            minimum_cost += gold_in_house[paid_house];
+
+            paid_house++;
+
+            looted_houses +=  1 + no_of_free_houses; //At each step, take 1 paid house and as many free houses as possible
+        }
+
+        printf("%d\n", minimum_cost);
+    }
