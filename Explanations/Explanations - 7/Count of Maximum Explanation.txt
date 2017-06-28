@@ -1,0 +1,28 @@
+Given an array A of length N, your task is to find the element which repeats in A maximum number of times as well as the corresponding count. 
+In case of ties, choose the smaller element first.
+
+--------------------------------------------
+
+I used a frequency table instead of a hash map because of the problem's requirement of breaking ties by choosing the smaller number.
+
+void solve()
+{
+    int number_of_elements;
+    scanf("%d", &number_of_elements);
+
+    vector <int> frequency(1e4 + 1, 0);
+    for(int i = 1; i <= number_of_elements; i++)
+    {
+        int element_i;
+        scanf("%d", &element_i);
+
+        frequency[element_i]++;
+    }
+
+    int most_frequent_element = 1;
+    for(int i = 2; i <= 1e4; i++)
+        if(frequency[i] > frequency[most_frequent_element])
+            most_frequent_element = i;
+
+    printf("%d %d\n", most_frequent_element, frequency[most_frequent_element]);
+}
