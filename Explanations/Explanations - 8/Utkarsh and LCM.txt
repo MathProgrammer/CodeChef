@@ -1,0 +1,48 @@
+Utkarsh found an array A of size N. He needs to report the number of pairs (i,j) where i < j such that
+
+LCM (A[i], A[j]) > min (A[i], A[j])
+
+-------------------------------------------
+
+The LCM(A, B) > min(a, b) whenever a and b are not equal 
+
+The question is asking us to count the number of pairs (a, b) such that (a, b) are distinct ...
+
+Here's what I did ...
+
+Use a frequency hash map ... where f(i) stores the frequency of i ...
+
+Now, each i can make a valid pair with any of the other elements ...
+
+So, at each step, increment no_of_pairs by f(i)*(N - f(i) )
+
+At the end, divide number of pairs by 2 because we count each pair twice ...
+
+The pair (i, j) is counted once when we are in i and another time when we are in j.
+
+Be careful to avoid overflow. Got a WA because of that.
+
+--------------------------------------------------
+
+int main()
+{
+	long long no_of_pairs = 0;
+	int number_of_elements, element_i;
+	scanf("%d", &number_of_elements);
+
+	map <int, int> frequency;
+	for(int i = 1; i <= number_of_elements; i++)
+	{
+		scanf("%d", &element_i);
+		frequency[element_i]++;
+	}
+
+	map <int, int> :: iterator it;
+	for(it = frequency.begin(); it != frequency.end(); it++)
+	{
+		no_of_pairs += (it->second)*1LL*(number_of_elements - it->second);
+	}
+
+	printf("%lld\n", no_of_pairs/2); //Each pair has been counted twice.
+	return 0;
+}
