@@ -19,7 +19,8 @@ int main()
 	map <int, int> :: iterator it;
 	for(it = frequency.begin(); it != frequency.end(); it++)
 	{
-		no_of_pairs += (it->second)*1LL*(number_of_elements - it->second);
+		int frequency_i = it->second;
+		no_of_pairs += frequency_i*1LL*(number_of_elements - frequency_i);
 	}
 
 	printf("%lld\n", no_of_pairs/2); //Each pair has been counted twice.
