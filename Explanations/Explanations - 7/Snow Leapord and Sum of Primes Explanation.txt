@@ -1,0 +1,22 @@
+Snow Leopard has been given an integer ‘n’. Now he has to tell whether 2n can be written as a sum of two prime numbers or not.
+Please help him calculate this efficiently.
+
+------------------------------------------
+
+Goldbach's conjecture has already been verified in the given range... Every even number other than 2 can be written as the sum of 2 primes.
+Just check if n >= 2.
+
+int main()
+{
+    int no_of_test_cases;
+    scanf("%d", &no_of_test_cases);
+
+    while(no_of_test_cases--)
+    {
+        int n;
+        scanf("%d", &n);
+
+        printf(n >= 2 ? "YES\n" : "NO\n");
+    }
+    return 0;
+}
