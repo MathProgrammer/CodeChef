@@ -1,0 +1,11 @@
+Count the sum of the proper divisors of all numbers.
+
+Add all the divisors in O(root(n)) time, the square root should only get added once ... and the test case that I was missing was that f(1) = 0 
+because 1 has no proper divisors.
+
+    for(i = 2; i*i <= number; i++)
+        if(number%i == 0)
+            sum_of_divisors += (i*i == number ? i : i + number/i); ///Divisors come in pairs(i, N/i) except the square root(i, i)
+
+    if(number > 1) //If it's not one, then we need to count 1 as a proper divisor
+        sum_of_divisors++;
