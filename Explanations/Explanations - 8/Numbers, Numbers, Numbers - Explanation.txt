@@ -1,0 +1,27 @@
+For the heck of it, we define a new sequence as the infinite sequence of all integers, in ascending order, that can represented as any positive integer power of 5 
+(i.e 5k where k is a positive integer) or as a sum of distinct positive integer powers of 5 (i.e 5a1 + 5a2 + 5a3 + ... , where a1, a2, a3, ... are distinct positive integers)
+. All the numbers in the lucky sequence are called lucky numbers. 
+The first few numbers are 5, 25, 30, 125, 130, 150, ... Given n your task is to find the nth number in the sequence. 
+--------------------------------------------------------
+
+The question is asking for all binary strings in base 5.
+
+3 - 110 ... IN base 5, it is 25 + 5 = 30.
+
+Here, 5^0 is ignored ... We start with 5^1 ... So, shift the entire string one step to the left.
+
+So, we simply take the binary n and then evaluate it as a polynomial in Horner's method in base 5.
+
+------------------------------------------
+
+long long lucky(int n)
+{
+	long long answer = 0;
+	n = n << 1;
+
+	for(int i = 31; i >= 0; i--)
+	{
+		answer = answer*5 + ( (n & (1 << i) ) != 0)	;
+	}
+	return answer;
+}
