@@ -1,0 +1,24 @@
+
+If N is already a multiple of 4, then if player A takes away r, player B takes 4-r and wins.
+If N is not a multiple of 4, A takes away (N mod 4) and wins.
+
+-------------------------------------------
+
+int main()
+{
+	int no_of_games;
+	scanf("%d", &no_of_games);
+
+	while(no_of_games--)
+	{
+		int number;
+		scanf("%d", &number);
+
+		printf(number%4 == 0 ? "Second\n" : "First\n");
+	}
+
+	return 0;
+}
+
+------------------------------------------------------
+
