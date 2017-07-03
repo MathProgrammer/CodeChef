@@ -1,0 +1,96 @@
+
+-----------------------------------------------
+
+Learnt quite a few things with this one. 
+Learnt how to use STL stacks and strings. It is not type safe to print STL strings with printf ... Use cin and cout.
+
+Also to append a character use either + or push_back() ... since strings are a specialised container here ... Don't write string[i++] = x ... That invokes undefined behaviour
+
+
+----------------------------------------------------------------------------
+
+Coming to the algorithm ... RPN notation is very powerful because it eliminates the need for brackets while parsing !
+
+This is one of those problems who's solution is difficult to come up with on pure logic, but becomes easy to remember once you know the data structure to use.
+
+The idea is to maintain a string containing the final string and a stack.
+
+1. If string[i] is an operand, push it to the back of RPN string.
+2. If string[i] is an operator, then pop out all the elements of the op stack and push it to the output, that have lower priority.
+	Then put string[i] in the op stack.
+
+3. If string[i] is ), continuously pop out all elements of op stack and push them to the back of the RPN. 
+	And then pop the ( as well, but don't push the bracket on the stack.
+
+	Important to note that ( and ) are not in the RPN expression and ) is not put on the op stack unlike the other operators.
+
+4. It is very easy to miss this case ... After the entire string has been processed, there may still be some operators on the stack.
+	Pop out all the operators on the stack till it is empty and append them to RPN expression.
+
+Dijkstra also called this the shunting-yard algorithm. It's very powerful and elegant ...
+It is easy to come up with the idea once you know a stack should be used.
+
+I remembered the case of making sure the op stack is empty after the string is processed and I also remembered the case of pushing out all operators between ( and ).
+
+But, I did not know what to do when the expression is not fully paranthesised ... a+b*c and a*b + c ... Should not be evaluated in Left to right associativity.
+
+The idea is that within the same brackets, the higher priority operators go first, and the equal operator goes first if it arrived first. 
+
+-------------------------------------------------------------------------
+
+void solve()
+{
+    map <char, int> priority;
+    priority['+'] = 0, priority['-'] = 1, priority['*'] = 2, priority['/'] = 3, priority['^'] = 4;
+    priority['X'] = -1; //Dummy token
+
+    int postfix_expression_length = 0;
+    string expression, postfix_expression;
+    cin >> expression;
+
+    stack <char> operators;
+    operators.push('X');
+
+    for(int i = 0; expression[i] != '\0'; i++)
+    {   printf("i = %d\n", i);
+        switch(expression[i])
+        {
+            case '+':
+            case '-':
+            case '*':
+            case '/':
+            case '^':
+                      while(priority[operators.top()] >= expression[i])
+                      {
+                          postfix_expression += operators.top();
+                          operators.pop();
+                      }
+
+            case '(':
+
+                      operators.push(expression[i]);
+                      break;
+
+            case ')':
+                      while(operators.top() != '(')
+                      {
+                          postfix_expression += operators.top();
+                          operators.pop();
+                      }
+                      operators.pop(); //RPN notation has no brackets of either kind
+                      break;
+
+            default :
+                      postfix_expression[postfix_expression_length++] = expression[i]; //Operands
+
+        }cout << postfix_expression << "\n";
+    }
+
+    while(operators.top() != 'X') //While it isn't empty
+    {
+        postfix_expression += operators.top();
+        operators.pop();
+    }
+
+    cout << postfix_expression << "\n";
+}
