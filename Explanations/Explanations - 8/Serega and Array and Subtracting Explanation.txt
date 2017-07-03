@@ -1,0 +1,37 @@
+Sereja has an array A of N positive integers : A[1], A[2], A[3], ... , A[N]. 
+In a single operation on the array, he performs the following two steps : 
+Pick two indices i, j s.t. A[i] > A[j]
+A[i] -= A[j]
+
+Sereja can apply these operations any number of times (possibly zero), such that the sum of resulting elements of the array is as small as possible. 
+Help Sereja find this minimum sum. 
+
+-------------------------------------------------------------
+
+Notice that gcd(x, y) = gcd(x - y, y) ... Because any number that divides both of them must also divide their difference.
+
+The gcd of the array does not change after any number of such operations ... Since we only choose elements where there's a strict inequality, there's no chance of there
+being an element set to 0. (If inequality wasn't strict, then only one non zero element would survive i.e. gcd).
+
+Since the gcd of the array remains invariant ... There will come a point when all elements are equal to the gcd. At this point no further operations will be possible.
+
+So minimum sum = gcd*N
+
+Be careful about overflow.
+
+-------------------------------------
+
+void solve()
+{
+    int number_of_elements, element_i, array_gcd;
+    scanf("%d", &number_of_elements);
+
+    for(int i = 1; i <= number_of_elements; i++)
+    {
+        scanf("%d", &element_i);
+        array_gcd = (i == 1 ? element_i : gcd(array_gcd, element_i) );
+    }
+
+    long long min_sum = array_gcd*1LL*number_of_elements;
+    printf("%lld\n", min_sum);
+}
