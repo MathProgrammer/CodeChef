@@ -1,0 +1,26 @@
+As you know that the Reliance Jio welcome offer will expire on 15th April, 2017. 
+
+Therefore all the users will have to buy the Jio prime offer to avail the further services.
+We know Chef is also a Reliance Jio user therefore he is also buying the Jio Prime offer. For the online transaction to take place 4G Data Connectivity is required. 
+The city of Chef can be represented in the form of 2D plane. The position of Jio tower is (Xi,Yi) and position of the Chef is (Xj,Yj) .
+The range of Jio Tower is R units radially.
+
+Your task is to find out whether the Chef will able to subscribe the Jio Prime Offer or not?
+
+if yes then Print "Unlimited Hoyenga" without quotes else print "Nahi Hoyenga" without quotes 
+-------------------------------------------
+
+Check squares instead of square root.
+
+---------------------------------------------
+
+int main()
+{
+    int tower_x, tower_y, chef_x, chef_y, range;
+    scanf("%d %d %d %d %d", &tower_x, &tower_y, &chef_x, &chef_y, &range);
+
+    long long x_difference = tower_x - chef_x, y_difference = tower_y - chef_y;
+
+    printf(range*1LL*range >= x_difference*x_difference + y_difference*y_difference ? "Unlimited Hoyenga" : "Nahi Hoyenga");
+    return 0;
+}
