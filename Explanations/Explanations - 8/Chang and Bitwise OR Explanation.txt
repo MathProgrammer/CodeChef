@@ -1,0 +1,38 @@
+Chang is a big fan of bitwise operations. As he was sitting in a boring lecture, he thought of a simple problem but had a tough time figuring out the solution. 
+Help him to solve it. The problem is as follows.
+Given a list of N non-negative integers, you perform the following operation on this list.
+
+Select any subsequence of integers from the list and remove the elements of that subsequence. The cost incurred will be Bitwise OR of the elements.
+Your task is to remove all the integers from the list by applying the above operation as many times as you want. You want to incur the minimum total cost at the end. 
+Total cost is the sum of all the costs incurred while removing subsequences.
+
+---------------------------------------------------
+
+The optimal strategy is always to select the entire segment the first time. 
+
+Suppose we select segment p - it's value is OR(a1, a2, a3, ... , ap)
+Then we select segment q - it's value is OR(b1, b2, b3, ... bq)
+
+Now total cost is p + q.
+
+However it can be observed that OR(p, q) <= p + q ... 
+
+Hence, it will always be at least the same cost to take the OR(p, q) at the same time.
+
+-----------------------------------------
+
+void solve()
+{
+    int no_of_numbers;
+    scanf("%d", &no_of_numbers);
+
+    int bitwise_OR = 0, number_i;
+    for(int i = 1; i <= no_of_numbers; i++)
+    {
+        scanf("%d", &number_i);
+        bitwise_OR = bitwise_OR|number_i;
+    }
+    printf("%d\n", bitwise_OR);
+}
+
+
