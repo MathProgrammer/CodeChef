@@ -1,0 +1,24 @@
+Isha and Suhana are on security patrol.
+
+They start from a checkpoint and go in opposite direction for greater coverage.
+Isha starts with speed U metre/second and Suhana starts with speed V metre/second. 
+They both have a walkie-talkie, operating for maximum distance of X metres. How long will they be able to communicate ?
+
+----------------------------------------------------
+
+Floating point problems are always tricky. I didn't get AC when I used typecasting on the integers and multiplied them with 1.0.
+Got AC when I made everything double.
+
+----------------------------------
+
+void solve()
+{
+    double isha_speed, suhana_speed, maximum_distance;
+    scanf("%lf %lf %lf", &isha_speed, &suhana_speed, &maximum_distance);
+
+    double relative_speed = isha_speed + suhana_speed;
+
+    double maximum_time = maximum_distance/relative_speed;
+
+    printf("%lf\n", maximum_time);
+}
