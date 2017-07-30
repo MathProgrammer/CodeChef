@@ -1,0 +1,45 @@
+The Chef had a box with N numbers arranged inside it: A1, A2, ..., AN. He also had the number N at the front, so that he knows how many numbers are in it. 
+That is, the box actually contains N+1 numbers. But in his excitement due the ongoing IOI, he started dancing with the box in his pocket, and the N+1 numbers got jumbled up. 
+So now, he no longer knows which of the N+1 numbers is N, and which the actual numbers are.
+
+He wants to find the largest of the N numbers. Help him find this.
+---------------------------------------
+
+The challenge of this problem is to read the input ...
+
+I used a do while loop like this. Initially the IDE rejected my solution but accepted it after the contest was over.
+
+An easy thing to overlook is if N occurs more than once in the array.
+
+The first time we get an element = size() - 1, we do not consider it a candidate for the maximum, but the second time we find it we should.
+
+For example, 
+
+4 4 3 2 1 ... The first 4 should not be considered, but the second 4 should.
+
+----------------------------------------------------------
+
+void solve()
+{
+    int num_i;
+    char ch;
+    vector <int> numbers;
+
+    do
+    {
+        scanf("%d%c", &num_i, &ch);
+        numbers.push_back(num_i);
+    }while(ch != '\n');
+
+    bool size_found = false;
+    int maximum = 0;
+    for(unsigned int i = 0; i < numbers.size(); i++)
+    {
+        if(numbers[i] == numbers.size() - 1 && size_found == false)
+            size_found = true;
+        else
+            maximum = max(maximum, numbers[i]);
+    }
+
+    printf("%d\n", maximum);
+}
