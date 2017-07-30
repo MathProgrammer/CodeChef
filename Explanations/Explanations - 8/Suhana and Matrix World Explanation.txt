@@ -1,0 +1,33 @@
+Suhana is a travel girl. Being a coder, she can assume the world as a matrix. 
+
+Suhana starts traveling from (0, 0). 
+She takes one step in the x-direction and two steps in the y-direction alternatively. 
+
+In short, she starts from (0, 0). She repeats following operations in sequence :
+Take one step in x-direction.
+Take two steps in y-direction.
+
+Where will she be after M steps ? 
+
+-----------------------------------------------------
+
+First notice that in every block of 3 steps, there will be 1 step of x and 2 steps of y.
+
+Now, there are three cases - M = 0, 1, 2 mod 3. 
+
+If M = 0 mod 3, we already know what to do.
+If M = 1 mod 3, one extra step for x
+If M = 2 mod 3, one extra step for x and one extra step for y.
+
+----------------------------------------------
+
+void solve()
+{
+    int final_y, final_x, no_of_steps;
+    scanf("%d", &no_of_steps);
+
+    final_x =   (no_of_steps/3) + (no_of_steps%3 >= 1);
+    final_y = 2*(no_of_steps/3) + (no_of_steps%3 == 2);
+
+    printf("%d %d\n", final_x, final_y);
+}

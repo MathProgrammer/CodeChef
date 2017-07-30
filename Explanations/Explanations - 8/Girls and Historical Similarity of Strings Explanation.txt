@@ -1,0 +1,63 @@
+Isha asked to Suhana, what is historical similarity of two strings ?
+
+Suhana says, "Two strings P and Q are historically similar if P can be converted into Q after applying following operation zero or more times." 
+
+In one operation, Isha can replace all occurences of a single character in P with any character from alphabet Z subject to following simple rules :
+
+Replace only happens when new character doesn't already exists in P.
+Replace operation is atomic to all occurences which means all occurences are replaced simultaneously with same character.
+All occurences must be replaced.
+Alphabet Z consists of lower case english letters only.
+
+Isha says, "Wow, That's interesting. Never heard anything more easy than that." 
+
+Task is to determine if given two strings are historically similar ?
+Isha already started coding, what are you upto ? 
+
+------------------------------------------------------------------------------
+
+Define a mapping in between the character at the same index in P and Q.
+
+P and Q are historically similar if and only if, a character p in P is mapped to only ONE character in Q for all it's occurences.
+And a character q in Q is mapped to only one character p in P for all of it's occurences.
+
+In other words, there's a bijection.
+
+So, aba ccc are not historically similary because it is true that a is mapped to only character and it is also true that b is only mapped to only one character.
+But, c is mapped to two characters. This prevents a change by the operation.
+
+To implement this, I used two character hash-maps.
+
+-------------------------------------
+
+void solve()
+{
+    char string_1[MAX_LENGTH], string_2[MAX_LENGTH];
+    scanf("%s %s", string_1, string_2);
+
+    map <char, char> mapping_1_to_2;
+    map <char, char> mapping_2_to_1;
+    for(int i = 0; string_1[i] != '\0'; i++)
+    {
+        mapping_1_to_2[string_1[i]] = mapping_2_to_1[string_2[i]] = '*';
+    }
+
+    bool historical_similarity = true;
+    for(int i = 0; string_1[i] != '\0'; i++)
+    {
+        char char_1 = string_1[i], char_2 = string_2[i];
+
+        if(mapping_1_to_2[char_1] == '*' && mapping_2_to_1[char_2] == '*')
+        {
+            mapping_1_to_2[char_1] = char_2;
+            mapping_2_to_1[char_2] = char_1;
+        }
+        else if(mapping_1_to_2[char_1] != char_2 || mapping_2_to_1[char_2] != char_1)
+        {
+            historical_similarity = false;
+            break;
+        }
+    }
+
+    printf(historical_similarity ? "YES\n" : "NO\n");
+}
