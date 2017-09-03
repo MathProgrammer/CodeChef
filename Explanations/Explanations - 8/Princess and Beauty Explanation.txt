@@ -1,0 +1,27 @@
+
+--------------------------------------------
+
+No need of finding the longest palindromic substring, which is O(n^2).
+
+Just check if there are any palindromes of length 2 or of length 3.
+
+If there is no palindrome of length 2 or 3, there will be no palindrome of larger length as well.
+
+-----------------------------------------
+
+void solve()
+{
+    char input[MAX_SIZE];
+    scanf("%s", input);
+
+    int palindrome_of_2 = false, palindrome_of_3 = false;
+    for(int i = 1; input[i] != '\0'; i++)
+        if(input[i] == input[i - 1])
+            palindrome_of_2 = true;
+
+    for(int i = 1; input[i + 1] != '\0'; i++)
+        if(input[i - 1] == input[i + 1])
+            palindrome_of_3 = true;
+
+    printf(palindrome_of_2 || palindrome_of_3 ? "YES\n" : "NO\n");
+}
