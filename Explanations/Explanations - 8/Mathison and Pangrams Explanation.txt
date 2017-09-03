@@ -1,0 +1,25 @@
+Buy all alphabets that haven't been used at least once.
+
+-----------------------------------------------------
+
+void solve()
+{
+    const int no_of_alphabets = 26;
+    vector <int> price(no_of_alphabets + 1);
+    for(int i = 0; i < no_of_alphabets; i++)
+        scanf("%d", &price[i]);
+
+    char text[MAX_SIZE];
+    scanf("%s", text);
+
+    vector <int> is_present(no_of_alphabets);
+    for(int i = 0; text[i] != '\0'; i++)
+        is_present[text[i] - 'a'] = true;
+
+    int minimum_price = 0;
+    for(int i = 0; i < no_of_alphabets; i++)
+        if(!is_present[i])
+            minimum_price += price[i];
+
+    printf("%d\n", minimum_price);
+}
