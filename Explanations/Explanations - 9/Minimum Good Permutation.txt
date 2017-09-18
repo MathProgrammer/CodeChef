@@ -1,0 +1,59 @@
+A permutation of length n is an array of size n consisting of n distinct integers in the range [1, n]. 
+For example, (3, 2, 4, 1) is a permutation of length 4, but (3, 3, 1, 4) and (2, 3, 4, 5) are not, as (3, 3, 1, 4) contains duplicate elements, 
+and (2, 3, 4, 5) contains elements not in range [1,4].
+
+A permutation p of length n is good if and only if for any 1 ≤ i ≤ n, pi ≠ i.
+
+Please find the lexicographically smallest good permutation p.
+For two permutations p and q, we say that p is lexicographically smaller than q if and only if there exists a index 1 ≤ l ≤ n such that:
+
+For any 1 ≤ i < l, pi = qi. Note that if l = 1, this constraint means nothing.
+and, pl < ql.
+For example, (2, 3, 1, 4) < (2, 3, 4, 1) < (3, 4, 1, 2). The lexicographically smallest permutation is, of course, (1, 2, ..., n), though this one is not good.
+-----------------------------------------------
+
+What is the smallest digit we can place at position 1 ? 1 ... But that's not allowed. So, we place 2.
+What is the smallest digit we can place at position 2 ? 2 ... So we place it ...
+
+Similarly for 3 and 4 ...
+
+Let's suppose we have constructed a permutation of length 2i in this fashion ... 
+
+What if we want a permutation of odd length ? Then, we can't place 2i + 1 in the last place as that would not satisfy the condition.
+
+Instead, we do this .... (permutation till 2i - 2) ... (2i, 2i + 1, 2i - 1)
+
+The last three elements have to be arranged like that as that is optimal ... The smallest at position (2i - 1) is 2i ...
+The smallest for position 2i, is 2i - 1 .. but if we place 2i - 1 there, we are forced to place 2i + 1 at position 2i + 1 ... This violates the condition.
+
+-------------------------------------------------------
+
+3 - 2 3 1
+5 - 2 1 4 5 3
+6 - 2 1 3 4 6 5
+
+-------------------------------------------------
+
+void solve()
+{
+    int length_of_permutation;
+    scanf("%d", &length_of_permutation);
+
+    if(length_of_permutation%2 == 0)
+    {
+        for(int i = 1; i <= length_of_permutation; i++)
+        {
+            printf("%d ", i%2 == 1 ? i + 1 : i - 1);
+        }
+    }
+    else
+    {
+        for(int i = 1; i <= length_of_permutation - 3; i++)
+        {
+            printf("%d ", i%2 == 1 ? i + 1 : i - 1);
+        }
+        printf("%d %d %d", length_of_permutation - 1, length_of_permutation, length_of_permutation - 2);
+    }
+
+    printf("\n");
+}
