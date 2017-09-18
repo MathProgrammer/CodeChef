@@ -1,0 +1,30 @@
+
+-------------------------------------------
+
+Prefix(i) + Suffix(i) = Sum(entire array) + A[i]
+
+, because A[i] is counted twice.
+
+To find the i that minimises Prefix(i) + Suffix(i) is the same as finding the i for which A[i] is minimum.
+
+The smallest such i is needed in case of a tie.
+
+----------------------------------------------
+
+void solve()
+{
+    int no_of_elements;
+    scanf("%d", &no_of_elements);
+
+    int minimum_element_index = 0, minimum_element = 1e9;
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        int element_i;
+        scanf("%d", &element_i);
+
+        if(element_i < minimum_element)
+            minimum_element_index = i, minimum_element = element_i;
+    }
+
+    printf("%d\n", minimum_element_index);
+}
