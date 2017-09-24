@@ -1,0 +1,42 @@
+Baga boy who works under Jethalel is bad in mathematics which is not good for Jethalel's business. 
+So Mr. Bhide , a school teacher, decided to teach him prime numbers. After teaching all about prime numbers Mr. Bhide gave Baga a task which is as follows :
+ Bhide will give Baga a range [ L , R ] and Baga has to answer the count of all the prime numbers lying in that range. 
+Help Baga find the number of prime numbers lying in the given range.
+
+--------------------------------------------------
+
+Use a sieve and then precompute.
+
+-----------------------------------------
+
+void precompute(vector <int> &no_of_primes_till, int LIMIT)
+{
+    vector <int> is_prime(LIMIT, true);
+    is_prime[0] = is_prime[1] = false;
+
+    vector <int> primes;
+
+    for(int i = 2; i < LIMIT; i++)
+    {
+        if(is_prime[i])
+            primes.push_back(i);
+
+        for(int j = 0; j < primes.size() && i*primes[j] < LIMIT; j++)
+        {
+            is_prime[i*primes[j]] = false;
+
+            if(i%primes[j] == 0) break;
+        }
+    }
+
+    for(int i = 1; i < LIMIT; i++)
+        no_of_primes_till[i] = no_of_primes_till[i - 1] + (is_prime[i]);
+}
+
+void solve(vector <int> &no_of_primes_till)
+{
+    int left, right;
+    scanf("%d %d", &left, &right);
+
+    printf("%d\n", no_of_primes_till[right] - no_of_primes_till[left - 1]);
+}
