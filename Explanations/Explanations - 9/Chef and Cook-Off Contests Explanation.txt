@@ -1,0 +1,39 @@
+Chef wants to prepare a Cook-Off contest with 5 problems chosen from a set of N problems. 
+He has marked the difficulty of each problem within a range identified by one of the following strings: "cakewalk", "simple", "easy", "easy-medium", "medium", "medium-hard", 
+"hard".
+ According to this page, a Cook-Off contest must have problems of the following difficulties:
+
+exactly one "cakewalk";
+exactly one "simple";
+exactly one "easy";
+one "easy-medium" or one "medium";
+one "medium-hard" or one "hard".
+Given the information about the N problems, can you advise Chef if it's possible to pick 5 problems and form a valid Cook-Off contest?
+
+-----------------------------------------------------
+
+Check the frequency of each kind of difficulty and if it meets the criteria.
+
+----------------------------------------------------
+
+void solve()
+{
+    map <string, int> difficulty_count;
+
+    int no_of_problems;
+    scanf("%d", &no_of_problems);
+
+    for(int i = 1; i <= no_of_problems; i++)
+    {
+        string difficulty;
+        cin >> difficulty;
+
+        difficulty_count[difficulty]++;
+    }
+
+    int possible_to_choose = (difficulty_count["simple"]) && (difficulty_count["cakewalk"]) && (difficulty_count["easy"]);
+    possible_to_choose = possible_to_choose && (difficulty_count["easy-medium"] || difficulty_count["medium"]);
+    possible_to_choose = possible_to_choose && (difficulty_count["medium-hard"] || difficulty_count["hard"]);
+
+    printf("%s\n", possible_to_choose ? "Yes" : "No");
+}
