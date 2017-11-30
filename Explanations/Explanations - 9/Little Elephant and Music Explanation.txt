@@ -1,0 +1,53 @@
+The optimal strategy is -
+
+1. Listen to the shortest song of each band first.
+2. After that listen to the other songs.
+
+This is to ensure each l gets the best multiplier.
+
+If there are n bands, the first n songs should be the shortest songs of each band. After that listen to the other bands. They will all have to be multiplied by n.
+
+----------------------------------------------------------
+
+void solve()
+{
+    int no_of_songs;
+    scanf("%d", &no_of_songs);
+
+    long long total_length = 0;
+    map <int, int> shortest_song;
+
+    for(int i = 0; i < no_of_songs; i++)
+    {
+        int singer,length;
+        scanf("%d %d", &singer, &length);
+
+        total_length += length;
+
+        if(shortest_song[singer] == 0)
+            shortest_song[singer] = length;
+
+        shortest_song[singer] = min(shortest_song[singer], length);
+    }
+
+    vector <long long> shortest_songs;
+    for(map <int, int> :: iterator it = shortest_song.begin(); it != shortest_song.end(); it++)
+    {
+        shortest_songs.push_back(it->second);
+    }
+
+    sort(all(shortest_songs));
+
+    long long length_of_shortest_songs = 0, total_sweetness = 0;
+
+    int no_of_singers = shortest_songs.size();
+    for(int i = 0; i < no_of_singers; i++)
+    {
+        total_sweetness += (i + 1)*shortest_songs[i];
+        length_of_shortest_songs += shortest_songs[i];
+    }
+
+    total_sweetness += (total_length - length_of_shortest_songs)*no_of_singers;
+
+    printf("%lld\n", total_sweetness);
+}
