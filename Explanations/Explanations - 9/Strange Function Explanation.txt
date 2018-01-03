@@ -1,0 +1,52 @@
+
+
+There's a trick with digital root questions. Yes, the digital root of a number is it's modulus with 9.
+
+However, if n is a multiple of 9, it's digital root is 9, NOT 0. 
+
+I fell for this trick at first and then remembered it after looking at the Wikipedia page.
+
+It's sufficient to find a^n %9 with binary exponentiation.
+
+But, I wanted to use Fermat's little Theorem.
+
+a^phi(n) = 1 (mod n), where a and n are coprime.
+
+Now, if A = 0 mod 9, it's digital root is always 9.
+
+If A = 3, 6 (mod 9), then it's digital root = A, if n = 1, and = 9, if n > 1
+
+Because A^2 = 0 (mod 9), when A = 3, 6
+
+Now, phi(9) = 6
+
+So, for all A other than {0, 3, 6}
+
+A^N mod 9 = A^(N mod 6) mod 9
+
+A^6 = 1 for all other N, just like x^0 = 1, in normal non-modulo multiplication.
+
+We only need the remainder of N mod 6.
+
+This took 0.04s vs 0.07s for normal binary exponentiation.
+
+--------------------------------------------------------------
+
+void solve()
+{
+	long long A, n;
+	scanf("%lld %lld", &A, &n);
+
+	A %= 9;
+
+	switch(A)
+	{
+	    case 0: printf("9\n"); break;
+
+	    case 3:
+	    case 6: printf("%d\n", n >= 2 ? 9 : A); break;
+
+	    default: const int PHI_9 = 6;
+                 printf("%d\n", power_mod(A, n%PHI_9, 9));
+	}
+}
