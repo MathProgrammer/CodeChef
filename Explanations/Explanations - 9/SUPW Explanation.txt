@@ -1,53 +1,43 @@
 
 Let f(i) be the minimum time you can save starting from day i. 
 
-Your optinos are to skip day i, or skip day i and day i + 1, But here we cannot say the answer is f(i + 2) because f(i + 2) includes the case where day i+2 was skipped.
-We can't use optimal substructure like this as the problems won't be independent.
+If you work on day i, the answer is time(i) + f(i + 1).
 
-This forces us to use a new dimension.
+If you skip day i and work on day i + 1, answer is time(i + 1) + f(i + 2)
 
-f(i, WORK) represent the time required starting from day i, if you work on day i. 
-Now, we realise we can use optimal substructure.
+If you skip day i and work on day i + 2, answer is time(i + 2) + f(i + 3)
 
-f(i, WORK) = time[i] + min{f(i + 1, WORK), f(i + 1, NO WORK)}
-
-f(i, NO WORK) = min{f(i + 1, WORK), f(i + 2, WORK)} depending on whether you skip one day or two. 
-
-This allows us to safely use the solutions to smaller problems without worrying about whether the structure of the overall problem is intact.
-
-The answer = min{f(1, WORK), f(1, NO WORK)}
+Answer is minimum of these 3.
 
 --------------------------------------------------------
+
+#define min_3(a, b, c) min(a, min(b, c))
+using namespace std;
 
 int main()
 {
     int no_of_days;
     scanf("%d", &no_of_days);
 
-    vector <int> time(no_of_days + 5, 0);
+    vector <int> time(no_of_days + 1);
     for(int i = 1; i <= no_of_days; i++)
         scanf("%d", &time[i]);
 
-    const int WORK = 0, NO_WORK = 1;
-    int minimum_time_starting[no_of_days + 5][2];
-
+    vector <int> minimum_time_starting(no_of_days + 1, 0);
 
     for(int i = no_of_days; i >= 1; i--)
     {
-        if(i == no_of_days || i == no_of_days - 1)
+        if(i >= no_of_days - 1)
         {
-            minimum_time_starting[i][WORK] = time[i];
-            minimum_time_starting[i][NO_WORK] = 0;
+            minimum_time_starting[i] = 0;
             continue;
         }
 
-        minimum_time_starting[i][NO_WORK] = min(minimum_time_starting[i + 1][WORK], minimum_time_starting[i + 2][WORK]);
-
-        minimum_time_starting[i][WORK] = time[i] + min(minimum_time_starting[i + 1][WORK], minimum_time_starting[i + 1][NO_WORK]);
+        minimum_time_starting[i] = min_3(time[i] + minimum_time_starting[i + 1], time[i + 1] + minimum_time_starting[i + 2],
+                                         time[i + 2] + minimum_time_starting[i + 3]);
     }
 
-    int total_time = min(minimum_time_starting[1][WORK], minimum_time_starting[1][NO_WORK]);
-    printf("%d\n", total_time);
+    printf("%d\n", minimum_time_starting[1]);
 
     return 0;
 }
