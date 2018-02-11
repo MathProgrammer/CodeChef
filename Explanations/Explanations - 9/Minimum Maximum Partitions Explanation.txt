@@ -1,0 +1,50 @@
+
+Consider the array - 
+
+a1 a2 a3 .... an
+
+Let us say you make the division at position i and j. ... What is the cost ?
+
+a1 + ai +  (a(i + 1) + aj) + a(j + 1) + an
+
+a1 and an occur is all partitions ... Remaining is always sum of SOME (a[i] + a[i + 1])
+
+We want to minimise this, we have to choose k numbers for which (a[i] + a[i + 1]) is minimised. 
+
+This is quite beautiful. Sort the list of numbers of (A[i], A[i + 1])
+
+The k-1 smallest is the minimum sum and the k-1 largest is the maximum sum.
+
+I love custom sorting questions. Here we have to put all (A[i], A[i + 1]) into a priority queue and choose the k-1 smallest sum and then the largest ones.
+
+------------------------------------------------------------------------------------
+
+int main()
+{
+    int no_of_elements, no_of_partitions;
+    scanf("%d %d", &no_of_elements, &no_of_partitions);
+
+    vector <int> element(no_of_elements + 1);
+    for(int i = 1; i <= no_of_elements; i++)
+        scanf("%d", &element[i]);
+
+    vector <long long> costs;
+    for(int i = 1; i < no_of_elements; i++)
+        costs.push_back(element[i] + element[i + 1]);
+
+    sort(all(costs));
+
+    no_of_partitions--;
+
+    long long minimum_cost = element[1] + element[no_of_elements];
+    for(int i = 0; i < no_of_partitions; i++)
+        minimum_cost += costs[i];
+
+    long long maximum_cost = element[1] + element[no_of_elements];
+    for(int i = costs.size() - 1; i >= costs.size() - no_of_partitions; i--)
+        maximum_cost += costs[i];
+
+    printf("%lld %lld\n", minimum_cost, maximum_cost);
+
+    return 0;
+}
