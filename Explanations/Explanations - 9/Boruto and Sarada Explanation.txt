@@ -1,0 +1,22 @@
+
+
+The minimum sum with Y distinct integers is 
+
+1 + 2 + 3 + ... + Y
+
+Any number smaller than this can't be reached.  If X > sum of Y integers 
+
+X = 1 + 2 + ... + Y - 1 + (x - Sum(Y - 1))
+
+So, it's always possible if x >= Sum(Y)
+
+---------------------------------------------------
+
+void solve()
+{
+    long long x, y;
+    scanf("%lld %lld", &x, &y);
+
+    long long minimum_sum = (y*(y + 1))/2;
+    printf(x >= minimum_sum ? "YES\n" : "NO\n");
+}
