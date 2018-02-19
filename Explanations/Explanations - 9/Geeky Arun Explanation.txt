@@ -1,0 +1,19 @@
+
+The sum of the series = 1 + 2 + 2^2 + 2^3 + ... + 2^n = 2^(n + 1) - 1
+
+Find the first n for which the sum is greater than number of pages. That is the answer.
+
+-----------------------------------------------------------
+
+void solve()
+{
+    int no_of_pages;
+    scanf("%d", &no_of_pages);
+
+    int no_of_days = 1;
+
+    while( (1LL << no_of_days) - 1 < no_of_pages)
+        no_of_days++;
+
+    printf("%d\n", no_of_days);
+}
