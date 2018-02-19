@@ -1,0 +1,19 @@
+
+Let us say n boxes are sold. 
+
+Number of summersaults = (1 + 2 + 3 + ... + n)*7 = (n*(n + 1)/2)*7
+
+---------------------------------------
+
+void solve()
+{
+    long long no_of_doughnuts;
+    scanf("%lld", &no_of_doughnuts);
+
+    const int DOUGHNUTS_IN_A_BOX = 7;
+    long long no_of_boxes = no_of_doughnuts/DOUGHNUTS_IN_A_BOX;
+
+    long long no_of_summersaults = ( (no_of_boxes*(no_of_boxes + 1) )/2)*DOUGHNUTS_IN_A_BOX;
+
+    printf("%lld\n", no_of_summersaults);
+}

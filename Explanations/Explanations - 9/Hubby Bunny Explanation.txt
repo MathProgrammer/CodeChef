@@ -1,0 +1,25 @@
+
+Let d be the distance between the circles' centers ...
+
+if, d == (r1 + r2), then the circles are tangential 
+
+and if d < (r1 + r2), then the circles overlap. 
+
+Compare their squares to avoid dealing with square roots. 
+
+-----------------------------------------------------------------------
+
+void solve()
+{
+    int x1, y1, radius1, x2, y2, radius2;
+    scanf("%d %d %d %d %d %d", &x1, &y1, &radius1, &x2, &y2, &radius2);
+
+    long long distance_squared = square(x1 - x2) + square(y1 - y2);
+
+    if(distance_squared == square(radius1 + radius2))
+        printf("tangential\n");
+    else if(distance_squared < square(radius1 + radius2))
+        printf("overlapping\n");
+    else if(distance_squared > square(radius1 + radius2))
+        printf("not overlapping\n");
+}
