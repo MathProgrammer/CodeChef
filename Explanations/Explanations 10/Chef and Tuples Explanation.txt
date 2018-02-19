@@ -1,0 +1,67 @@
+
+First, we will fix x and then see how many pairs of (y, z) exist such that y.z = N/x
+
+Of course, at every step check if the given factor is <= Limit, for that variable.
+
+Factorise in root(n) time. So, this gives us two factors at a time. (x and N/x)
+
+Count (N/x, y, z) and (N/(N/x), y, z) = (x, y, z) seperately
+
+And if x = N/x, then count it only once.
+
+-----------------------------------------------------------------
+
+int no_of_factors(int N, int b, int c)
+{
+    int answer = 0;
+
+    for(int i = 1; i*i <= N; i++)
+    {
+        if(N%i == 0)
+        {
+            if(i*i == N)
+            {
+                answer += (i <= b && i <= c);
+            }
+            else
+            {
+                answer += (i <= b && N/i <= c);
+                answer += (N/i <= b && i <= c);
+            }
+        }
+    }
+
+    return answer;
+}
+
+void solve()
+{
+    int N, a, b, c;
+    scanf("%d %d %d %d", &N, &a, &b, &c);
+
+    int no_of_triplets = 0;
+
+    for(int i = 1; i*i <= N; i++)
+    {
+        if(N%i == 0)
+        {
+            if(i*i == N)
+            {
+                if(i <= a)
+                    no_of_triplets += no_of_factors(N/i, b, c);
+            }
+            else
+            {
+                if(i <= a)
+                    no_of_triplets += no_of_factors(N/i, b, c);
+                if(N/i <= a)
+                    no_of_triplets += no_of_factors(i, b, c);
+            }
+        }
+    }
+
+    printf("%d\n", no_of_triplets);
+}
+
+
+
