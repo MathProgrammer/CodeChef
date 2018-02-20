@@ -1,0 +1,41 @@
+
+The question gives L and R and asks for f(L) + … + f(R). This is a relatively easy problem. 
+
+But, I solved this question because it reminded me of the question Next Lucky Sum. That day, I just borrowed Endagorion's implementation. 
+That was also similar, notice many terms contribute the same thing to the sum. I got an opportunity to implement it and internalise the idea. 
+
+Answer(R) - Answer(L – 1). … 
+
+Here's what we do. Notice that the sum of all 3 digit numbers = 3*( 100 + …. + 999) and so on. 
+There are at most 10 digits in the range. 
+
+We set Left = smallest I digit numbers, Right = min(largest I digit number, n). Sum(L, R) = I*Sum_till(R) - I*sum_till(L – 1). 
+
+------------------------------------------------
+
+long long get_answer_till(long long n, int MOD)
+{
+    long long answer = 0;
+    long long starting = 1, ending;
+
+    for(int digit = 1; starting <= n ; digit++, starting = ending + 1)
+    {
+        ending = min(10*starting - 1, n);
+
+        answer += digit*sum_till(ending) - digit*sum_till(starting - 1) + MOD;
+        answer %= MOD;
+    }
+
+    return answer;
+}
+
+void solve()
+{
+    const int MOD = 1e9 + 7;
+
+    int left, right;
+    scanf("%d %d", &left, &right);
+
+    long long answer = (get_answer_till(right, MOD) - get_answer_till(left - 1, MOD) + MOD)%MOD;
+    printf("%lld\n", answer);
+}
