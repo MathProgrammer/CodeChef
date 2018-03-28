@@ -1,0 +1,64 @@
+
+It is not possible to go from [L, R] for every query as it degrades to O(NQ)
+
+Let us think in terms of prime factorisation. The product of all numbers, is equal to the product of all it's prime factors. 
+
+For each prime find it's exponent in the given range and then raise it to that exponent.
+
+But, There are only 25 primes less than 100. 
+
+For each prime, maintain a prefix sum array of it's exponent.
+
+Prefix[prime][i], holds the sum of exponents of prime, in all numbers from A[1] to A[i].
+ 
+Now, for each query, go through each prime, and find the sum of it's exponents in the range and then use binary exponentiation.
+ 
+For each query, we only need to do O(|P| Q)
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+int main()
+{
+    const int LIMIT = 100;
+    vector <int> primes;
+    precompute(primes, LIMIT);
+
+    int no_of_elements;
+    scanf("%d", &no_of_elements);
+
+    vector <int> A(no_of_elements + 1);
+    for(int i = 1; i <= no_of_elements; i++) scanf("%d", &A[i]);
+
+    vector <v_int> exponent_sum( primes.size() + 1, v_int(no_of_elements + 1, 0) );
+    for(int p = 0; p < primes.size(); p++)
+    {
+        for(int i = 1; i <= no_of_elements; i++)
+        {
+            exponent_sum[p][i] = exponent_sum[p][i - 1] + get_exponent(A[i], primes[p]);
+        }
+    }
+
+    int no_of_queries;
+    scanf("%d", &no_of_queries);
+
+    while(no_of_queries--)
+    {
+        int left, right, mod;
+        scanf("%d %d %d", &left, &right, &mod);
+
+        long long segment_product = 1;
+
+        for(int p = 0; p < primes.size(); p++)
+        {
+            int exponent = exponent_sum[p][right] - exponent_sum[p][left - 1];
+
+            segment_product *= power_mod(primes[p], exponent, mod);
+            segment_product %= mod;
+        }
+
+        printf("%lld\n", segment_product);
+    }
+
+    return 0;
+}
+
