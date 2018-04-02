@@ -99,13 +99,13 @@ Answer(L, R) = max{Answer(L, R), Answer(L + 1, R), Answer(L, R - 1)}
 
 ------------------------------------------------------------------------------------------------------------------------
 
- Most importantly, and easiest to miss is that you need to do things. 
+ Most importantly, and easiest to miss is that you can update .certain intervals, and then build answers for all intervals seperately.
 
 First make Answer(P(x), I) >= X. And then update all intervals later. The editorial used two data structures for clarity. Temp(I, j) and Answer(I, j). 
 
-Answer can do both jobs, but it's critical to remember here that you can do the two jobs seperately. 
+Answer can do both jobs, but it's critical to remember here that you do the two jobs seperately. 
 
-I think I can miss this in the future even if I get the other ideas - gcd(a, b) = g, means g | a and g | b, and the recurrence and precomputation. 
+I think I can miss this in the future even if I get the other ideas  (gcd(a, b) = g, means g | a and g | b, and the recurrence and precomputation).
 
 That you can first mark all Answer(P(x), I) and later after it's done, update all intervals using the LPS recurrence. I was trying to do both at once. I.E. 
 
@@ -118,6 +118,12 @@ So, it's better to do it once.
 O(n^2 + n log |max(A)|)
 
 For each factor of every number, we are updating only one pair. 
+
+After this, Answer(i, j) contains the lower bound of answer. 
+
+Meaning, if Answer(L, R) = X, then it means that Answer(L, R) >= x. 
+
+To definitively get the value of Answer(L, R), we need to use the recurrence and use Answer(L + 1, R) and Answer(L, R - 1) too.
 
 Only after going through all factors of all numbers, do we build the solution for all pairs.
 
