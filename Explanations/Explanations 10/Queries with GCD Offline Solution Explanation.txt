@@ -1,0 +1,144 @@
+Quite a beautiful problem and I learnt a lot from it. 
+
+I had already solved it using DP precomputing answers for all pairs. Answer[L][R] = max(Answer[L][R], Answer[L + 1][R], Answer[L][R - 1])
+
+This solution took too much memory. 
+
+I came to know of another solution using segment trees and offline processing. 
+
+Maintain an array Answer.
+
+Answer[i] holds the maximum gcd A[i] can make with some element to it's right. 
+
+We add A[i], one by one to it's right. 
+
+Factorise A[i]. 
+If A[i] is divisible by d, then let the last element that was divisible by d, be A[p].
+
+The gcd(A[i], A[p]) >= d. 
+
+Also, Answer[i] >= d. 
+
+So now update Answer[p] = max{Answer[p], d}
+
+After doing this, answer all queries which finish at i. (Who's Right = i)
+
+Every element of Answer[i] holds the answer[i] upto i only. 
+
+So, finding the maximum of Answer[L ... R] will do. 
+
+If some A[i] has a better GCD with A[j], where j > R, it won't affect us because we haven't added A[j] and Answer[i] currently does not hold gcd(A[i], A[j]).
+
+It holds the best GCD A[i] can make with some element to it's right UPTO R. 
+
+That's why it is more convenient to answer the queries offline in order of R. 
+
+----------------------------------------------------------------------------
+
+struct query
+{
+    int left, right, query_no;
+};
+
+int sort_by_right(const query &A, const query &B)
+{
+    return (A.right < B.right);
+}
+
+void update(int n, int left, int right, int index, int value)
+{
+    if(right < index || index < left)
+        return;
+
+    if(left == right)
+    {
+        max_tree[n] = max(max_tree[n], value);
+        return;
+    }
+
+    int mid = (left + right) >> 1;
+    update(LEFT(n), left, mid, index, value);
+    update(RIGHT(n), mid + 1, right, index, value);
+
+    max_tree[n] = max(max_tree[LEFT(n)], max_tree[RIGHT(n)]);
+}
+
+int get_max(int n, int left, int right, int query_left, int query_right)
+{
+    if(right < query_left || query_right < left)
+        return 0;
+
+    if(query_left <= left && right <= query_right)
+        return max_tree[n];
+
+    int mid = (left + right) >> 1;
+    int left_answer = get_max(LEFT(n), left, mid, query_left, query_right);
+    int right_answer = get_max(RIGHT(n), mid + 1, right, query_left, query_right);
+
+    return max(left_answer, right_answer);
+}
+
+int main()
+{
+    int no_of_elements, no_of_queries;
+    scanf("%d %d", &no_of_elements, &no_of_queries);
+
+    vector <int> A(no_of_elements + 1);
+    for(int i = 1; i <= no_of_elements; i++)
+        scanf("%d", &A[i]);
+
+    vector <query> Q;
+    for(int i = 1; i <= no_of_queries; i++)
+    {
+        int left, right;
+        scanf("%d %d", &left, &right);
+        Q.push_back({left, right, i});
+    }
+
+    sort(all(Q), sort_by_right);
+
+    memset(max_tree, 0, sizeof(max_tree));
+    map <int, int> last_occurence;
+    int last_query = 0;
+    vector <int> answer(no_of_queries + 1);
+
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        for(int d = 1; d*d <= A[i]; d++)
+        {
+            if(A[i]%d == 0)
+            {
+                int divisor_1 = d, divisor_2 = A[i]/d;
+
+                if(last_occurence[divisor_1] != 0)
+                {
+                    update(1, 1, no_of_elements, last_occurence[divisor_1], divisor_1);
+                }
+
+                last_occurence[divisor_1] = i;
+
+                if(divisor_1 == divisor_2)
+                    continue;
+
+                if(last_occurence[divisor_2] != 0)
+                {
+                    update(1, 1, no_of_elements, last_occurence[divisor_2], divisor_2);
+                }
+
+                last_occurence[divisor_2] = i;
+            }
+        }
+
+        while(last_query < Q.size() && Q[last_query].right == i) //Answer all queries ending here
+        {
+            answer[Q[last_query].query_no] = get_max(1, 1, no_of_elements, Q[last_query].left, Q[last_query].right);
+
+            last_query++;
+        }
+    }
+
+    for(int i = 1; i <= no_of_queries; i++)
+        printf("%d\n", answer[i]);
+
+    return 0;
+}
