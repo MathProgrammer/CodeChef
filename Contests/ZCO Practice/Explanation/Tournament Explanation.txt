@@ -1,0 +1,42 @@
+
+Let us see the strengths sorted s[1] < s[2] < ... < s[n]
+
+Now, notice that when s[i]  is paired with any j, such that s[j] < s[i], then we add s[i] - s[j], s[i] has a positive sign. 
+
+And when s[i] is paired with any j, such that s[j] > s[i], then we add s[j] - s[i], s[i] has a negative sign.
+
+So, s[i] has a negative sign as many times as there are stronger teams = n - i
+
+s[i] has a positive sign as many times as there are weaker teams = i - 1
+
+So, we count the contribution of s[i] as s[i]*(i - 1 - (n - i))
+
+And add all the contributions in O(n) time after O(n log n) sorting.
+
+----------------------------------------------------------------------
+
+#define all(v) (v).begin() + 1, (v).end()
+using namespace std;
+
+int main()
+{
+    int no_of_teams;
+    scanf("%d", &no_of_teams);
+
+    vector <int> strength(no_of_teams + 1, 0);
+    for(int i = 1; i <= no_of_teams; i++)
+        scanf("%d", &strength[i]);
+
+    sort(all(strength));
+
+    long long total_revenue = 0;
+    for(int i = 1; i <= no_of_teams; i++)
+    {
+        long long weaker_teams = i - 1, stronger_teams = no_of_teams - i;
+
+        total_revenue += strength[i]*(weaker_teams - stronger_teams);
+    }
+
+    printf("%lld\n", total_revenue);
+    return 0;
+}
