@@ -1,0 +1,13 @@
+A set of integers is called good if there does not exist three distinct elements a, b, c in it such that a + b = c.
+
+Your task is simple. Just output any good set of n integers. All the elements in this set should be distinct and should lie between 1 and 500, both inclusive.
+
+----------------------------------------------------------------------------
+
+The sum of two odd numbers is even. Odd numbers are not closed with respect to addition.
+
+    for(i = 1; i <= size_of_set; i++)
+    {
+        printf("%d ", (2*i - 1));
+    }
+    printf("\n");
