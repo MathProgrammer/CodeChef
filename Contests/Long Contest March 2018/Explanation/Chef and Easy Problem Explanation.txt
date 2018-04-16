@@ -1,0 +1,163 @@
+Beautiful problem. It's my first problem 5 of a long contest. 
+
+The main insight is to interpret the problem differently. Rather than think of it element-wise. Think of it bit-wise. 
+
+Think of each number as a string of 31 binary digits. 
+
+Now, write down A[l] till A[r]. 
+
+Let us consider the first column .... 
+
+Let L = 1, R = 10, for an example. 
+
+Let us say 3 numbers have a bit set in that position. 
+This means that if X had a bit set in this position, when all numbers are XOR-ed with this number, the number of 1's will become 7. 
+So, it is better to set it !
+
+We proceed greedily like this. We don't need to worry about carry or what the final sum is. 
+Just go through all 31 positions, and count the number of 1's. If the number of 1's is less than half the number of numbers, then if all numbers are XOR-ed with a 1, 
+the number of 1's in that position increases, thereby increasing the sum. 
+
+Maintain 31 segment trees, one for each bit position. This allows you to find the number of 1's in that position in all numbers from [L, R]. 
+If the number of 1's is less than half, then that bit is set in X ... As that will only increase the number of 1's in that column. 
+
+However, if it is more than half, then that bit is 0 in X, as XOR-ing with a 1 there, will reduce the number of 1's. 
+
+--------------------------------------------------------------------------------------------------------------------------
+
+const int MAX_BITS = 31, MAX_N = 1e5 + 5;
+int no_of_set_bits[3*MAX_N][MAX_BITS];
+int A[MAX_N];
+
+int get_half(int n)
+{
+    return (n/2 + n%2);
+}
+
+int bit_set(int n, int position)
+{
+    return ( ( n & (1 << position) ) != 0 );
+}
+
+void build(int n, int left, int right)
+{
+    if(left == right)
+    {
+        for(int bit = 0; bit < MAX_BITS; bit++)
+        {
+            no_of_set_bits[n][bit] = (bit_set(A[left], bit) ? 1 : 0);
+        }
+
+        return;
+    }
+
+    int mid = (left + right) >> 1;
+    build(LEFT(n), left, mid);
+    build(RIGHT(n), mid + 1, right);
+
+    for(int bit = 0; bit < MAX_BITS; bit++)
+        no_of_set_bits[n][bit] = no_of_set_bits[LEFT(n)][bit] + no_of_set_bits[RIGHT(n)][bit];
+}
+
+int get_bit_count(int n, int left, int right, int query_left, int query_right, int bit)
+{
+    if(query_right < left || right < query_left)
+        return 0;
+
+    if(query_left <= left && right <= query_right)
+        return no_of_set_bits[n][bit];
+
+    int mid = (left + right) >> 1;
+    int left_answer = get_bit_count(LEFT(n), left, mid, query_left, query_right, bit);
+    int right_answer = get_bit_count(RIGHT(n), mid + 1, right, query_left, query_right, bit);
+
+    return (left_answer + right_answer);
+}
+
+int main()
+{
+    int no_of_elements, no_of_queries;
+    scanf("%d %d", &no_of_elements, &no_of_queries);
+
+    for(int i = 1; i <= no_of_elements; i++) scanf("%d", &A[i]);
+    build(1, 1, no_of_elements);
+
+    while(no_of_queries--)
+    {
+        int left, right;
+        scanf("%d %d", &left, &right);
+
+        int half_elements = get_half(right - left + 1);
+        int answer = 0;
+
+        for(int bit = 0; bit < MAX_BITS; bit++)
+        {
+            int no_of_ones = get_bit_count(1, 1, no_of_elements, left, right, bit);
+
+            if(no_of_ones < half_elements)
+                answer = (answer|(1 << bit));
+        }
+
+        printf("%d\n", answer);
+    }
+
+    return 0;
+}
+
+---------------------------------------------------------------------------------------------------
+
+In this question the numbers don't get updated. We don't need to update the sums quickly. Only get the sums. 
+
+So rather than use a segment tree to build in O(n log n) time and answer in o( log n) time, we can build in O(n) time and answer in O(1) time using plain prefix sums.
+
+const int MAX_BITS = 31, MAX_N = 1e5 + 5;
+int A[MAX_N], sum[MAX_N][MAX_BITS];
+
+int get_half(int n)
+{
+    return (n/2 + n%2);
+}
+
+int bit_set(int n, int position)
+{
+    return ( ( n & (1 << position) ) != 0 );
+}
+
+int main()
+{
+    int no_of_elements, no_of_queries;
+    scanf("%d %d", &no_of_elements, &no_of_queries);
+
+    for(int i = 1; i <= no_of_elements; i++) scanf("%d", &A[i]);
+
+    for(int bit = 0; bit < MAX_BITS; bit++) sum[0][bit] = 0;
+
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        for(int bit = 0; bit < MAX_BITS; bit++)
+        {
+            sum[i][bit] = sum[i - 1][bit] + bit_set(A[i], bit);
+        }
+    }
+
+    while(no_of_queries--)
+    {
+        int left, right;
+        scanf("%d %d", &left, &right);
+
+        int half_elements = get_half(right - left + 1);
+        int answer = 0;
+
+        for(int bit = 0; bit < MAX_BITS; bit++)
+        {
+            int no_of_ones = sum[right][bit] - sum[left - 1][bit];
+
+            if(no_of_ones < half_elements)
+                answer |= (1 << bit);
+        }
+
+        printf("%d\n", answer);
+    }
+
+    return 0;
+}
