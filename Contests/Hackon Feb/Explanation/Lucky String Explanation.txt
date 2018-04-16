@@ -1,0 +1,69 @@
+
+This question is equivalent to generating the K-th binary string. Let us create a bijection in between binary strings and these lucky numbers - 
+
+5 - 0
+8 - 1
+55 - 00
+58 - 01
+85 - 10
+88 - 11
+555 - 000
+
+And so on, wherever there is a 0, put a 5, and if there's a 1, put an 8. 
+
+Now, the problem is binary strings with leading 0s are not legal. 
+
+To solve this problem, we will append a 1 at the beginning of every string. 
+
+
+5 - 10 (2)
+8 - 11 (3)
+55 - 100 (4)
+58 - 101 (5)
+85 - 110 (6)
+88 - 111 (7)
+555 - 1111 (8)
+
+So, if we are given K, write (K + 1) in binary, and create the lucky number in bijection with it's binary bits excluding the first bit.
+
+If K + 1 = 111101010100, then the corresponding lucky number is 
+
+            88858585855
+
+Till 10^18, a number has at most 64 bits.
+
+If we write all binary strings starting from 10, and then delete the leading digit, it gives us a set of all binary strings sorted by length and thenlexicographically.
+(Including leading zeroes). This is the insight that helps us solve the problem.
+
+----------------------------------------------------------------------------------
+
+string reverse(string S)
+{
+    string R;
+
+    for(int i = S.size() - 1; i  >= 0; i--)
+        R += S[i];
+
+    return R;
+}
+
+void solve()
+{
+    long long index;
+    cin >> index;
+
+    index++;
+
+    string lucky_string;
+
+    do
+    {
+        lucky_string += (index%2 == 0 ? '5' : '8');
+        index = index >> 1;
+
+    }
+    while(index > 1);
+
+    lucky_string = reverse(lucky_string);
+    cout << lucky_string << "\n";
+}

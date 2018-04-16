@@ -1,0 +1,31 @@
+
+Now, there are (n - i + 1) squares of side length i. 
+
+There are nxn squares of length 1, 
+
+(n - 1)x(n-1) squares of length 2
+
+(n - 2)x(n - 2) squares of length 3
+
+and so on. 
+
+Total number of squares is sum of the first n squares = 1^2 + 2^2 + .... + n^2 = n(n + 1)(2n + 1)/6
+
+Find sum(i*(n - i + 1))/n(n + 1)(2n + 1)/6
+
+After the simplification, which I used Wolfram Alpha to do correctly, it comes out to be
+
+(n + 1)(n + 2)/(4n + 2)
+
+Now, this should cause overflow, but it doesn't. Weak test cases.
+
+------------------------------------------------------------
+
+void solve()
+{
+    long long n;
+    cin >> n;
+
+    long long expectation = (((n + 2)*(n + 1))/2)/(2*n + 1);
+    cout << expectation << "\n";
+}
