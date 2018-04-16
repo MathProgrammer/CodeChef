@@ -1,0 +1,71 @@
+
+This is a beautiful binary search problem. It's not intutive if you've not seen it before. 
+
+Notice that if a speed of K is possible, a speed of K+1 is also possible. 
+
+If a speed of K is not possible, a speed of K - 1 is also not possible. 
+
+This proves that possible(K) is a linearly increasing function in K ... {Either 0 or 1}
+
+If we pick up a random value of K and see p(K) = 0, then we can safely discard [1, K - 1]. 
+
+Similarly if p(k) = 1, we can discard [K + 1, N]
+
+So we do binary search and reduce the search space by a factor of 2 each time. 
+
+Each query will take O( log(Max Ai) N) time to answer because that many O(N) scans are required. 
+
+------------------------------------------------------------------------------------------------------
+
+int ceil(int n, int x)
+{
+    return (n/x + (n%x != 0));
+}
+
+int possible(vector <int> &piles, int speed, int limit_time)
+{
+    int time = 0;
+
+    for(int i = 0; i < piles.size(); i++)
+    {
+        time += ceil(piles[i], speed);
+    }
+
+    return (time <= limit_time);
+}
+
+void solve()
+{
+    int no_of_piles, no_of_hours;
+    scanf("%d %d", &no_of_piles, &no_of_hours);
+
+    vector <int> pile(no_of_piles + 1);
+    for(int i = 1; i <= no_of_piles; i++) scanf("%d", &pile[i]);
+
+    int eating_speed;
+    int left = 1, right = 1e9;
+
+    while(left <= right)
+    {   
+        int mid = (left + right) >> 1;
+
+        if(possible(pile, mid, no_of_hours))
+        {
+            if(!possible(pile, mid - 1, no_of_hours))
+            {
+                eating_speed = mid;
+                break;
+            }
+            else
+            {
+                right = mid - 1;
+            }
+        }
+        else
+        {
+            left = mid + 1;
+        }
+    }
+
+    printf("%d\n", eating_speed);
+}

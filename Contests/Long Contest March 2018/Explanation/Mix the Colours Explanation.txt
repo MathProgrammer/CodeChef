@@ -1,0 +1,30 @@
+
+If there are x duplicates, we cannot do it in fewer than x moves. 
+
+Let us now prove that we can do it in exactly x moves. 
+
+Take the maximum element of the list. Let it be M. 
+
+Add a duplicate to M. M + d = M', We now have a new maximum. 
+
+Every time we do this, we get a new maxima, which means there's a new element on the list and one duplicate less.
+
+---------------------------------------------------------------------
+
+void solve()
+{
+    int no_of_elements;
+    scanf("%d", &no_of_elements);
+
+    set <int> S;
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        int element;
+        scanf("%d", &element);
+        S.insert(element);
+    }
+
+    int no_of_distinct_elements = S.size();
+    int no_of_duplicates = no_of_elements - no_of_distinct_elements;
+    printf("%d\n", no_of_duplicates);
+}
