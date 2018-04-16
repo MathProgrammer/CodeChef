@@ -1,0 +1,189 @@
+I read this question and thought it's a segment tree question. Turns out, it isn't. 
+
+Here's the first trick. Precompute the answer(L, R) for all pairs (L, R). 
+
+Can you see optimal substructure ? 
+
+Well, it's similar to longest palindromic subsequence. 
+
+f(L, R) = max(gcd(A[l], A[R]), f(L + 1, R), f(L, R - 1)}
+
+A naive solution would be O(n^2 log n) would only pass first subtask.
+
+    for(int interval_size = 2; interval_size <= no_of_elements; interval_size++)
+    {
+        for(int left = 1, right = left + interval_size - 1; right <= no_of_elements; left++, right++)
+        {
+            answer[left][right] = gcd(A[left], A[right]);
+
+            if(interval_size > 2)
+            	answer[left][right] = max_3(answer[left][right], answer[left + 1][right], answer[left][right - 1]);
+        }
+    }
+
+------------------------------------------------------------------------------------------------------------------------------
+
+Now, how to do it faster ? We need to do something instead of computer gcd every time. 
+
+A common trick with GCD is the insight that if gcd(a, b) = g, then a and b are multiples of g. 
+
+There was a question on HackerRank too - Maximum GCD sum where you had to find the sum of A[i], B[j] that had the maximum GCD. 
+Well, in that question finding GCD of every pair was too slow. You had to instead do something like, 
+
+for(int d = 1; d <= N; d++)
+{
+	for(int i = 1; d*i <= Limit; d++)
+	{
+		if(is_present_in_A[d*i])
+			largest_multiple_A[d] = d*i;
+
+		if(is_present_in_B[d*i])
+			largest_multiple_B[d] = d*i;
+	}
+}
+
+And then, 
+
+for(int d= 1; d <= N; d++)
+	if(largest_multiple_A[d] && largest_multiple_B[d])
+		answer = largest_multiple_A[d] + largest_multiple_B[d];
+
+This is O(n log n + n)
+
+In that question, instead of taking pairs and factorising, you do the inverse process of taking a number and then crossing out it's multiples.
+
+------------------------------------------------------------------------------------------------------------------------------
+
+So, what we do here is notice that if A[i] and A[j] are both multiples of X, 
+
+Then Answer(i, j) >= X. The gcd of A[i], A[j] is at least X. So the answer cannot be greater than X.
+
+So, here's what we should do. 
+
+Have temp_answer(i, j) for all pairs. 
+
+Go through each number and factorise it. 
+
+Let us say A[i] is a multiple of X, 
+
+Then let us say that X has multiples at positions P(1), P(2), ... P(k - 1), P(k), [k = i]
+
+The Answer for any of these intervals is at least X. 
+
+Temp_ans(P(k - 1), i) = max{temp_ans(P(i - 1), i), X}
+
+We do this to ensure that the answer is at least X in this range. 
+
+Keep in mind that temp_ans(P(k - 2), P(k - 1)) has already been updated when we encountered a multiple of X at P(k - 1). 
+
+After doing this, we then build Answer(i, j) using the LPS recurrence using temp_ans. 
+
+We don't need to use a seperate variable for temp_ans. It was just for understanding. 
+
+-------------------------------------------------------------------------------------------------------------------
+
+What we do is first, factorise every integer. 
+
+After factorising, if A[i] is divisible by X, then
+
+Look at previous_occurence of X
+
+Answer(P(X), i) = max{Answer(P(x), i), X}
+
+We do this for all factors of all A[i]. 
+
+After doing this, use it to build up the answer for all intervals in O(n^2)
+
+Answer(L, R) = max{Answer(L, R), Answer(L + 1, R), Answer(L, R - 1)}
+
+------------------------------------------------------------------------------------------------------------------------
+
+ Most importantly, and easiest to miss is that you can update .certain intervals, and then build answers for all intervals seperately.
+
+First make Answer(P(x), I) >= X. And then update all intervals later. The editorial used two data structures for clarity. Temp(I, j) and Answer(I, j). 
+
+Answer can do both jobs, but it's critical to remember here that you do the two jobs seperately. 
+
+I think I can miss this in the future even if I get the other ideas  (gcd(a, b) = g, means g | a and g | b, and the recurrence and precomputation).
+
+That you can first mark all Answer(P(x), I) and later after it's done, update all intervals using the LPS recurrence. I was trying to do both at once. I.E. 
+
+After finding out Answer(P(X), I) >= X, update all Answer(L, R) such that [P(x), I] belongs to [L, R]. THis is too expensive and too slow as you'll have to do it many times.
+
+If you do it each time, it will be O(N^2. N. Log |Max(A)|), which is worse than the naive way !
+ 
+So, it's better to do it once.
+
+O(n^2 + n log |max(A)|)
+
+For each factor of every number, we are updating only one pair. 
+
+After this, Answer(i, j) contains the lower bound of answer. 
+
+Meaning, if Answer(L, R) = X, then it means that Answer(L, R) >= x. 
+
+To definitively get the value of Answer(L, R), we need to use the recurrence and use Answer(L + 1, R) and Answer(L, R - 1) too.
+
+Only after going through all factors of all numbers, do we build the solution for all pairs.
+
+----------------------------------------------------------------------------------------------
+
+int main()
+{
+    int no_of_elements, no_of_queries;
+    scanf("%d %d", &no_of_elements, &no_of_queries);
+
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        int number_i;
+        scanf("%d", &number_i);
+
+        for(int d = 1; d*d <= number_i; d++)
+        {
+            if(number_i%d == 0)
+            {
+                int divisor_1 = d, divisor_2 = number_i/d;
+
+                if(previous_occurence[divisor_1] != 0)
+                {
+                    int left = previous_occurence[divisor_1], right = i;
+
+                    answer[left][right] = max(answer[left][right], divisor_1);
+                }
+
+                previous_occurence[divisor_1] = i;
+
+                if(divisor_1 == divisor_2)
+                {
+                    continue;
+                }
+
+                if(previous_occurence[divisor_2] != 0)
+                {
+                    int left = previous_occurence[divisor_2], right = i;
+
+                    answer[left][right] = max(answer[left][right], divisor_2);
+                }
+
+                previous_occurence[divisor_2] = i;
+            }
+        }
+    }
+
+    for(int interval_size = 2; interval_size <= no_of_elements; interval_size++)
+    {
+        for(int left = 1, right = left + interval_size - 1; right <= no_of_elements; left++, right++)
+        {
+            answer[left][right] = max_3(answer[left][right], answer[left + 1][right], answer[left][right - 1]);
+        }
+    }
+
+    while(no_of_queries--)
+    {
+        int left, right;
+        scanf("%d %d", &left, &right);
+        printf("%d\n", answer[left][right]);
+    }
+
+    return 0;
+}
