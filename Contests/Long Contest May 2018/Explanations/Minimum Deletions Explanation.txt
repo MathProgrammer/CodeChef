@@ -1,0 +1,21 @@
+If the GCD of the array = 1, then no deletions are necessary. 
+
+If the GCD = x > 1, then it means every element is divisible by x. So this means we can never have an array consisting of elements none of whom are divisible by x. So, it is not possible. 
+
+void solve()
+{
+    int no_of_elements;
+    scanf("%d", &no_of_elements);
+
+    int array_gcd;
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        int a_i;
+        scanf("%d", &a_i);
+
+        array_gcd = (i == 1 ? a_i : gcd(a_i, array_gcd));
+    }
+
+    int no_of_deletions = (array_gcd == 1 ? 0 : -1);
+    printf("%d\n", no_of_deletions);
+}
