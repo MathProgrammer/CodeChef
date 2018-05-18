@@ -1,0 +1,69 @@
+Let us put all the Even indexed elements in an Array E
+And the odd indexed elements in an Array O.
+
+Let's say that the elements of E are sorted in descending order. 
+And O is sorted in ascending order. 
+
+e1 > e2 > e3 > ... > en
+o1 < o2 < o3 < ... < on
+
+The claim is that the best strategy is to perform a swap in the first K positions if e_i > o_i. 
+
+Let us prove this. 
+
+First, that it is best to perform the swaps only in the first K positions. 
+
+If e_1 > o_1, then the sum of O O_s increases by (e_1 - o_1)
+
+If o_1 is replaced by any other element of E, it will increase by a smaller amount. Since e_1 is the greatest element of the list.
+
+If e_1 <= o_1, then performing a swap with o_1 will only reduce or make the sum stay the same. So it's better not to perform the swap. 
+
+e_1 cannot replace any other element in O because if e_1 <= o_1, then e_1 < o_1 < o_i, for all other i.
+
+It is established that the best replacement for o_1 is e_1. 
+
+Now, we can delete both o_1 and e_1 and apply the same logic on the rest of the array with K - 1 swaps. 
+
+Also, another thing to notice is after the first position where we cannot perform a swap because e_i <= o_i, we can never perform a swap at any position > i, as e_j < o_j at all these positions.
+
+So, we only need to check the first K positions.
+
+--------------------------------------------
+
+void solve()
+{
+    int no_of_elements, no_of_swaps;
+    scanf("%d %d", &no_of_elements, &no_of_swaps);
+
+    vector <int> even;
+    vector <int> odd;
+
+    for(int i = 0; i < no_of_elements; i++)
+    {
+        int a_i;
+        scanf("%d", &a_i);
+
+        if(i%2 == 0)
+            even.push_back(a_i);
+        else if(i%2 == 1)
+            odd.push_back(a_i);
+    }
+
+    sort(all(even));
+    reverse(all(even));
+
+    sort(all(odd));
+
+    for(int i = 0; i < odd.size() && i < even.size() && i < no_of_swaps; i++)
+    {
+        if(even[i] > odd[i])
+            swap(even[i], odd[i]);
+    }
+
+    int odd_sum = 0, even_sum = 0;
+    for(int i = 0; i < odd.size(); i++) odd_sum += odd[i];
+    for(int i = 0; i < even.size(); i++) even_sum += even[i];
+
+    printf(odd_sum > even_sum ? "YES\n" : "NO\n");
+}
