@@ -1,0 +1,33 @@
+Now, if we have K people for a round, then 1 will win. 
+
+So we need K^2 people for 2 rounds because this guarantees that there will be K people for last round. 
+
+Then total number is K + K^2 + K^3 + ... + K^n
+
+This is a geometric progression. 
+
+S = K + K^2 + K^3 + ... + K^n
+
+KS = K^2 + K^3 + ... + K^{n + 1}
+
+S(K - 1) = K^{n + 1} - K
+
+S = (K^(n + 1) - K)/(K - 1)
+
+-----------------------------------------------
+
+Now, the problem is when K = 1, the denominator goes to 0 and it becomes undefined. So to get over that problem, K = 1, always means answer = 1.
+
+void solve()
+{
+    long long n, k;
+    scanf("%lld %lld", &n, &k);
+
+    const int MOD = 1e9 + 7;
+    long long numerator = (power(k, n + 1, MOD) - k + MOD)%MOD;
+    long long denominator = (k + MOD - 1)%MOD;
+
+    long long answer = (k == 1 ? 1 : (numerator*inverse(denominator, MOD))%MOD);
+    printf("%lld\n", answer);
+}
+

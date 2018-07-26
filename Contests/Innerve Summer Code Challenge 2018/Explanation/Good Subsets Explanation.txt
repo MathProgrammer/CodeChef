@@ -1,0 +1,25 @@
+Let us consider the gcd of the array. 
+
+If it is = 1, then we give the entire array as the answer. 
+
+If it is > 1, then every number has a common divisor > 1 so no good subset is possible.
+
+-------------------------------
+
+void solve()
+{
+    int no_of_elements;
+    scanf("%d", &no_of_elements);
+
+    vector <int> A(no_of_elements + 1);
+    for(int i = 1; i <= no_of_elements; i++)
+        scanf("%d", &A[i]);
+
+    int array_gcd;
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        array_gcd = (i == 1 ? A[i] : gcd(array_gcd, A[i]));
+    }
+
+    printf(array_gcd == 1 ? "YES\n" : "NO\n");
+}

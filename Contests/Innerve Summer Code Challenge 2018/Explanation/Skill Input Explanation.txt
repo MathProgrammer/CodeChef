@@ -1,0 +1,125 @@
+Maintain a segment tree where each node contains the sorted list of elements in it's range. 
+
+So, each node has a vector. This vector is the sorted list of all elements in it's range. 
+
+This data structure is also called merge sort tree !
+
+void build(int n, int left, int right)
+{
+    if(left == right)
+    {
+        tree[n].push_back(Y[left]);
+        return;
+    }
+
+    int mid = (left + right) >> 1;
+    build(LEFT(n), left, mid);
+    build(RIGHT(n), mid + 1, right);
+
+    merge(tree[n], tree[LEFT(n)], tree[RIGHT(n)]);
+}
+
+If it's a leaf, just push it. Otherwise merge left and right leaves with two pointers in O(n) time. 
+
+-----------------------------------------------
+
+void merge(vector <int> &S, vector <int> &A, vector <int> &B)
+{
+    for(int a_ptr = 0, b_ptr = 0; a_ptr < A.size() || b_ptr < B.size(); )
+    {
+        if(a_ptr == A.size())
+        {
+            S.push_back(B[b_ptr++]);
+        }
+        else if(b_ptr == B.size())
+        {
+            S.push_back(A[a_ptr++]);
+        }
+        else
+        {
+            if(A[a_ptr] <= B[b_ptr])
+                S.push_back(A[a_ptr++]);
+            else if(B[b_ptr] < A[a_ptr])
+                S.push_back(B[b_ptr++]);
+        }
+    }
+}
+
+As we see the merging happens in O(n) time with two pointers. 
+A one element list is always sorted. 
+So, while building the list for a node, we have the sorted list of it's right and left children. All we have to do it is merge
+
+---------------------------------------------------
+
+Now, how do we answer a query ? 
+
+Firstly, we will check a node's range. 
+
+If the range is completely outside [L, R], discard it and return oo
+
+If the range is partially inside, then take the left and the right answer and return whichever is better. 
+
+If the range is completely inside (Eventually we will break the interval down into sub intervals that either lie completely inside or completely outside [L, R].), then do the following -
+
+Let i be the first index such that A[i - 1] < K <= A[i]
+
+Then the closest number to K is either A[i] or A[i - 1]. 
+We examine both possibilities. lower_bound gives us this i, we also check i - 1 and return whichever is better !
+
+long long get_answer(int n, int left, int right, int query_left, int query_right, int k)
+{
+    if(query_right < left || right < query_left)
+        return oo;
+
+    if(query_left <= left && right <= query_right)
+    {
+        int upper = lower_bound(all(tree[n]), k) - tree[n].begin(); //First element >= k
+        int lower = (upper == 0 ? 0 : upper - 1); //First element < k
+
+        long long answer = (abs(k - tree[n][lower]) <= abs(k - tree[n][upper]) ? tree[n][lower] : tree[n][upper]);
+        return answer;
+    }
+
+    int mid = (left + right) >> 1;
+    long long left_answer = get_answer(LEFT(n), left, mid, query_left, query_right, k);
+    long long right_answer = get_answer(RIGHT(n), mid + 1, right, query_left, query_right, k);
+
+    return (abs(left_answer - k) <= abs(right_answer - k) ? left_answer : right_answer);
+}
+
+
+-------------------------------------------------
+
+Lastly, while reading in the x's, build the merge sort segment tree on the y's. 
+
+After the query, get the corresponding x from the y
+
+int main()
+{
+    const int SUM = 1e9;
+    int no_of_elements, no_of_queries;
+    scanf("%d %d", &no_of_elements, &no_of_queries);
+
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        int x;
+        scanf("%d", &x);
+
+        Y[i] = SUM - x;
+    }
+
+    build(1, 1, no_of_elements);
+
+    while(no_of_queries--)
+    {
+        int left, right, k;
+        scanf("%d %d %d", &left, &right, &k);
+
+        long long best_y = get_answer(1, 1, no_of_elements, left, right, k);
+        long long best_x = SUM - best_y;
+
+        printf("%lld\n", best_x);
+    }
+
+    return 0;
+}

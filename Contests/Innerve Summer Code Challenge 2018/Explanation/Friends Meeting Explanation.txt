@@ -1,0 +1,26 @@
+The only good pairs are (1, p), where p is a prime number. 
+
+We need to check if the array has a 1 and a prime. If there are multiple primes, choose the smallest prime. 
+
+----------------------------------------------------
+
+void solve(vector <int> &is_prime)
+{
+    int no_of_elements;
+    scanf("%d", &no_of_elements);
+
+    int one_exists = false, smallest_prime = 101;
+    while(no_of_elements--)
+    {
+        int element;
+        scanf("%d", &element);
+
+        if(element == 1)
+            one_exists = true;
+
+        if(is_prime[element])
+            smallest_prime = min(smallest_prime, element);
+    }
+
+    printf("%d\n", one_exists && smallest_prime != 101 ? smallest_prime : -1);
+}
