@@ -1,0 +1,52 @@
+Use sliding window technique with two pointers. 
+
+Fix a given L and then go as far as possible with R, as long as [L, R] is a good segment. 
+
+If [L, R + 1] is not a good segment,
+
+Then update L to L + x, where [L + x, R + 1] is a good sement. 
+
+We don't need to check smaller segments like [L + x, L + x + 1] because they will also be good and we want a segment that is atleast as big as [L, R]. 
+
+This problem had an unusal condition to break ties. Ties were broken in the following way - 
+
+If there are multiple paths of cities of the same length, choose the path where more money is spent. This cost me an AC in the contest. 
+
+The complexity is O(n) as each element is visited at most twice. 
+
+----------------------------------------------------------------
+
+void solve()
+{
+    int no_of_cities, money;
+    scanf("%d %d", &no_of_cities, &money);
+
+    vector <int> cost(no_of_cities + 1);
+    for(int i = 1; i <= no_of_cities; i++)
+        scanf("%d", &cost[i]);
+
+    long long maximum_cities = 0, cost_here = 0, money_saved = money;
+    int left = 0, right = 1;
+
+    while(right <= no_of_cities)
+    {
+        cost_here += cost[right];
+
+        while(cost_here > money)
+        {
+            cost_here -= cost[left];
+            left++;
+        }
+
+        int cities = right - (left - 1);
+        if(cities > maximum_cities || (cities == maximum_cities && money - cost_here < money_saved))
+        {
+            maximum_cities = cities;
+            money_saved = money - cost_here;
+        }
+
+        right++;
+    }
+
+    printf("%lld %lld\n", maximum_cities, money_saved);
+}
