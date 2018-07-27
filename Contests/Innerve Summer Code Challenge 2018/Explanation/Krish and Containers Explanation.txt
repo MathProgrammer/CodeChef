@@ -1,0 +1,34 @@
+Every query of adding K to A[L, ... , R] can be treated as adding K to A[L, L + 1, ... , N] and -K to A[R + 1, R + 2, ... , N]
+
+Another way to think of it is that each index is affected by all queries affecting i - 1, and all queries starting at i and not all queries ending at i - 1. 
+
+Queries of size K that end at i - 1 are like queries of -k that start at i.
+
+vector <int> containers_starting_at(no_of_containers + 2, 0);
+    while(no_of_days--)
+    {
+        int left, right;
+        scanf("%d %d", &left, &right);
+        containers_starting_at[left]++;
+        containers_starting_at[right + 1]--;
+    }
+
+    vector <int> containers(no_of_containers + 1, 0);
+    for(int i = 1; i <= no_of_containers; i++)
+        containers[i] = containers[i - 1] + containers_starting_at[i];
+
+---------------------------------
+
+After we have gotten that, we can sort the containers and then perform binary search for each query !
+
+
+    while(no_of_queries--)
+    {
+        int minimum_containers;
+        scanf("%d", &minimum_containers);
+
+        int first_ineligible_container = (upper_bound(all(containers), minimum_containers - 1) - containers.begin() - 1);
+        int answer = no_of_containers - first_ineligible_container;
+
+        printf("%d\n", answer);
+    }

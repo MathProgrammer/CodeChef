@@ -1,0 +1,40 @@
+We don't need to know the value of the pair (A, B). 
+
+We only need the value of 4AB + 2 max{A, B}
+
+So maintain the frequency of those values and then for every k, find the frequency of k(k + 1) in terms of 4AB + 2max{A, B}
+
+Careful that MOD in this problem was 10^9 + 9 not 10^9 + 7
+
+--------------------------------------------------------------
+
+int main()
+{
+    int no_of_elements, no_of_queries;
+    cin >> no_of_elements >> no_of_queries;
+
+    map <unsigned long long, int> value_frequency;
+    while(no_of_elements--)
+    {
+        unsigned long long A, B;
+        cin >> A >> B;
+
+        value_frequency[4*A*B + 2*max(A, B)]++;
+    }
+
+    while(no_of_queries--)
+    {
+        long long k;
+        cin >> k;
+
+        long long target = k*(k + 1);
+        int no_of_answers = value_frequency[target];
+
+        const int MOD = 1e9 + 9;
+        long long answer = (no_of_answers == 0 ? -1: inverse(no_of_answers, MOD));
+
+        cout << answer << "\n";
+    }
+
+    return 0;
+}
