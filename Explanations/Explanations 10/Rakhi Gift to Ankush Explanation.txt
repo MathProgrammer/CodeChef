@@ -1,0 +1,5 @@
+Blog Link - http://qr.ae/TUNJVY
+
+--------------------------------------
+
+Just check if N is a multiple of 11.
