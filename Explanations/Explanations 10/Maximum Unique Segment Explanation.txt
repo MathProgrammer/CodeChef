@@ -1,0 +1,61 @@
+Fortunately, the weights are always non-negative integers.
+
+We don't need to iterate over every unique segment in that case.
+
+I mean, that if [L, R] is unique. 
+
+We don't need to check [L + 1, R], [L + 2, R] and so on since those segments weights cannot be greater than [L, R].
+
+--------------------
+
+Since this is guaranteed, we just need to use a sliding window to visit all the unique segment.
+
+Keep track of the frequency of each element.
+
+Whenever frequency of A[R] becomes > 1, Keep incrementing L till frequency A[R] = 1
+
+At each step, maintain the invariant that [L, R] is completely unique.
+
+------------------------------------------
+
+void solve()
+{
+    int no_of_elements;
+    scanf("%d", &no_of_elements);
+
+    vector <int> A(no_of_elements + 1);
+    for(int i = 1; i <= no_of_elements; i++)
+        scanf("%d", &A[i]);
+
+    vector <int> weights(no_of_elements + 1);
+    for(int i = 1; i <= no_of_elements; i++)
+        scanf("%d", &weights[i]);
+
+    vector <long long> weight_sum(no_of_elements + 1, 0);
+    for(int i = 1; i <= no_of_elements; i++)
+        weight_sum[i] = weight_sum[i - 1] + weights[i];
+
+    map <int, int> frequency;
+    long long maximum_segment_sum = 0;
+
+    int left = 1, right = 1;
+    while(right <= no_of_elements)
+    {
+        frequency[A[right]]++;
+
+        while(frequency[A[right]] == 2)
+        {
+            frequency[A[left]]--;
+
+            left++;
+        }
+
+        long long segment_sum = weight_sum[right] - weight_sum[left - 1];
+
+        maximum_segment_sum = max(maximum_segment_sum, segment_sum);
+
+        right++;
+    }
+
+    printf("%lld\n", maximum_segment_sum);
+}
