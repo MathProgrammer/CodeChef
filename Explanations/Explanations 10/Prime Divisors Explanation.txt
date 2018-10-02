@@ -1,0 +1,67 @@
+Firstly, let us precompute the sum of prime divisors of a number using a sieve - 
+
+void precompute_sieve(vector <int> &prime_divisors_sum, int MAX_N)
+{
+    vector <int> is_prime(MAX_N, true);
+    for(int i = 2; i < MAX_N; i++)
+    {
+        if(is_prime[i])
+        {
+            for(int multiple = i; multiple < MAX_N; multiple += i)
+            {
+                prime_divisors_sum[multiple] += i;
+
+                is_prime[multiple] = false;
+            }
+        }
+    }
+}
+
+-----------------------------------------
+
+Now, we will go over every integer from 1 to 10^6
+
+For every integer i, go over every multiple 2i, 3i, 4i, ...
+
+If some multiple j is present in A and S(i)|S(j), then add frequency[i]*frequency[j] to the answer.
+
+The corner case is for i, if frequency[i] > 0, then add frequency[i]*(frequency[i] - 1) to the answer since every pair (i, i) will be a good pair.
+
+void solve(vector <int> &prime_divisor_sum, int MAX_N)
+{
+    vector <long long> frequency(MAX_N, 0);
+
+    int no_of_elements;
+    scanf("%d", &no_of_elements);
+
+    while(no_of_elements--)
+    {
+        int element;
+        scanf("%d", &element);
+
+        frequency[element]++;
+    }
+
+    long long good_pairs = 0;
+    for(int i = 1; i < MAX_N; i++)
+    {
+        if(frequency[i] == 0) continue;
+
+        good_pairs += frequency[i]*(frequency[i] - 1);
+
+        for(int multiple = 2*i; multiple < MAX_N; multiple += i)
+        {
+            if(frequency[multiple] > 0 && prime_divisor_sum[multiple]%prime_divisor_sum[i] == 0)
+            {
+                good_pairs += frequency[i]*frequency[multiple];
+            }
+        }
+    }
+
+    printf("%lld\n", good_pairs);
+}
+
+------------------------------------------
+
+The complexity is N/1 + N/2 + N/3 + N/4 + ... N/N = NH_n = 
+O(N log N)
