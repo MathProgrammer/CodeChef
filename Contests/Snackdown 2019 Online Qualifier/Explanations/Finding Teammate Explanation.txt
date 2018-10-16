@@ -1,0 +1,116 @@
+Let the distinct sorted strengths be 
+
+s1 < s2 < s3 < ... < sn
+
+Now what do people with strength sn do ? They will either pair off with other people of strength sn or pair with someone of strength s(n - 1), if not available. 
+
+-----------------------------
+
+Let frequeny of sn be fn
+
+Case 1 - f(n) is even
+
+Then All the f(n) people will split into f(n)/2 pairs. 
+
+Case 2 - f(n) is odd
+
+Then f(n) - 1 people will split into (f(n) - 1)/2 pairs. The remaining person pairs with s(n - 1)
+
+------------------------------------
+
+The only question remaining is how do we count the number of ways to split n people into n/2 pairs ?
+
+For convenience, let us say there are 2n people and we will split them into n pairs. 
+
+The first pair can be chosen in C(2n, 2) ways
+Next in C(2n - 2, 2) ways
+
+Next in C(2n - 4, 2) ways
+
+And so on ...
+
+C(2n, 2) C(2n - 2, 2) C(2n - 4, 2) ... C(2, 2) = (2n)!/2^n
+
+And of course we may choose these n! pairs in any order. So we are overcounting n!
+
+Answer = (2n)!/(2^n x n!)
+
+-----------------------------------
+
+Another derivation - There are (2n)! way of permuting these n people. 
+
+Each permutation corresponds to one way of splitting into n pairs. 
+
+Now, we are overcounting the order of the people within each pair 2^n times. 
+
+We are overcounting the pairs themselves in n! ways. 
+
+So answer = (2n)!/(2^n x n!)
+
+-----------------------------------
+
+long long choose_pairs(long long n)
+{
+    long long numerator = (factorial[n]*inverse_factorial[n/2])%MOD;
+    long long inverse_denominator = inverse(power(2, n/2));
+
+    return (numerator*inverse_denominator)%MOD;
+}
+
+void solve()
+{
+    vector <long long> frequency(MAX_N, 0);
+
+    vector <int> S;
+
+    int no_of_people;
+    scanf("%d", &no_of_people);
+
+    for(int i = 1; i <= no_of_people; i++)
+    {
+        int strength;
+        scanf("%d", &strength);
+
+        frequency[strength]++;
+
+        if(frequency[strength] == 1)
+            S.push_back(strength);
+    }
+
+    sort(all(S));
+
+    long long no_of_ways = 1;
+
+    for(int i = S.size() - 1; i >= 0; i--)
+    {
+        int frequency_here = frequency[S[i]];
+
+        if(frequency_here == 0) continue;
+
+        if(frequency_here%2 == 0)
+        {
+            no_of_ways *= choose_pairs(frequency_here);
+        }
+        else if(frequency_here == 1)
+        {
+            no_of_ways *= (frequency[S[i - 1]]);
+
+            frequency[S[i - 1]]--;
+        }
+        else if(frequency_here%2 == 1)
+        {
+            int previous_frequency = frequency[S[i - 1]];
+
+            no_of_ways *= choose_pairs(frequency_here - 1);
+            no_of_ways %= MOD;
+
+            no_of_ways *= ((frequency_here*previous_frequency)%MOD);
+
+            frequency[S[i - 1]]--;
+        }
+
+        no_of_ways %= MOD;
+    }
+
+    printf("%lld\n", no_of_ways);
+}
