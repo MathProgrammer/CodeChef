@@ -1,0 +1,30 @@
+Suppose S[i], is the prefix sum of A[1, 2, ... , i]
+
+Now, if on a certain day you are at person x, next day you will be at x + S[x].
+
+----------------------
+
+void solve()
+{
+    int no_of_elements;
+    scanf("%d", &no_of_elements);
+
+    vector <int> A(no_of_elements + 1);
+    for(int i = 1; i <= no_of_elements; i++)
+        scanf("%d", &A[i]);
+
+    vector <int> S(no_of_elements + 1, 0);
+    for(int i = 1; i <= no_of_elements; i++)
+        S[i] = S[i - 1] + A[i];
+
+    int p = 1, days = 0;
+
+    while(p > 0 && p < no_of_elements)
+    {
+        days++;
+
+        p += S[p];
+    }
+
+    printf("%d\n", days);
+}

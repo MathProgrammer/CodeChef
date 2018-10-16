@@ -1,0 +1,18 @@
+Can be done with brute force since the constraints are really small.
+
+void solve()
+{
+    int n;
+    scanf("%d", &n);
+
+    for(int i = 4; i <= n; i++)
+    {
+        if(is_semi_prime(i) && is_semi_prime(n - i))
+        {
+            printf("YES\n");
+            return;
+        }
+    }
+
+    printf("NO\n");
+}
