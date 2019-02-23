@@ -1,0 +1,91 @@
+We will represent each vertex v by a bitmask m, where the i-th bit is set if the vertex has number i in their collection. 
+
+From u we will go to the LCA L, and have the XOR of all numbers. 
+From v we will go to the LCA L, and have the XOR of all numbers. 
+
+We will then have to OR both these numbers and count the number of 1s in them.
+
+--------------
+
+Let us try to solve the following question - 
+
+Given a tree of vertices, with a value each.
+Find the XOR of all vertices lying on the path between (u, v)
+
+--------
+
+Let f(v) denote the XOR of the path starting at 1 and ending at vertex v. 
+
+We can calculate this with a DFS. 
+
+Let L be the LCA of (u, v). 
+
+Then the XOR of L to u will be f(v)^f(L)^m(L)
+
+XOR of L to v will be f(u)^f(L)^m(L)
+
+We will OR both these and then count the number of 1s. 
+
+--------
+
+I had a bug in my implementation of LCA. I should go down till 0 not > 0.
+
+----------
+
+void solve()
+{
+    memset(depth, 0, sizeof(depth));
+    memset(mask, 0, sizeof(mask));
+
+    int no_of_vertices;
+    scanf("%d", &no_of_vertices);
+
+    for(int i = 1; i <= no_of_vertices; i++)
+    {
+        tree[i].clear();
+
+        int no_of_items;
+        scanf("%d", &no_of_items);
+
+        for(int j = 1; j <= no_of_items; j++)
+        {
+            int item;
+            scanf("%d", &item);
+
+            set_bit(mask[i], item);
+        }
+
+        xor_till[i] = mask[i];
+    }
+
+    int no_of_edges = no_of_vertices - 1;
+    for(int i = 1; i <= no_of_edges; i++)
+    {
+        int u, v;
+        scanf("%d %d", &u, &v);
+
+        tree[u].push_back(v);
+        tree[v].push_back(u);
+    }
+
+    dfs(1, 0, 1);
+    precompute_parents(no_of_vertices);
+
+    int no_of_queries;
+    scanf("%d", &no_of_queries);
+
+    while(no_of_queries--)
+    {
+        int x, y;
+        scanf("%d %d", &x, &y);
+
+        int lca = LCA(x, y);
+
+        long long x_mask = xor_till[lca]^xor_till[x]^mask[lca];
+        long long y_mask = xor_till[lca]^xor_till[y]^mask[lca];
+
+        long long result = (x_mask|y_mask);
+
+        printf("%d\n", bit_count(result));
+    }
+}
