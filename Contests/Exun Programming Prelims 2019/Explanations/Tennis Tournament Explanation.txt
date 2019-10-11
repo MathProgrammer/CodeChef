@@ -1,0 +1,68 @@
+The total number of matches is 
+
+C(N, 2) = N(N - 1)/2
+
+If everyone has to win an equal number of matches, everyone wins C(N, 2)/N matches. 
+
+For this, C(N, 2)/N has to be a multiple of N. This never happens when N is even. 
+
+The answer is NO when N is even. 
+
+---
+
+When N is odd, it is always possible. There are many ways to do this. 
+
+When N is odd, everyone has to win (N - 1)/2 matches. 
+
+Let the first person win matches [2, (N - 1)/2 + 1]
+
+Let the second person win matches [3, (N - 1)/2 + 2]
+
+And so on
+
+If (N - 1)/2 + i is greater than the end of the array, then person i wins matches [i + 1, N] and [1, (N - 1)/2 + i - 1].
+
+----
+
+void solve()
+{
+    int no_of_elements;
+    cin >> no_of_elements;
+
+    if(no_of_elements%2 == 0)
+    {
+        cout << "NO\n";
+
+        return;
+    }
+
+    cout << "YES\n";
+    int no_of_matches_won = (no_of_elements - 1)/2;
+
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        int prefix = (i + no_of_matches_won > no_of_elements ? i + no_of_matches_won - no_of_elements: 0);
+
+        for(int j = 1; j <= no_of_elements; j++)
+        {
+            if(j <= prefix)
+            {
+                cout << "1";
+            }
+            else if(j > prefix && j <= i)
+            {
+                cout << "0";
+            }
+            else if(j > i && j <= i + no_of_matches_won)
+            {
+                cout << "1";
+            }
+            else if(j > i + no_of_matches_won)
+            {
+                cout << "0";
+            }
+        }
+
+        cout << "\n";
+    }
+}

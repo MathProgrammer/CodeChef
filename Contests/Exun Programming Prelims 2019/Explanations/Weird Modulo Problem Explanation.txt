@@ -1,0 +1,25 @@
+If x < y, then it is always optimal to use x (mod y) instead of y (mod x)
+
+The reason is that x (mod y) is x and y (mod x) is at most x
+
+In order to have the highest possible value, we need to sort the integers in ascending order and evaluate the expression one by one. 
+
+The answer will be the smallest integer in the array. 
+
+The uniqueness constraint is very important in this problem.
+
+-----
+
+void solve()
+{
+    int no_of_elements;
+    cin >> no_of_elements;
+
+    vector <int> A(no_of_elements + 1, 0);
+    for(int i = 1; i <= no_of_elements; i++)
+        cin >> A[i];
+
+    sort(all(A));
+
+    cout << A[1] << "\n";
+}
