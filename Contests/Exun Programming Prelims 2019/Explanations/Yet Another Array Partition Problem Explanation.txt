@@ -1,0 +1,112 @@
+Let the actual array be called Original
+
+We will maintain another auxiliary array called A, 
+
+A[i] = 1, if original[i] is not divisible by original[i - 1].
+
+A[i] indicates whether i is the beginning point of a new segment. 
+
+The sum of A from [1, i] tells us the number of segments till i. 
+
+----
+
+I maintained a segment tree over A. 
+
+This will allow us to find the sum of [1, i] and determine the number of segments till i in O(log N) time. 
+
+---
+
+Let us check how to answer both queries. 
+
+First, we will build the array A and the segment tree over A
+
+    original[0] = oo;
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        cin >> original[i];
+
+        A[i] = (original[i]%original[i - 1] == 0 ? 0 : 1);
+    }
+
+----
+
+How do we perform an update ? 
+
+While performing an update, we have to check if a new segment is starting at position P. This means that A[P] = 0 but now the P-th element is not divisible by the (P - 1)th element. 
+
+We also have to check if there was a segment beginning from P before but it is now being merged. This means that A[P] = 1 but now the P-th element is divisible by (P - 1)th element. 
+
+We need to perform these checks for the (P + 1)th element too
+
+---
+
+void perform_update(int position, int value)
+{
+    if(A[position] == 1 && original[position]%original[position - 1] == 0)
+    {
+        A[position] = 0;
+
+        update(1, 1, no_of_elements, position, 0);
+    }
+
+    if(A[position] == 0 && original[position]%original[position - 1] != 0)
+    {
+        A[position] = 1;
+
+        update(1, 1, no_of_elements, position, 1);
+    }
+
+    if(position == no_of_elements)
+    {
+        return;
+    }
+
+    if(A[position + 1] == 1 && original[position + 1]%original[position] == 0)
+    {
+        A[position + 1] = 0;
+
+        update(1, 1, no_of_elements, position + 1, 0);
+    }
+
+    if(A[position + 1] == 0 && original[position + 1]%original[position] != 0)
+    {
+        A[position + 1] = 1;
+
+        update(1, 1, no_of_elements, position + 1, 1);
+    }
+}
+
+----
+
+How do we find out the beginning of the segment ? 
+
+We will binary search over the prefix sums of A. 
+
+Suppose the sum of A[1, p] = S, then it means that p belongs to segment S. 
+
+We want the leftmost element x where A[1, x] = S. We can do this using binary search. 
+
+----
+
+int get_segment_start(int position)
+{
+    int no_of_segments_till_here = get_sum(1, 1, no_of_elements, 1, position);
+
+    int left = 0, right = position;
+
+    while(right - left > 1)
+    {
+        int mid = (left + right)/2;
+
+        if(get_sum(1, 1, no_of_elements, 1, mid) < no_of_segments_till_here)
+        {
+            left = mid;
+        }
+        else
+        {
+            right = mid;
+        }
+    }
+
+    return right;
+}
