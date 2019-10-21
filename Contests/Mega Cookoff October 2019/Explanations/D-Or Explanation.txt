@@ -1,0 +1,58 @@
+Whichever integer will choose will 
+
+1. Match some prefix of R (possibly the whole string) and then have a 0 where R has a 1
+2. Match some prefix of L (possible the whole string) and then have a 1 where L has a 0
+
+Let us look at the common matching prefix of L and R. Any 2 integers that we choose in this range will have to match this common prefix. 
+
+Suppose L and R have a common prefix of length P.
+
+Then L[p + 1] = 0 and R[p + 1] = 1
+
+We can choose 2 integers like this - 
+
+1. X = [64 ... p] [1] [0000 ... 0]
+2. Y = [64 ... p] [0] [1111 ... 1]
+
+X is <= R and > L 
+Y is >= L and < R
+
+-----
+
+This means that the answer is [64 ... p] [1111 .... 1]
+
+(The common prefix followed by a suffix of all 1s.)
+
+We cannot do any better because this would mean that we have to set some new bit in the prefix. 
+(As all bits in the suffix are already set)
+
+However, there is no integer in the range [L, R] with an extra bit set in the prefix !
+
+-----
+
+void solve()
+{
+    long long left, right;
+    cin >> left >> right;
+
+    const int MAX_BIT = 62;
+    long long answer = right;
+    long long prefix = 0, suffix = 0;
+    for(int bit = MAX_BIT; bit >= 0; bit--)
+    {
+        if(is_bit_set(right, bit) && !is_bit_set(left, bit))
+        {
+            suffix = all_ones(bit + 1);
+
+            answer = prefix|suffix;
+
+            break;
+        }
+        else if(is_bit_set(right, bit))
+        {
+            prefix |= (1LL << bit);
+        }
+    }
+
+    cout << answer << "\n";
+}
