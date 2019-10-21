@@ -1,0 +1,67 @@
+Let us ask ourselves the following question - 'Which element will never be the median of any subarray ?' 
+
+This is an elegant invariant. The maximum element and the minimum element will never be the median of any subarray as there will always be 2 elements that are greater than or lesser than it. 
+
+So, when there are only 2 elements left, it has to be the minimum element and the maximum element :)
+
+------
+
+One thing to take care of is that the minimum element and maximum element have to be printed in the order in which it appears in the array. 
+
+------
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+#define all(v) (v).begin(), (v).end()
+using namespace std;
+
+void solve()
+{
+    int n;
+    cin >> n;
+
+    vector <int> A(n + 1, 0);
+    for(int i = 1; i <= n ;i++)
+        cin >> A[i];
+
+    int minimum = A[1], maximum = A[1];
+
+    for(int i = 1; i <= n; i++)
+    {
+        minimum = min(A[i], minimum);
+        maximum = max(A[i], maximum);
+    }
+
+    for(int i = 1; i <= n; i++)
+    {
+        if(A[i] == minimum)
+        {
+            cout << minimum << " " << maximum << "\n";
+
+            return;
+        }
+
+        if(A[i] == maximum)
+        {
+            cout << maximum << " " << minimum << "\n";
+
+            return;
+        }
+    }
+}
+
+int main()
+{
+	int no_of_test_cases;
+	cin >> no_of_test_cases;
+
+
+	for(int i = 1; i <= no_of_test_cases; i++)
+    {
+        solve();
+    }
+
+	return 0;
+}

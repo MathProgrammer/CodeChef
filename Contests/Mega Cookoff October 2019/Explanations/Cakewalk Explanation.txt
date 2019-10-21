@@ -1,0 +1,60 @@
+10 = 2.5
+
+20 = 2.2.5
+
+Let us look at the prime factors of N
+
+If N has any prime factors other than 2 and 5, then we can never make N. 
+
+If N has more 5s than 2s, then also we can never make N as the number of 5s can be at most equal to the number of 2s. 
+
+If N = 2^x 5^y and x > 2y, then also we can never make N as the maximum number of 2s we can use is 2y. (Two 2s for every 5).
+
+----
+
+Now, we will prove that if N = 2^x 5^y and 
+
+2y >= x >= y, then it is always possible. 
+
+while (x != y)
+{
+	x -= 2;
+	y -= 1;
+}
+
+(This is equivalent to using 20s).
+
+There will always come a point when x = y here since x <= 2y. This is the same as keeping y constant and decreasing x by 1
+
+After we reach this, we will only use 10s
+
+----
+
+void solve()
+{
+    long long n;
+    cin >> n;
+
+    int power_2 = 0, power_5 = 0;
+    while(n%2 == 0)
+    {
+        n /= 2;
+        power_2++;
+    }
+
+    while(n%5 == 0)
+    {
+        n /= 5;
+        power_5++;
+    }
+
+    if(n > 1 || power_5 > power_2 || (2*power_5 < power_2))
+    {
+        cout << "No\n";
+
+        return;
+    }
+
+    cout << "Yes\n";
+    // x 5s and y 2s, 2x >= y >= x
+}
