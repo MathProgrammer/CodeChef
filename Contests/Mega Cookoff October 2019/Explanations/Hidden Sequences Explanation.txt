@@ -1,0 +1,142 @@
+It is quite implementation heavy. 
+
+1. Whenever we encounter a triplet (X, Y, Z), we will set A[Z] = X and Expected Frequency[Z] = Y
+
+If there are 2 values of Z, then it is not possible as we can neither have 2 integers in the same spot, nor can we have 2 different frequencies of X in [1, Z].
+
+-----
+
+vector <int> A(no_of_elements + 1);
+    vector <int> expected_frequency_index(no_of_elements + 1, 0);
+    for(int i = 1; i <= no_of_triplets; i++)
+    {
+        if(A[M[i].index] != 0)
+        {
+            cout << "No\n";
+
+            return;
+        }
+
+         //cout << "First A" << M[i].index << " = " << M[i].x << "\n";
+         A[M[i].index] = M[i].x;
+
+        expected_frequency_index[M[i].index] = M[i].frequency;
+    }
+
+-----
+
+2. Now, we will go through all N elements. 
+
+3. If A[i] already has a value, then we will check the frequency of A[i]. 
+
+If A[i] = 0, then i is a free index. We will store all the free indices in a set.
+
+4. If frequency of A[i] > Expected Frequency [i], then it is not possible. 
+
+5. If frequency of A[i] < Expected Frequency[i], then we will fix more A[i]'s in the array in the back. 
+
+Where do we put these A[i]'s ? We will put them in the 'free indices'. 
+
+However, we can't put then in any free index of our choice. 
+
+Suppose the last occurence of A[i] was at position j, we do not want to disturb the prefix frequency of A[j], So will start putting A[i] in the array after j using the set. 
+
+We will put the A[i]'s as much to the left as we can after j. This is to leave as many free indices as possible for future elements.
+
+----
+
+vector <int> last(range + 1, 0);
+    vector <int> frequency(range + 1, 0);
+    set <int> free_indices;
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        if(expected_frequency_index[i] == 0)
+        {
+            free_indices.insert(i);
+
+            continue;
+        }
+
+        int x = A[i];
+
+        frequency[x]++;
+
+        if(frequency[x] > expected_frequency_index[i])
+        {   //cout << "Frequency " << A[i] << " exceeding the expected frequency at " << i << " = " << expected_frequency_index[i] << "\n";
+            cout << "No\n";
+
+            return;
+        }
+
+        while(frequency[x] != expected_frequency_index[i])
+        {
+            if(free_indices.size() == 0)
+            {   //cout << "No indices available for " << A[i] << " to make up the frequency = " << expected_frequency_index[i] << " at " << i << "\n";
+                cout << "No\n";
+
+                return;
+            }
+
+            set <int> :: iterator it = free_indices.lower_bound(last[x]);
+
+            if(it == free_indices.end())
+            {
+                cout << "No\n";
+
+                return;
+            }
+
+            int index = *it;
+
+            free_indices.erase(it);
+
+            A[index] = x; //cout << "A" << index << " = " << x << "\n";
+
+            frequency[x]++;
+        }
+
+        last[x] = i;
+    }
+
+
+----
+
+6. We are still not done. A might have some missing values after this is done. 
+
+7. We will starting putting values in A from N to 1. Now, notice that at A[N], we can put in any value and it will not disturb any prefix frequency. 
+
+We can keep on doing this until we encounter some A[i], where A[i] =/= 0, 
+
+Then, we will not put A[i] in the range [1, i] as we do not want to disturb it's prefix frequency. 
+
+Here is how we do this last part - 
+
+-----
+
+set <int> available;
+    for(int i = 1; i <= range; i++)
+    {
+        available.insert(i);
+    }
+
+    for(int i = no_of_elements; i >= 1; i--)
+    {
+        if(A[i] != 0)
+        {
+            available.erase(A[i]);
+        }
+        else if(A[i] == 0)
+        {
+            set <int> :: iterator it = available.begin();
+
+            A[i] = *(it);
+
+            //cout << "A" << i << " = " << A[i] << "\n";
+        }
+    }
+
+-----
+
+Then, we will do one last check to ensure that every spot is filled and all the conditions are satisfied and then print the array :)
+
+-----
