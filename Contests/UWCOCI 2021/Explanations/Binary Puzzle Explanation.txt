@@ -1,0 +1,85 @@
+We have to create certain disjoint cycles. 
+
+Here is the solution for K = 4 
+
+0 -> 1 -> 2 -> 3 -> 0 
+
+We can create arbitrarily many cycles of 4 in this manner by changing the prefix and maintaining the last 2 bits as {00, 01, 10, 11}
+
+-----
+
+We will have at most one cycle of length 5, 6 or 7. 
+
+//0 -> 1 -> 2 -> 3 -> 5 -> 0
+//0 -> 1 -> 2 -> 3 -> 5 -> 7 -> 0
+//0 > 1 -> 2 -> 3 -> 5 -> 4 -> 7 -> 0
+
+Since 2^n -1 has every bit set. 
+
+(2^n - 1) - 1 has exactly n - 1 bits set and (2^n - 3) has exactly (n - 2) bits set. So, we can just subtract from 2^n - 1
+
+----
+
+void solve()
+{
+    int n, no_of_pairs;
+    cin >> n >> no_of_pairs;
+    
+    int no_of_4_cycles = no_of_pairs/4;
+    if(no_of_pairs%4 != 0)
+    {
+        no_of_4_cycles--;
+    }
+    
+    for(int i = 0; i < no_of_4_cycles; i++)
+    {
+        cout << ( (i << 2)|0 ) << " " << ( (i << 2)|1 ) << "\n";
+        cout << ( (i << 2)|1 ) << " " << ( (i << 2)|2 ) << "\n";
+        cout << ( (i << 2)|2 ) << " " << ( (i << 2)|3 ) << "\n";
+        cout << ( (i << 2)|3 ) << " " << ( (i << 2)|0 ) << "\n";
+    }
+    
+    if(no_of_pairs == 3)
+    {
+        cout << "0 1\n";
+        cout << "1 3\n";
+        cout << "3 0\n";
+        
+        return;
+    }
+    
+    int last = (1 << n) - 1;
+    
+    switch(no_of_pairs%4)
+    {
+        //0 -> 1 -> 2 -> 3 -> 5 -> 0
+        case 1 :
+            cout << last << " " << last - 1 << "\n";
+            cout << last - 1 << " " << last - 2 << "\n";
+            cout << last - 2 << " " << last - 3 << "\n";
+            cout << last - 3 << " " << last - 5 << "\n";
+            cout << last - 5 << " " << last << "\n";
+            break;
+        
+        //0 -> 1 -> 2 -> 3 -> 5 -> 7 -> 0
+        case 2:
+            cout << last << " " << last - 1 << "\n";
+            cout << last - 1 << " " << last - 2 << "\n";
+            cout << last - 2 << " " << last - 3 << "\n";
+            cout << last - 3 << " " << last - 5 << "\n";
+            cout << last - 5 << " " << last - 7 << "\n";
+            cout << last - 7 << " " << last << "\n";
+            break;
+        
+        //0 > 1 -> 2 -> 3 -> 5 -> 4 -> 7 -> 0
+        case 3 :
+            cout << last << " " << last - 1 << "\n";
+            cout << last - 1 << " " << last - 2 << "\n";
+            cout << last - 2 << " " << last - 3 << "\n";
+            cout << last - 3 << " " << last - 5 << "\n";
+            cout << last - 5 << " " << last - 4 << "\n";
+            cout << last - 4 << " " << last - 7 << "\n";
+            cout << last - 7 << " " << last << "\n";
+            break;
+    }
+}
