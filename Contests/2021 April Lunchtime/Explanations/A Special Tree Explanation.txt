@@ -1,0 +1,96 @@
+For each vertex v, we will find the first ancestor L, such that L has a special vertex in it's subtree. 
+
+The answer is d(A, L) - d(B, L) 
+
+For convenience, root the tree at A 
+
+We can do binary lifting to find the first ancestor L of B that has a special vertex in it's subtree. 
+
+It will take at most O(log n) steps. 
+
+The reason we can do binary lifting is because if a node v has a special vertex in it's subtree, every ancestor of v also has a special vertex in it's subtree.
+
+I was initially doing binary search on the ancestor, but that brings an additional log factor. Do direct binary lifting
+
+-----
+
+void solve()
+{
+    int no_of_vertices, special_vertices, a;
+    cin >> no_of_vertices >> special_vertices >> a;
+
+    initialise(no_of_vertices);
+
+    for(int i = 1; i <= special_vertices; i++)
+    {
+        int v;
+        cin >> v;
+
+        is_special[v] = true;
+    }
+
+    int no_of_edges = no_of_vertices - 1;
+
+    for(int i = 1; i <= no_of_edges; i++)
+    {
+        int u, v;
+        cin >> u >> v;
+
+        tree[u].push_back(v);
+        tree[v].push_back(u);
+    }
+
+
+    depth[0] = -1;
+    dfs(a, 0);
+    fill_parents(no_of_vertices);
+
+    vector <pair <int, int> > answer(no_of_vertices + 1);
+    for(int i = 1; i <= no_of_vertices; i++)
+    {
+        if(nearest_special[i] != 0)
+        {
+            answer[i].first = depth[i];
+
+            answer[i].second = nearest_special[i];
+
+            continue;
+        }
+
+        int ancestor, distance_to_ancestor;
+
+        int v = i;
+
+        for(int l = MAX_L - 1; l >= 0; l--)
+        {
+            ancestor = parent[v][l];
+
+            if(ancestor != 0 && nearest_special[ancestor] == 0)
+            {
+                v = ancestor;
+            }
+        }
+
+
+        ancestor = parent[v][0];
+
+
+        distance_to_ancestor = depth[i] - depth[ancestor];
+
+        answer[i].first = depth[ancestor] - distance_to_ancestor;
+
+        answer[i].second = nearest_special[ancestor];
+    }
+
+    for(int i = 1; i <= no_of_vertices; i++)
+    {
+        cout << answer[i].first << " ";
+    }
+    cout << "\n";
+
+    for(int i = 1; i <= no_of_vertices; i++)
+    {
+        cout << answer[i].second << " ";
+    }
+    cout << "\n";
+}
