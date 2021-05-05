@@ -1,16 +1,20 @@
-For each vertex v, we will find the first ancestor L, such that L has a special vertex in it's subtree. 
+- Suppose L is the LCA of B and some special node u.
+    - d(A, u) - d(B, u) = d(A, L) + d(u, L) - d(L, u) - d(u, B) = d(A, L) - d(B, L)
+    - This is maximised by choosing the L with the greatest depth
+    
+- If v is a vertex which has a special mode in its sub tree, every ancestor of v also has this property.
 
-The answer is d(A, L) - d(B, L) 
+- We only need to find the first ancestor of B, which has a special node in its sub tree.
+- Root the tree at A for convenience.
 
-For convenience, root the tree at A 
+- My initial solution was binary searching on the LCA but that causes an additional $\log$ factor. When we are at node v, move up by length 2^i if that vertex also does not have a special node in its sub tree.
 
-We can do binary lifting to find the first ancestor L of B that has a special vertex in it's subtree. 
-
-It will take at most O(log n) steps. 
-
-The reason we can do binary lifting is because if a node v has a special vertex in it's subtree, every ancestor of v also has a special vertex in it's subtree.
-
-I was initially doing binary search on the ancestor, but that brings an additional log factor. Do direct binary lifting
+- From B, find the closest ancestor which does not have a special node in it's subtree.
+    - Suppose the distance from L to B is 100100 in binary.
+        - First we will go to the 2^5 th ancestor and then to the 2^2 nd ancestor and then to the 2^0 th ancestor to reach L.
+        
+    - From B, we will climb up 2^i if the ancestor at 2^i levels up is not special.
+    - Be careful to do binary lifting in descending powers of 2 and not ascending.
 
 -----
 
@@ -71,9 +75,7 @@ void solve()
             }
         }
 
-
         ancestor = parent[v][0];
-
 
         distance_to_ancestor = depth[i] - depth[ancestor];
 
