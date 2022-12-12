@@ -55,8 +55,8 @@ void solve()
         answer %= MOD;
         
         prefix_sum = (prefix_sum + sum[i])%MOD;
-        prefix_cube = (prefix_cube + cube(sum[i], MOD))%MOD;
         prefix_square = (prefix_square + square(sum[i], MOD))%MOD;
+	prefix_cube = (prefix_cube + cube(sum[i], MOD))%MOD;
     }
     
     cout << answer << "\n";
