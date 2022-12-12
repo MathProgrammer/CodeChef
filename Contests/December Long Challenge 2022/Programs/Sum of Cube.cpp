@@ -42,7 +42,7 @@ void solve()
     {
         int no_of_prefixes = i;
         
-        answer += no_of_prefixes*cube(sum[i], MOD);
+        answer = answer + no_of_prefixes*cube(sum[i], MOD);
         answer %= MOD;
         
         answer = answer - 3LL*square(sum[i], MOD)*prefix_sum;
