@@ -1,0 +1,47 @@
+If n is even, then n and n + 1 differ only in the last bit 
+
+XOR(n, n + 1) = 1
+XOR(n, n + 1, n + 2, n + 3) = XOR(1, 1) = 0
+
+The XOR of any 4 integers starting from an even integer is 0. 
+
+-----
+
+If L is not even, check if 
+
+XOR(L, L + 1, L + 2, L + 3) = 0
+
+Otherwise, we know for sure XOR(L + 1, L + 2, L + 3, L + 4) = 0 
+
+so check if R >= L + 4
+
+-----
+
+
+void solve()
+{
+    int left, right; 
+    cin >> left >> right;
+    
+    int starting_xor = left^(left + 1)^(left + 2)^(left + 3);
+    
+    if(starting_xor != 0 && right - left >= 4)
+    {
+        left++;
+        starting_xor = left^(left + 1)^(left + 2)^(left + 3);
+    }
+    
+    if(starting_xor != 0)
+    {
+        cout << "-1";
+    }
+    else 
+    {
+        for(int i = left; i < left + 4; i++)
+        {
+            cout << i << " ";
+        }
+    }
+    
+    cout << "\n";
+}
