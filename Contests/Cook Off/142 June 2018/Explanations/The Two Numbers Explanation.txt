@@ -1,0 +1,62 @@
+We know LCM(a, b) x GCD(a, b) = ab
+The maximum possible difference between LCM and GCD are between two coprime numbers = ab - 1 
+
+Also when a + b = n, the maximum value of ab is (n/2)^2 
+
+-----
+
+When n is odd 
+
+a = n/2, b = n/2 + 1
+
+and we get the maximum value 
+
+----
+
+When n = 0 (mod 4) 
+
+a = n/2 - 1, b = n/2 + 1
+
+a and b are both odd and consecutive odd integers are coprime
+
+----
+
+When n = 2 (mod 4) 
+
+a = n/2 - 2, b = n/2 - 2
+
+This is not possible when n = 2, which is a special case. 
+
+-----
+
+void solve()
+{
+    int n;
+    cin >> n;
+
+    long long a, b;
+
+    if(n%2 == 1)
+    {
+        a = n/2, b = n - a;
+    }
+    else if(n%4 == 2)
+    {
+        if(n == 2)
+        {
+            a = 1, b = 1;
+        }
+        else
+        {
+            a = n/2 - 2, b = n/2 + 2;
+        }
+    }
+    else if(n%4 == 0)
+    {
+        a = n/2 - 1, b = n/2 + 1;
+    }
+
+    long long lcm = a*b, gcd = 1;
+    long long answer = lcm - gcd;
+    cout << answer << "\n";
+}
