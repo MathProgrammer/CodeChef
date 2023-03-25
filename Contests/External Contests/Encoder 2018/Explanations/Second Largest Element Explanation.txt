@@ -1,0 +1,86 @@
+To begin with, let us discuss how to solve this problem if we had to make K the second largest element without counting duplicates 
+as separate numbers. 
+
+We can replace all numbers > K by 1 and < K by 0. 
+We want to count the number of subarrays with sum = 1 
+
+This can be done by keeping track of prefix sum frequencies. 
+
+However, in this problem we have to count the number of subarrays where K is the second largest distinct element. 
+
+
+-----
+
+Let us iterate over all integers A[i] > K
+What is the maximum length of the segment where A[i] is the largest and K would be the second largest ? 
+
+We need to know 
+1. L -> The first position to the left of A[i] such that L > K, and which is different from A[i]
+2. R -> The first position to the right of A[i] such that R > K, and which is different from A[i]
+
+This means the segment [L + 1, R - 1] is good because every integer in it is either
+1. < K 
+2. = A[i]
+
+-----
+
+Now, the question is how to find L and R ? 
+
+Only integers > K matter. 
+Let us keep track of all their indices in a vector Greater.
+
+Suppose we are at index i now in the Greater array and 
+A[Greater[i]] > K and A[Greater[i - 1]] != A[Greater[i]]
+We will find the first j such that A[Greater[j]] != A[Greater[i]]
+
+L = Greater[i - 1], R = Greater[j] 
+[L + 1, R - 1] is a good segment with A[Greater[i]] as the maximum. 
+
+Set i = j for the next iteration since the answer of the segment for every other A[Greater[i]] in the segment will be the same. 
+It also maintains the invariant that A[Greater[i - 1]] != A[Greater[i]] that we need for the first step
+
+-----
+
+void solve()
+{
+    int no_of_elements, k;
+    cin >> no_of_elements >> k;
+    
+    vector <int> A(no_of_elements + 1);
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        cin >> A[i];
+    }
+    
+    vector <int> greater;
+    greater.push_back(0);
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        if(A[i] > k)
+        {
+            greater.push_back(i);
+        }
+    }
+    
+    greater.push_back(no_of_elements + 1);
+   
+    int answer = 0;
+    
+    for(int i = 1; i + 1 < greater.size(); )
+    {
+        int left = greater[i - 1] + 1;
+        int current_max = A[greater[i]];
+      
+        while(current_max == A[greater[i]])
+        {
+        	i++;
+        }
+        
+        int right = greater[i] - 1;
+        
+        int segment_with_this_greater = right - (left - 1);
+        answer = max(answer, segment_with_this_greater);
+    }
+    
+    cout << answer << "\n";
+}
