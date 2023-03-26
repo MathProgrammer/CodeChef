@@ -1,0 +1,82 @@
+We will use a beautiful fact of the binary number system - 
+
+1. 20 bits are enough to describe all integers from [1, 10^6] 
+2. With at most 20 additions, we can convert x -> y, if 0 <= x <= y <= 10^6
+
+Let us try to create the final sorted array - 
+
+[10^5, 10^5 + 1, 10^5 + 2, .... , 10^5 + n - 1]
+
+We will create this array by performing 20 operations. 
+In the i-th operation, we will add 2^i to a subsequence. 
+
+-----
+
+Now, the question is how to choose the subsequence for the i-th operation. 
+
+We will find out the difference between each A[i] and sorted_A[i] 
+
+If Diff = Sorted_A[i] - A[i] = 100010001, 
+
+This means that we need to add 2^0, 2^4 and 2^8 to A[i]. 
+
+So we will include A[i] in those operations. 
+
+-----
+
+void solve()
+{
+    int no_of_elements;
+    cin >> no_of_elements;
+
+    vector <int> A(no_of_elements + 1);
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        cin >> A[i];
+    }
+
+    vector <int> sorted_A(no_of_elements + 1);
+    sorted_A[1] = 1e5;
+    for(int i = 2; i <= no_of_elements; i++)
+    {
+        sorted_A[i] = sorted_A[i - 1] + 1;
+    }
+
+    const int NO_OF_BITS = 20;
+    vector < vector <int> > subsequence(NO_OF_BITS);
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        int difference = sorted_A[i] - A[i];
+
+        for(int bit = 0; bit < NO_OF_BITS; bit++)
+        {
+            if(is_bit_set(difference, bit))
+            {
+                subsequence[bit].push_back(i);
+            }
+        }
+    }
+
+    int no_of_non_empty_subsequences = 0;
+    for(int bit = 0; bit < NO_OF_BITS; bit++)
+    {
+        no_of_non_empty_subsequences += (subsequence[bit].size() > 0);
+    }
+
+    cout << no_of_non_empty_subsequences << "\n";
+    for(int bit = 0; bit < NO_OF_BITS; bit++)
+    {
+        if(subsequence[bit].size() == 0)
+        {
+            continue;
+        }
+
+        int add_to_this_subsequence = (1 << bit);
+        cout << subsequence[bit].size() << " " << add_to_this_subsequence << "\n";
+        for(int x : subsequence[bit])
+        {
+            cout << x << " ";
+        }
+        cout << "\n";
+    }
+}
