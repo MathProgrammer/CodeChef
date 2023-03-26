@@ -1,0 +1,71 @@
+We have to maximise the number of bits set. We have to do this by setting as many of the lower bits as possible. 
+
+Let us analyse the 3 cases with the least significant bit (at first).
+
+1. k <= N 
+
+This case, we can set k bits of value 2^0
+and the entire sum is represented. 
+
+2. k > N
+
+We will set all N Bits. 
+However, there is a problem if K is even and N is odd or vice versa. 
+
+2a k (mod 2) != N (mod 2) 
+
+In this case, set only N - 1 bits
+
+2b k (mod 2) == N (mod 2) 
+
+Set all N bits 
+
+-----
+
+After we perform this, the value of k that is remaining to be expressed is either 
+
+Case 1 - k = 0
+Case 2a - k -= N - 1
+Case 2b - k -= N
+
+----
+
+After this, we will go over to the next higher bit. 
+We can do this by either subtracting N x 2 or (N - 1) x 2 for the next bit or just divide K by 2. 
+
+Dividing K by 2 is an easier and cleaner approach so that is what I have done in my code. 
+
+-----
+
+void solve()
+{
+    int no_of_elements, k;
+    cin >> no_of_elements >> k;
+
+    const int NO_OF_BITS = 31;
+    long long total_bits_set = 0;
+    for(int bit = 0; bit < NO_OF_BITS & k > 0; bit++)
+    {
+        int bits_set_here = 0;
+        if(k <= no_of_elements)
+        {
+            bits_set_here = k;
+        }
+        else
+        {
+            bits_set_here = no_of_elements;
+
+            if(k%2 != no_of_elements%2)
+            {
+                bits_set_here--;
+            }
+        }
+
+        total_bits_set += bits_set_here;
+        k -= bits_set_here;
+
+        k /= 2;
+    }
+
+    cout << total_bits_set << "\n";
+}
