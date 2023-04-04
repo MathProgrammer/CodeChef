@@ -1,0 +1,72 @@
+We will use the following fact - 
+GCD of consecutive multiples of an integer n is n. 
+
+gcd(nX, n(X + 1) 
+= gcd(nX, n(X + 1) - nX)
+= gcd(nX, n)
+= n
+
+-----
+
+There is an amazing construction that we can create 
+
+It is always possible to choose 4 integers such that there are 4 pairs who's GCDs are consecutive integers
+
+Here is the construction - 
+
+A = i(i + 3), B = i(i + 2), C = (i + 1)(i + 2), D = (i + 1)(i + 3)
+
+Using the fact we proved above, we can say that 
+
+gcd(A, B) = i 
+gcd(C, D) = i + 1
+gcd(B, C) = i + 2
+gcd(A, D) = i + 3 
+
+We just have to handle the first N (mod 4) integers specially and can then use this amazing constructive idea to 
+construct quadruplets till N
+
+
+---
+
+void solve()
+{
+    int no_of_elements;
+    cin >> no_of_elements;
+
+    vector <int> A(no_of_elements + 1);
+    //a(a + 3) (a + 1)(a + 2) a(a + 2) (a + 1)(a + 3)
+    //gcd(1, 3) = a
+    //gcd(2, 3) = a + 2
+    //gcd(2, 4) = a + 1
+    //gcd(1, 4) = a + 3
+    int first_new = 1;
+    switch(no_of_elements%4)
+    {
+        case 1 : A[1] = 1;
+                first_new = 2;
+                break;
+
+        case 2 : A[1] = 1, A[2] = 2;
+                first_new = 3;
+                break;
+
+        case 3 : A[1] = 2, A[2] = 3, A[3] = 6;
+                 first_new = 4;
+                 break;
+    }
+
+    for(; first_new <= no_of_elements; first_new += 4)
+    {
+        A[first_new] = first_new*(first_new + 3);
+        A[first_new + 1] = (first_new + 1)*(first_new + 2);
+        A[first_new + 2] = first_new*(first_new + 2);
+        A[first_new + 3] = (first_new + 1)*(first_new + 3);
+    }
+
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        cout << A[i] << " ";
+    }
+    cout << "\n";
+}

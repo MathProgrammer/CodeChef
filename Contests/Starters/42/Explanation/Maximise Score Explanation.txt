@@ -1,0 +1,173 @@
+It is very important simplification that two segments never intersect partially. 
+Either one segment contains another or they do not intersect. 
+
+Another important idea is that there are at most N = 10^5 points. 
+
+Initially, we will assign each point a value of 0. 
+
+We will then process the segments one by one. It is important to process the segments in ascending order of length. 
+We don't want a bigger segment to exhaust points for a smaller segment. 
+
+We need to choose at most one point from each segment. 
+While processing a segment, look at the point with the minimum value. 
+
+1. If the minimum value is > value of the segment, then there is no need of choosing any point from this segment. 
+2. If the minimum value is < value of the segment, we can assign that point to this segment. 
+This would increase the total value. Among all the points to assign to this segment, the minimum value is the most optimal. 
+We do not need to worry about choosing a rightmost or leftmost point if there are multiple minima because there are no
+partial intersections. If any segment intersects with this segment, it would contain all the points of this segment. 
+So we can freely choose points according to their value alone.
+
+We can use a segment tree to find the minimum of each segment. 
+
+----
+
+void solve()
+{
+    int no_of_segments;
+    cin >> no_of_segments;
+    vector <segment> S(no_of_segments + 1);
+    for(int i = 1; i <= no_of_segments; i++)
+    {
+        int left, right, value;
+        cin >> left >> right >> value;
+        S[i] = segment(left, right, value);
+    }
+    sort(S.begin() + 1, S.end());
+
+    int no_of_elements = no_of_segments;
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        update(1, 1, no_of_elements, i, 0);
+    }
+
+    long long answer = 0;
+    for(int i = 1; i <= no_of_segments; i++)
+    {
+        //cout << "Sorted Segment " << i << " = [" << S[i].left << "," << S[i].right << "] V = " << S[i].value << "\n";
+        if(query(1, 1, no_of_elements, S[i].left, S[i].right).value < S[i].value)
+        {
+            node result = query(1, 1, no_of_elements, S[i].left, S[i].right);
+            //cout << "Result V = " << result.value << " P = " << result.position << "\n";
+
+            answer += (S[i].value - result.value);
+
+            update(1, 1, no_of_elements, result.position, S[i].value);
+        }
+    }
+
+    cout << answer << "\n";
+}
+
+----
+
+I have made a struct called Node for the segment tree, which returns the minimum as well as the index of the minimum. 
+
+struct node
+{
+    int position, value;
+
+    node(int P, int V)
+    {
+        position = P, value = V;
+    }
+
+    node()
+    {
+        position = 0, value = 0;
+    }
+};
+
+node min(node &N1, node &N2)
+{
+    if(N1.value < N2.value)
+    {
+        return N1;
+    }
+    else if(N1.value > N2.value)
+    {
+        return N2;
+    }
+    else
+    {
+        return (N1.position < N2.position ? N1 : N2);
+    }
+}
+
+-----
+
+Functions for querying and updating the segment tree
+
+void update(int n, int left, int right, int position, int value)
+{
+    if(right < left || position < left || right < position)
+    {
+        return;
+    }
+
+    if(left == right)
+    {
+        min_tree[n] = node(position, value);
+        return;
+    }
+
+    int mid = (left + right)/2;
+    update(LEFT(n), left, mid, position, value);
+    update(RIGHT(n), mid + 1, right, position, value);
+
+    min_tree[n] = min(min_tree[LEFT(n)], min_tree[RIGHT(n)]);
+}
+
+node query(int n, int left, int right, int query_left, int query_right)
+{
+    //cout << "Entering At [" << left << "," << right << "] And Q[" << query_left << "," << query_right << "]\n";
+    if(query_right < left || right < query_left || query_right < query_left)
+    {
+        //cout << "Completely out At [" << left << "," << right << "] And Q[" << query_left << "," << query_right << "]\n";
+        return node(-1, oo);
+    }
+
+    if(query_left <= left && right <= query_right)
+    {
+        //cout << "Completely in At [" << left << "," << right << "] And Q[" << query_left << "," << query_right << "]\n";
+        return min_tree[n];
+    }
+
+    //cout << "Partially in At [" << left << "," << right << "] And Q[" << query_left << "," << query_right << "]\n";
+    int mid = (left + right)/2;
+    node left_answer = query(LEFT(n), left, mid, query_left, query_right);
+    node right_answer = query(RIGHT(n), mid + 1, right, query_left, query_right);
+
+    node answer = min(left_answer, right_answer);
+    return answer;
+}
+
+-----
+
+I also created a struct for segments to sort the segments in order of their length 
+
+struct segment
+{
+    int left, right, distance, value;
+
+    segment()
+    {
+        left = right = distance = value = 0;
+    }
+
+    segment(int L, int R, int V)
+    {
+        left = L, right = R, value = V;
+        distance = right - (left - 1);
+    }
+
+    int operator<(segment &S)
+    {
+        if(distance == S.distance)
+        {
+            return (value > S.value);
+        }
+
+        return (distance < S.distance);
+    }
+};
