@@ -1,0 +1,84 @@
+This game can be treated as a NIM game. 
+We can precompute the grundy of every integer from 1 to 10^5
+
+grundy(n) = max {grundy(y)} if y is reachable from n. 
+
+There are at most 7 moves possible from any given n in the constraints. 
+
+-----
+
+void precompute_moves()
+{
+    for(int i = 1; i <= MAX_MOVES; i++)
+    {
+        moves[i] = power(i, i);
+    }
+}
+
+void precompute_grundy()
+{
+    grundy[0] = 0;
+    for(int i = 1; i < MAX_N; i++)
+    {
+        set <int> S;
+        grundy[i] = 0;
+        for(int j = 1; j < MAX_MOVES; j++)
+        {
+            int move = moves[j];
+            if(move <= i)
+            {
+                S.insert(grundy[i - move]);
+                //cout << "Inserting " << move << " G = " << grundy[i - move] << "\n";
+            }
+        }
+        
+        for(int mex = 0; ; mex++)
+        {
+            //cout << "Mex = " << mex << " Coung = " << S.count(mex) << "\n";
+            if(S.count(mex) == 0)
+            {
+                grundy[i] = mex;
+                break;
+            }
+        }
+        
+        //cout << "Grundy " << i << " = " << grundy[i] << "\n";
+    }
+}
+
+-----
+
+After computing the grundy of all the piles, we can find out the winner by computing the XOR of the grundy numbers 
+
+If it is non zero, it is winning for the player to move as they can always make a move to make it 0 
+and the final state will have 0 XOR 
+
+If it is 0, then any move for the player will make the XOR non 0 and give the next player the above position. 
+
+------
+
+void precompute()
+{
+    precompute_moves();
+    precompute_grundy();
+}
+
+void solve()
+{
+    int no_of_elements; 
+    cin >> no_of_elements;
+    
+    vector <int> A(no_of_elements + 1);
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        cin >> A[i];
+    }
+    
+    int total_xor = 0;
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        total_xor ^= grundy[A[i]];
+    }
+    
+    cout << (total_xor != 0 ? "Little Chef" : "Head Chef") << "\n";
+}
