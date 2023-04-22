@@ -1,69 +1,16 @@
-It is clear that we have to solve the problem independently of each prime. 
-In any one operation, we reduce the exponent of exactly 1 prime in several integers by 1. 
+Chef and Roma are playing a game. Rules of the game are quite simple.
+Initially there are N piles of stones on the table.
+In each turn, a player can choose one pile and remove it from the table.
+Each player want to maximize the total number of stones removed by him.
+Chef takes the first turn.
 
-The number of operations we will use for a given prime is equal to it's maximum exponent in the array. 
+Please tell Chef the maximum number of stones he can remove assuming that both players play optimally.
 
--------
+--------------------------------------------------------------
 
-We can modify the sieve in order to find the maximum exponent of a prime among all it's multiples 
+The answer is all the odd piles, when the piles are arranged in descending order of height
 
-This will take sum(N/P) = O(N log N) time since the harmonic series is bounded by O(N log N) 
+     sort(no_of_stones_in_pile, no_of_stones_in_pile + no_of_piles);//Ascending order
 
-Each such iteration will take E(m, p) steps where E is the exponent of prime p in multiple m 
-
------
-
-Add the answer for every prime to get the final answer
-
-int exponent(int n, int p)
-{
-    int answer = 0;
-    while(n%p == 0)
-    {
-        answer++;
-        n /= p;
-    }
-    
-    return answer;
-}
-
-void solve()
-{
-    int no_of_elements; 
-    cin >> no_of_elements;
-    
-    const int MAX_N = 1e6 + 1;
-    vector <int> frequency(MAX_N, 0);
-    vector <int> A(no_of_elements + 1);
-    for(int i = 1; i <= no_of_elements; i++)
-    {
-        cin >> A[i];
-        frequency[A[i]]++;
-    }
-    
-    int answer = 0;
-    vector <int> no_of_multiples(MAX_N, 0);
-    vector <int> is_prime(MAX_N, true);
-    for(int i = 2; i < MAX_N; i++)
-    {
-        if(!is_prime[i])
-        {
-            continue;
-        }
-        
-        int max_exponent = 0;
-        for(int multiple = i; multiple < MAX_N; multiple += i)
-        {
-            if(frequency[multiple] > 0)
-            {
-                max_exponent = max(max_exponent, exponent(multiple, i));
-            }
-            
-            is_prime[multiple] = false;
-        }
-        
-        answer += max_exponent;
-    }
-    
-    cout << answer << "\n";
-}
+    for(i = no_of_piles - 1; i >= 0; i = i - 2)
+        chef_stones += no_of_stones_in_pile[i];
