@@ -1,53 +1,33 @@
-#include <cstdio>
+#include <stdio.h>
+#include <algorithm>
 
-const int MAX_BITS = 31, MAX_N = 1e5 + 5;
-int A[MAX_N], sum[MAX_N][MAX_BITS];
+#define MAX_PILES 100000 + 1
+using namespace std;
 
-int get_half(int n)
+int no_of_stones_in_pile[MAX_PILES];
+void solve()
 {
-    return (n/2 + n%2);
-}
+    int no_of_piles,i;
+    long long chef_stones = 0LL;
+    scanf("%d", &no_of_piles);
 
-int bit_set(int n, int position)
-{
-    return ( ( n & (1 << position) ) != 0 );
-}
+    for(i = 0; i < no_of_piles; i++)
+        scanf("%d", &no_of_stones_in_pile[i]);
 
+    sort(no_of_stones_in_pile, no_of_stones_in_pile + no_of_piles);//Ascending order
+
+    for(i = no_of_piles - 1; i >= 0; i = i - 2)
+        chef_stones += no_of_stones_in_pile[i];
+
+    printf("%lld\n", chef_stones);
+
+}
 int main()
 {
-    int no_of_elements, no_of_queries;
-    scanf("%d %d", &no_of_elements, &no_of_queries);
-
-    for(int i = 1; i <= no_of_elements; i++) scanf("%d", &A[i]);
-
-    for(int bit = 0; bit < MAX_BITS; bit++) sum[0][bit] = 0;
-
-    for(int i = 1; i <= no_of_elements; i++)
-    {
-        for(int bit = 0; bit < MAX_BITS; bit++)
-        {
-            sum[i][bit] = sum[i - 1][bit] + bit_set(A[i], bit);
-        }
-    }
-
-    while(no_of_queries--)
-    {
-        int left, right;
-        scanf("%d %d", &left, &right);
-
-        int half_elements = get_half(right - left + 1);
-        int answer = 0;
-
-        for(int bit = 0; bit < MAX_BITS; bit++)
-        {
-            int no_of_ones = sum[right][bit] - sum[left - 1][bit];
-
-            if(no_of_ones < half_elements)
-                answer |= (1 << bit);
-        }
-
-        printf("%d\n", answer);
-    }
+    int no_of_test_cases;
+    scanf("%d", &no_of_test_cases);
+    while(no_of_test_cases-- != 0)
+        solve();
 
     return 0;
 }
