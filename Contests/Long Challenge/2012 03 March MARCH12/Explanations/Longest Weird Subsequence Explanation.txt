@@ -1,0 +1,70 @@
+We have 3 options for every alphabet - do not include this alphabet, 
+include it in the increasing sequence 
+include it in the decreasing sequence 
+
+Let f(i, U, D) represent the maximum length of the sequence including the first i characters 
+where the largest increasing sequence ended with U 
+and the largest decreasing sequence ended with D 
+
+-----
+
+We will choose the maximum of the 3 transitions 
+
+1. Case 1, exclude S[i] 
+
+This is given by f(i - 1, U, D) 
+
+2. Case 2, add it to the increasing sequence 
+
+f(i, S[i], D) = max{ 1 + f(i - 1, u, D)}, u <= S[i]
+
+3. Case 3, add it to the decreasing sequence 
+
+f(i, U, S[i]) = max{ 1 + f(i - 1, U, d)}, d >= S[i]
+
+-----
+
+void solve()
+{
+    string S; 
+    cin >> S;
+    
+    int answer = 1;
+    
+    memset(max_length, 0, sizeof(max_length));
+    for(int alpha = 0; alpha < NO_OF_ALPHABETS; alpha++)
+    {
+        max_length[0][S[0] - 'a'][alpha] = 1; 
+        max_length[0][alpha][S[0] - 'a'] = 1;
+    }
+    
+    for(int i = 1; i < S.size(); i++)
+    {
+        for(int up_alpha = 0; up_alpha < NO_OF_ALPHABETS; up_alpha++)
+        {
+            for(int down_alpha = 0; down_alpha < NO_OF_ALPHABETS; down_alpha++)
+            {
+                
+               max_length[i][up_alpha][down_alpha] = max(
+                   max_length[i - 1][up_alpha][down_alpha], max_length[i][up_alpha][down_alpha]);
+                
+                int current_alpha = S[i] - 'a';
+                if(up_alpha <= current_alpha)
+                {   
+                    max_length[i][current_alpha][down_alpha] = max(max_length[i][current_alpha][down_alpha], 
+                        1 + max_length[i - 1][up_alpha][down_alpha]);
+                }
+                
+                if(down_alpha >= current_alpha)
+                {
+                    max_length[i][up_alpha][current_alpha] = max(max_length[i][up_alpha][current_alpha],
+                        1 + max_length[i - 1][up_alpha][down_alpha]);
+                }
+                
+                answer = max(answer, max_length[i][up_alpha][down_alpha]);
+            }
+        }
+    }
+    
+   cout << answer << "\n";
+}
