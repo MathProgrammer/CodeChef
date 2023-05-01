@@ -1,0 +1,124 @@
+Firstly, let us notice that M is small but n is very large
+
+If we have to find the answer, we have to do in terms of m, not n. 
+
+Let us write the series like this 
+
+(1^1 + 2^2 + 3^3 + .... + m^m) + 
+((m + 1)^{m + 1} + (m + 2)^{m + 2} + (m + 3)^{m + 3} + ... + (2m)^{2m}) + 
+.
+.
+.
+
+We can notice that we can write the series as a sum of M geometric progressions 
+
+since (m + i)^x = i^x (mod m) 
+
+-----
+
+We have to sum M series like 
+
+(1^1 + 1^{m + 1} + 1^{2m + 1} + ... + ) + 
+(2^2 + 2^{m + 2} + 2^{2m + 2} + ... + ) + 
+.
+.
+((m - 1)^{m - 1} + (m - 1)^{2m - 1) + .... + )
+
+The i-th geometric series has 
+
+1. First term - i^i 
+2. Difference - i^M 
+3. Number of terms - Number of integers = i (mod M) <= N 
+
+-----
+
+void solve()
+{
+    long long n, mod;
+    cin >> n >> mod;
+
+    long long sum = 0;
+    for(int i = 1; i <= min(n, mod - 1); i++)
+    {
+        long long first_term = power(i, i, mod);
+        long long multiplier = power(i, mod, mod);
+        long long no_of_terms = (n/mod) + (n%mod >= i);
+
+        sum += first_term*geometric_progression(multiplier, no_of_terms, mod);
+        sum %= mod;
+    }
+
+    cout << sum << "\n";
+}
+
+------
+
+How to find the sum of a geometric series quickly ? 
+
+We cannot use the normal expression S = a(r^n - 1)/(r - 1) 
+
+since we need to calculate the inverse of (r - 1) mod M 
+
+M is not guaranteed to be prime so we cannot raise the denominator to (M - 1) to get the inverse. 
+
+M is large so we cannot calculate phi(M) to invoke Fermat's Little Theorem at all. 
+
+Instead, we will use another beautiful method to evaluate the sum of a GP without division. 
+
+-----
+
+S = 1 + r + r^2 + r^3 + .... + r^n 
+
+Group (1 + r) terms 
+
+S = (1 + r) + (r^2 + r^3) + (r^4 + r^5) + .... 
+
+S = (1 + r) + r^2(1 + r) + r^4(1 + r) + ... 
+
+S = (1 + r)(1 + r^2 + r^4 + ... ) 
+
+So if the sum of a geometric series of N terms with difference r is G(r, n)
+
+G(r, n) = (1 + r)G(r^2, n/2) 
+
+When there are an odd number of terms, then one power will be left out after factorizing by (1 + r) 
+
+G(r, n) = (1 + r)G(r^2, n/2) + r^n
+
+We have reduced the problem of finding the sum of a term with N terms to a 
+smaller version of itself of finding the sum of a smaller series of N/2 terms
+
+This will take O(log N) iterations to compute ! 
+
+This is a very beautiful method. 
+
+------
+
+long long geometric_progression(long long multiplier, long long no_of_terms, int mod)
+{
+    //cout << "GP m = " << multiplier << " N = " << no_of_terms << "\n";
+    if(no_of_terms == 1)
+    {
+        return 1;
+    }
+
+    if(no_of_terms == 2)
+    {
+        return (1 + multiplier)%mod;
+    }
+
+    long long left_over_power = 0;
+
+    if(no_of_terms%2 == 1)
+    {
+        left_over_power = power(multiplier, no_of_terms - 1, mod);
+    }
+
+    long long square_multiplier = power(multiplier, 2, mod);
+
+    long long factored_gp = geometric_progression(square_multiplier, no_of_terms/2, mod);
+    long long answer = (1 + multiplier)*factored_gp + left_over_power;
+
+
+    return answer%mod;
+}
