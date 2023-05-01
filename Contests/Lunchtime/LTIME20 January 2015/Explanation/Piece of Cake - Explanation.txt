@@ -1,0 +1,26 @@
+You are given a string. Your task is to determine whether number of occurrences of some character in the string is equal to the sum of the 
+numbers of occurrences of other characters in the string. 
+
+-------------------------------------------------
+
+In other words, check if frequency(c) = length/2, for any c in the array
+
+
+To be more precise, 2*frequency(c) = length, because if there are 2n+1 characters and 1 occurs n times, it does not satisfy the statement. 
+
+char string[MAX_LENGTH], frequency[NO_OF_ALPHABETS] = {0};
+    int max_frequency = 0, i, length;
+
+    scanf("%s", string);
+
+    for(i = 0; string[i] != '\0'; i++)
+        frequency[string[i] - 'a']++;
+
+    length = i;
+
+    for(i = 0; i < NO_OF_ALPHABETS; i++)
+        max_frequency = max(max_frequency, frequency[i]);
+
+
+
+    printf("%s\n", (2*max_frequency == length ? "YES" : "NO") );
