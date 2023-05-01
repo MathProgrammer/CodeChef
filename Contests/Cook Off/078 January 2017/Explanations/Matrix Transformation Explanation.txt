@@ -1,0 +1,115 @@
+Let us instead look at the difference matrix C = A - B 
+
+Incrementing a row or column in A corresponds to incrementing a row or column in C
+Incrementing a row or column in B corresponds to decrementing a row or column in C
+
+Our objective is to make C = 0 
+
+-----
+
+Let us notice that we have to make C[1][1]. This is equal to -C[1][1].
+Let us say we will perform C[1][1] row operations on the first row to make C[1][1] = 0 
+We will then perform column operations on (C[1][j] - C[1][1]) operations on the j-th column to make C[1][j] = 0
+We will then perform row operations on C[i][1] operations on the i-th row to make C[i][1] = 0
+
+C[i][j] will be impacted by the same number of column operations as C[1][j] and row operations as C[i][1]
+After these operations, C[i][j] should be 0 or else it is never possible. 
+
+Every (i, j) should satisfy 
+
+C[i][j] = (C[1][j] - C[1][1]) + (C[i][1])
+
+C[i][j] = C[1][i] + C[j][1] - C[1][1]
+
+-----
+
+Now, let us work on minimizing the number of operations.
+
+Let us start with the number of operations we apply on the first row, 
+this uniquely determines the row and column operations. 
+
+We don't necessarily have to apply C[1][1] rows to begin with. 
+Let us say we apply X operations on the first row in the beginning. 
+
+If we perform X operations on it. 
+1. Operations on columns j = |C[1][j] - X|
+2. Operations on row i = (C[i][1] - Column Operations(1)) = |C[i][1] - C[1][1] + X|
+
+Choosing the number of operations on any one row or column determines the whole setting. 
+
+---
+
+We need to choose the best X such that |C[1][j] - X| and |C[i][1] - C[1][1] + X| is minimized. 
+This is the same as saying there are (N + M) integers, choose the best X such that the sum of the absolute distances is minimized. 
+
+We have M integers of the form (-C[1][j]) and N integers of the form (C[1][1] - C[i][1]) 
+
+In my code, I have taken (C[1][j]) and (C[i][1] - C[1][1]) instead. They are equivalent since we are dealing with absolute values. 
+
+Choose the median of these integers as X. 
+This is the point that minimizes the sum of absolute distances. 
+
+-----
+
+void solve()
+{
+    int rows, columns;
+    cin >> rows >> columns;
+
+    vector <vector <int> > A(rows + 1, vector <int> (columns + 1));
+    vector <vector <int> > B(rows + 1, vector <int> (columns + 1));
+    read(A, rows, columns);
+    read(B, rows, columns);
+
+    vector <vector <int> > C(rows + 1, vector <int> (columns + 1));
+    for(int i = 1; i <= rows; i++)
+    {
+        for(int j = 1; j <= columns; j++)
+        {
+            C[i][j] = A[i][j] - B[i][j];
+        }
+    }
+
+    int possible = true;
+    for(int i = 1; i <= rows; i++)
+    {
+        for(int j = 1; j <= columns; j++)
+        {
+            if(C[i][j] - C[i][1] != C[1][j] - C[1][1])
+            {
+                possible = false;
+            }
+        }
+    }
+
+    if(!possible)
+    {
+        cout << "-1\n";
+
+        return;
+    }
+
+    vector <long long> points;
+    for(int i = 1; i <= columns; i++)
+    {
+        points.push_back(C[1][i]);
+    }
+    for(int i = 1; i <= rows; i++)
+    {
+        points.push_back(C[i][1] - C[1][1]);
+    }
+
+    sort(points.begin(), points.end());
+
+    int median_index = points.size()/2 - (points.size()%2 == 0 ? 1 : 0);
+    long long median = points[median_index];
+
+    long long operations = 0;
+
+    for(int i = 0; i < points.size(); i++)
+    {
+        operations += abs(points[i] - median);
+    }
+
+    cout << operations << "\n";
+}
