@@ -1,0 +1,122 @@
+This problem consists of two parts 
+
+1. First we will evaluate all the exponents (x^P) mod M 
+2. Then we will multiply all the integers (A x B) mod M 
+
+-----
+
+void solve()
+{
+    string S; 
+    long long mod; 
+    cin >> mod >> S;
+    
+    vector <long long> A; 
+    for(int i = 0; i < S.size(); )
+    {
+        int b = i;
+        long long base = 0;
+        while(S[b] != '*')
+        {
+            base = base*10 + (S[b] - '0');
+            base %= mod;
+            b++;
+        }
+        
+        int p = b + 2;
+        string power;
+        while(p < S.size() && S[p] != '*')
+        {
+            power += S[p];
+            p++;
+        }
+        
+        A.push_back(power_mod(base, power, mod));
+        
+        i = p + 1;
+    }
+    
+    long long answer = A[0];
+    for(int i = 1; i < A.size(); i++)
+    {
+        answer = multiply_mod(answer, A[i], mod);
+    }
+    cout << answer << "\n";
+}
+
+
+
+-----
+
+First, let us discuss how to evaluate (x^P) mod M, when x and P are arbitrarily large. 
+
+It is easy to reduce x = x (mod M) via Horner's Method. 
+
+How to evaluate x^P
+
+If M were prime, we could simply evaluate P = P (mod M - 1).
+
+If M were smaller, we could also evaluate P = P (mod phi(M)) 
+
+Since, Fermat's Little Theorem says that x^P = x^(P mod (phi(M)) (mod M)
+
+However, we can extend Fermat's little theorem and evaluate it using Horner's Method on P !
+
+For example x^{639} will be done as follows 
+
+1. Answer = x^6 
+2. Answer = x^{6}^{10} = x^{60}
+3. Answer = x^{60}.x^3 = x^63
+4. Answer = x^{63}^{10} = x^{630} 
+5. Answer = x^{630}.x^9 = x^{639}
+
+-----
+
+long long power_mod(long long x, string power, long long mod)
+{
+    long long answer = 1; 
+    for(int i = 0; i < power.size(); i++)
+    {
+        long long last_digit_contribution = power_mod(x, power[i] - '0', mod);
+        
+        answer = power_mod(answer, 10, mod);
+        
+        answer = multiply_mod(answer, last_digit_contribution, mod);
+    }
+    
+    return answer;
+}
+
+-----
+
+At last, we have to multiply (A x B) (mod M), but both A and B are bigger than 10^9. 
+This will lead to overflow. 
+
+So, we will have to perform the multiplication ourselves in O(log B) time. 
+This is also called the Egyptian Multiplication algorithm. 
+
+Write down B as sums of powers of 2 
+
+For example A x 23 
+
+= A x (2^4 + 2^2 + 2^1 + 2^0)
+
+------
+
+long long multiply_mod(long long a, long long b, long long mod)
+{   
+    long long product = 0;
+    while(b > 0)
+    {
+        if(b%2 == 1)
+        {
+            product = (product + a)%mod;
+        }
+        
+        a = (a + a)%mod;
+        b = b/2;
+    }
+    
+    return product;
+}
+
