@@ -1,0 +1,93 @@
+We will divide this problem into two main cases.
+And show that both cases can be solved in (root(N)) iterations 
+
+Either the base is larger than root(N) or smaller than root(N) 
+
+When the base is larger than root(N), there are at most two digits. 
+Each digit is smaller than root(N). 
+Iterate over the first digit and find out the base corresponding to that digit and then the sum of digits. 
+
+When the base is smaller than root(N), we can check all of them by brute force
+
+-----
+
+void solve()
+{
+    int n, left, right;
+    cin >> n >> left >> right;
+    
+    int small_base = solve_below_square_root(n, left, right);
+    int big_base = solve_above_square_root(n, left, right);
+    
+    int answer = small_base;
+    if(digit_sum(n, small_base) > digit_sum(n, big_base))
+    {
+        answer = big_base;
+    }
+                 
+    cout << answer << "\n";
+}
+
+-----
+
+Case 1: b <= root(N)
+
+Let us check all the bases by brute force 
+
+-----
+
+int solve_below_square_root(int n, int left, int right)
+{
+    int minimum_sum = digit_sum(n, left), answer = left;
+    for(int base = left; base*1LL*base <= n && base <= right; base++)
+    {
+        if(digit_sum(n, base) < minimum_sum)
+        {
+            minimum_sum = digit_sum(n, base);
+            answer = base;
+        }
+      
+    }
+    return answer;
+}
+
+-----
+
+Case 2 : b > root (N)
+
+There can be at most two digits because b^2 > N
+
+N = d1 b + d2 = q. B + r 
+
+0 <= p < b < root(N) 
+
+The range of each digit is small. 
+The beautiful idea is that we will iterate over each possible first digit and then find the corresponding base, 
+rather than iterating over the base and then finding the digit. 
+
+b = N/p 
+r = N (mod B) = N (mod p) 
+
+-----
+
+int solve_above_square_root(int n, int left, int right)
+{
+    int minimum_sum = digit_sum(n, right), answer = right;
+    //N = digit x B + remainder
+    for(int digit = 1; digit*1LL*digit <= n && n/digit >= left; digit++)
+    {
+        int base = n/digit;
+        int remainder = n%base;
+        
+        if(left <= base && base <= right)
+        {
+            if(digit + remainder < minimum_sum)
+            {
+                minimum_sum = digit + remainder;
+                answer = base;
+            }
+        }
+    }
+    return answer;
+}
+
