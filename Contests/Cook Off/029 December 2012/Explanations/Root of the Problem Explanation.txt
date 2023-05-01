@@ -1,0 +1,28 @@
+Let us add the numbers written on all the parents 
+Let us add the numbers written on all the children 
+
+Every vertex is counted two times - once in the parent and once as a child 
+other than the root 
+
+Parent sum - Child sum = Root
+
+-----
+
+void solve()
+{
+    int no_of_vertices; 
+    cin >> no_of_vertices;
+    
+    int parent_id_sum = 0, child_id_sum = 0;
+    for(int i = 1; i <= no_of_vertices; i++)
+    {
+        int parent, child_sum;
+        cin >> parent >> child_sum; 
+        
+        parent_id_sum += parent;
+        child_id_sum += child_sum;
+    }
+    
+    int root = parent_id_sum - child_id_sum;
+    cout << root << "\n";
+}
