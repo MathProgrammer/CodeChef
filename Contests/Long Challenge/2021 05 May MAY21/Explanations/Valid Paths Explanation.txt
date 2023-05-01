@@ -1,0 +1,100 @@
+Let us first calculate d(v) 
+
+d(v) is the number of paths that go only 'down' in some subtree of v. 
+It might begin at v or go down at v. 
+
+Every down path at a child of v is a valid path at v 
+We can also append v to each such path 
+
+So, d(v) = \sum 2 x d(c) 
+
+-----
+
+void dfs_down(int v, int parent_v)
+{
+    down_path[v] = 1;
+    
+    for(int child_v : tree[v])
+    {
+        if(child_v == parent_v)
+        {
+            continue;
+        }
+        
+        dfs_down(child_v, v);
+        
+        down_path[v] += 2*down_path[child_v];
+        down_path[v] %= MOD;
+    }
+}
+
+-----
+
+Let us now count the number of paths that go up till v and then down to some subtree of v 
+
+The path begins in some subtree under a child C1, goes till v, and then ends in a subtree of another child C2 
+
+(Such a path may or may not contain v) 
+
+The number of such paths is sum (2 x d(C1) x d(C2)) 
+
+The reason we multiply it by 2 is because each such path can contain v or it may not contain v 
+
+-----
+
+void dfs_combine_siblings(int v, int parent_v)
+{
+    int no_of_children = tree[v].size();
+    long long prefix_sum_down_paths = 0;
+    
+    for(int child_v : tree[v])
+    {
+        if(child_v == parent_v)
+        {
+            continue;
+        }
+        
+        dfs_combine_siblings(child_v, v);
+        
+        up_down_path[v] += 2*down_path[child_v]*prefix_sum_down_paths;
+        up_down_path[v] %= MOD;
+        
+        prefix_sum_down_paths += down_path[child_v];
+        prefix_sum_down_paths %= MOD;
+    }
+}
+
+-----
+
+For the final answer, we combine both the number of paths that only go down as well as the number of paths that go up first and then go down 
+
+void solve()
+{
+    int no_of_vertices; 
+    cin >> no_of_vertices; 
+    
+    clear(no_of_vertices);
+    
+    int no_of_edges = no_of_vertices - 1;
+    for(int i = 1; i <= no_of_edges; i++)
+    {
+        int u, v; 
+        cin >> u >> v; 
+        
+        tree[u].push_back(v);
+        tree[v].push_back(u);
+    }
+    
+    dfs_down(1, 0);
+    dfs_combine_siblings(1, 0);
+    
+    long long answer = down_path[1];
+    for(int v = 1; v <= no_of_vertices; v++)
+    {
+        answer += up_down_path[v];
+        answer %= MOD;
+    }
+    
+    cout << answer << "\n";
+}
+
