@@ -31,6 +31,8 @@ Let us say it is f.
 The final frequency of lucky integers should be one of the 14 lucky numbers. 
 Suppose the final frequency is F and (F - f) > suffix length. 
 
+There are two ways to choose a lucky digit and 8 ways to choose a normal digit. 
+
 The number of ways to create the suffix is Choose(Suffix, F - f) x 2^{F - f} x 8^{Suffix - (F - f)}
 
 -----
