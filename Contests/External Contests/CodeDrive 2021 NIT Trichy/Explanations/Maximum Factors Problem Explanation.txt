@@ -9,6 +9,9 @@ so there are (ak + 1) choices
 
 In order to retain the maximum value, we will subtract 1 from the prime with the largest exponent 
 
+- When we have a product AB. If we subtract 1 from B, the product reduces by B since A B - (A - 1) B = B
+- When we want to maximize the final product, we want to minimize the reduction. That is why we reduce 1 from the largest term.
+
 -----
 
 #include <iostream>
