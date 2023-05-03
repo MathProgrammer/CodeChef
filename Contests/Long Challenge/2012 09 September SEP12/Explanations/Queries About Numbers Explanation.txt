@@ -1,0 +1,129 @@
+There is not enough time to factorize K in every query. 
+Instead, we can make a beautiful observation that we can answer every query by just knowing the common factors of N and K 
+
+Let us find the exponent of every prime, that divides in, in k. 
+There can be at most 14 distinct primes. This takes a lot less time than checking all the primes in [1, 10^6]. 
+We do not care about prime factors of k which are not in n. We can answer all 3 queries without this. 
+
+This is effectively the GCD of (n, k)
+
+-----
+
+Query 1 - Common Factors 
+
+The common factors of n and k are the same as the number of factors of the GCD. 
+
+The number of factors of an integer is given by 
+
+f(p1^a1 p2^a2 .... pk^ak) = (a1 + 1) (a2 + 1) ... (ak + 1)
+
+
+The reason is that any factor of N has the same prime factors and each prime factor can have an exponent [0, ak] 
+so there are (ak + 1) choices
+
+-----
+
+long long no_of_factors(map <long long, int> &exponent)
+{
+    long long answer = 1;
+    for(auto it = exponent.begin(); it != exponent.end(); it++)
+    {
+        answer *= (it->second + 1);
+    }
+
+    return answer;
+}
+
+-----
+
+Query 2 - Factors of N and multiples of K 
+
+The answer is 0, if N is not a multiple of K or K > N
+
+Any integer satisfying this will have the same prime factors of N
+The exponent of a prime pi will be [ki, ni] where ki and ni are the exponent of pi in k and n respectively. 
+
+-----
+
+long long get_divisor_n_multiple_k(long long n, long long k, map <long long, int> &factors_n, map <long long, int> &common_factors)
+{
+    if(n < k || n%k != 0)
+    {
+        return 0;
+    }
+
+    long long answer = 1;
+    for(auto it = factors_n.begin(); it != factors_n.end(); it++)
+    {
+        long long factor = it->first;
+        int extra_exponent = (factors_n[factor] - common_factors[factor]);
+        answer *= (1 + extra_exponent);
+    }
+
+    return answer;
+}
+
+-----
+
+Query 3 - Factors of N and non multiples of K 
+
+Subtract the total number of factors of N from query 2
+
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+	sieve();
+
+	long long n;
+	int no_of_queries;
+	cin >> n >> no_of_queries;
+
+	map <long long, int> factors_n;
+	factorise(n, factors_n);
+
+	for(int i = 1; i <= no_of_queries; i++)
+	{
+	    const int COMMON_DIVISOR = 1, DIVISOR_N_MULTIPLE_K = 2, DIVISOR_N_NON_MULTIPLE_K = 3;
+	    int query;
+	    long long k;
+	    cin >> query >> k;
+
+	    map <long long, int> common_factors;
+	    for(auto it = factors_n.begin(); it != factors_n.end(); it++)
+	    {
+	        common_factors[it->first] = min(it->second, get_exponent(k, it->first));
+	    }
+
+	    long long answer = 0;
+	    switch(query)
+	    {
+	        case COMMON_DIVISOR:
+	        {
+	            answer = no_of_factors(common_factors);
+	            break;
+	        }
+
+	        case DIVISOR_N_MULTIPLE_K:
+	        {
+	            answer = get_divisor_n_multiple_k(n, k, factors_n, common_factors);
+	            break;
+	        }
+
+	        case DIVISOR_N_NON_MULTIPLE_K:
+	        {
+	            long long divisors_n = no_of_factors(factors_n);
+	            long long divisors_n_multiple_k = get_divisor_n_multiple_k(n, k, factors_n, common_factors);
+
+	            answer = divisors_n - divisors_n_multiple_k;
+	            break;
+	        }
+	    }
+
+	    cout << answer << "\n";
+	}
+
+	return 0;
+}
+
