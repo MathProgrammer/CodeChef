@@ -1,0 +1,55 @@
+Cyael is a teacher at a very famous school in Byteland and she is known by her students for being very polite to them and also to encourage them 
+to get good marks on their tests.
+Then, if they get good marks she will reward them with candies :) 
+
+However, she knows they are all very good at Mathematics, so she decided to split the candies evenly to all the students she considers worth of receiving them, 
+so they don't fight with each other. 
+She has a bag which initially contains N candies and she intends to split the candies evenly to K students. 
+To do this she will proceed as follows: while she has more than K candies she will give exactly 1 candy to each student until she has less than K candies. 
+On this situation, as she can't split candies equally among all students she will keep the remaining candies to herself.
+Your job is to tell how many candies will each student and the teacher
+receive after the splitting is performed.
+
+----------------------------------------------
+
+Um very simple ...
+
+N = qK + r - by the division algorithm, r is less than K ...
+
+Each student gets N/k candies and she keeps N%r candies.
+
+----------------------------
+
+This problem is very straightforward ... The only difficulty is that, unlike most judge problems they don't avoid division by 0. 
+So, a runtime error is possible. 
+
+Hence, handle the case of number of students = 0 seperately.
+
+If there are 0 students, all the students get 0 candies, and the teacher gets all the candies.
+
+Another trick in this problem is that N and K go up to 2^33 - 1, this looks like 2^32 when seen from far ... But it isn't.
+64 bit data type is necessary.
+
+---------------------------------------
+
+void solve()
+{
+    long long number_of_candies, number_of_students;
+    scanf("%lld %lld", &number_of_candies, &number_of_students);
+
+    long long student_candies, teacher_candies;
+
+    if(number_of_students == 0)
+    {
+        student_candies = 0;
+        teacher_candies = number_of_candies;
+    }
+    else
+    {
+        student_candies = number_of_candies/number_of_students;
+        teacher_candies = number_of_candies%number_of_students;
+    }
+
+    printf("%lld %lld\n",student_candies, teacher_candies);
+}
+

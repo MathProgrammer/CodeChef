@@ -1,0 +1,125 @@
+Let us precompute all lucky numbers smaller than 10^5. 
+
+There are not many lucky numbers in this range. 
+At most 14. 
+
+-----
+
+We want to count the number of integers where the frequency of lucky digits is a lucky number. 
+
+We will do this with a digit DP. 
+
+Let f(N) be the number of lucky integers strictly < N 
+
+Then, the answer is f(R + 1) - f(L) 
+
+-----
+
+Now, let us discuss how to calculate f(N) using Digit DP
+
+
+First, let us count the number of lucky integers without leading 0
+
+Every integer of this form will match some prefix of length N, will then have a smaller integer 
+and can then have any suffix. 
+
+Let us iterate over every prefix of length [0, i]
+We will then make D[i + 1] < S[i + 1]
+And keep track of the total number of lucky integers in the prefix so far. 
+
+Let us say it is f. 
+The final frequency of lucky integers should be one of the 14 lucky numbers. 
+Suppose the final frequency is F and (F - f) > suffix length. 
+
+There are two ways to choose a lucky digit and 8 ways to choose a normal digit. 
+
+The number of ways to create the suffix is Choose(Suffix, F - f) x 2^{F - f} x 8^{Suffix - (F - f)}
+
+-----
+
+for(int i = 0; i < N.size(); i++)
+    {
+        int remaining_digits = (N.size() - 1) - i;
+        for(int current_digit = 0; current_digit < N[i] - '0'; current_digit++)
+        {
+            if(i == 0 && current_digit == 0)
+            {
+                continue;
+            }
+            for(auto lucky_frequency : lucky)
+            {   
+                int lucky_prefix_frequency =  
+                  prefix_frequency[4] + prefix_frequency[7]  
+                  + (current_digit == 4 || current_digit == 7);
+                
+                if(lucky_frequency < lucky_prefix_frequency || 
+                   lucky_frequency > lucky_prefix_frequency + remaining_digits)
+                {
+                    continue;
+                }
+                
+                int frequency_4 = prefix_frequency[4] + (current_digit == 4);
+                int frequency_7 = prefix_frequency[7] + (current_digit == 7);
+                
+                int lucky_suffix = lucky_frequency - frequency_4 - frequency_7;
+                
+                long long choosing_lucky_suffix = choose(remaining_digits, lucky_suffix);
+                choosing_lucky_suffix *= power(2, lucky_suffix, MOD);
+                choosing_lucky_suffix %= MOD;
+                
+                int non_lucky_suffix = remaining_digits - lucky_suffix;
+                long long choosing_non_lucky_suffix = power(8, non_lucky_suffix, MOD);
+                
+                long long count_here = choosing_lucky_suffix*choosing_non_lucky_suffix;
+                count_here %= MOD;
+                
+                lucky_count += count_here;
+                lucky_count %= MOD;
+                    
+                //cout << "N = " << N << " i = " << i << " d = " << current_digit << " Lucky  " << lucky_frequency << "\nLucky Count = " << choosing_lucky_suffix << " others = " << choosing_non_lucky_suffix << " count = " << count_here << "\n";
+            }
+        }
+        
+        prefix_frequency[N[i] - '0']++;
+    }
+
+-----
+
+The number of integers with leading 0s is similar except we do not have to match any prefix. 
+
+Just count free suffixes and make sure the final length is strictly smaller than the length of N
+
+-----
+
+for(int i = 1; i < N.size(); i++)
+    {
+        for(int d = 1; d <= 9; d++)
+        {
+            int remaining_digits = (N.size() - 1) - i;
+            for(auto lucky_frequency : lucky)
+            {   
+                int lucky_here = (d == 4 || d == 7);
+                if(lucky_frequency >  lucky_here + remaining_digits)
+                {
+                    continue;
+                }
+                
+                int lucky_suffix_leading_0 = lucky_frequency - (d == 4 || d == 7);
+                
+                long long choosing_lucky_suffix_leading_0 = choose(remaining_digits, lucky_suffix_leading_0);
+                choosing_lucky_suffix_leading_0 *= power(2, lucky_suffix_leading_0, MOD);
+                choosing_lucky_suffix_leading_0 %= MOD;
+                
+                int non_lucky_suffix_leading_0 = remaining_digits - lucky_suffix_leading_0;
+                long long choosing_non_lucky_suffix_leading_0 = power(8, non_lucky_suffix_leading_0, MOD);
+                
+                long long count_here_leading_0 = choosing_lucky_suffix_leading_0*choosing_non_lucky_suffix_leading_0;
+                count_here_leading_0 %= MOD;
+                
+                lucky_count += count_here_leading_0;
+                lucky_count %= MOD;
+                    
+                //cout << "N0 = " << N << " i = " << i << " d = " << d << " Lucky  " << lucky_frequency << "\nLucky Count = " << choosing_lucky_suffix_leading_0 << " others = " << choosing_non_lucky_suffix_leading_0 << " count = " << count_here_leading_0 << "\n";
+            }
+        }
+    }
