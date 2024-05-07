@@ -1,0 +1,55 @@
+Chef found a strange string yesterday - a string of signs s, where each sign is either a '<', '=' or a '>'. Let N be the length of this string. 
+Chef wants to insert N + 1 positive integers into this sequence and make it valid. 
+A valid sequence is a sequence where every sign is preceded and followed by an integer, and the signs are correct. 
+That is, if a sign '<' is preceded by the integer a and followed by an integer b, then a should be less than b. Likewise for the other two signs as well. 
+Chef can take some positive integers in the range [1, P] and use a number in the range as many times as he wants.
+Help Chef find the minimum possible P with which he can create a valid sequence.
+
+--------------------------------------------------------------
+
+Notice that if there was a sequence of equal to and greater than signs like,
+
+< = < = = < ... The number of distinct numbers must be equal to at least 1 more than the number of < signs. Because each of these signs cause an inequality.
+
+----------------------------------------
+
+My idea was to go through the string ... Go through every run of < and =, and > and =, keeping track of the maximum number of < and > occuring in any run.
+
+P = 1 + max.
+
+I got a WA at first because I only considered the greater case and didn't consider that case of > and = signs. Fortunately, I was able to catch the mistake myself.
+I solved it in contest environment so no access to other solutions or editorials. It felt great to see the green tick after solving a problem on your own !
+
+Also got strange results when the second loop was starting from i... The second loop always starts from where the first one ends.
+We know the entire extent of the first loop has no < signs. This ensures that the complexity is linear.
+
+---------------------------------------
+
+void solve()
+{
+    char sequence[MAX_LENGTH];
+    scanf("%s", sequence);
+
+    int maximum_sign_run = 0, length = strlen(sequence), i, j;
+
+    for(i = 0; i < length; i = j)
+    {
+        int no_of_greater_than = 0;
+        for(j = i; sequence[j] == '<' || sequence[j] == '='; j++)
+        {
+            no_of_greater_than += (sequence[j] == '<');
+        }
+
+        int no_of_less_than = 0;
+        for(; sequence[j] == '>' || sequence[j] == '='; j++) //Pick off from where the previous loop ended.
+        {
+            no_of_less_than += (sequence[j] == '>');
+        }
+
+        maximum_sign_run = max(maximum_sign_run, max(no_of_greater_than, no_of_less_than));
+
+    }
+    printf("%d\n", maximum_sign_run + 1);
+
+}
+

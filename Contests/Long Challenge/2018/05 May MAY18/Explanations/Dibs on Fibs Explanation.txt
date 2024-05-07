@@ -1,0 +1,84 @@
+Let us notice something. 
+
+f(n) = f(n - 1) + f(n - 2) = (f(n - 2) + f(n - 3)) + f(n - 2)
+
+f(n) = 2f(n - 2) + f(n - 3) = 2(f(n - 2) + f(n - 3)) + f(n - 3)
+
+f(n) = 3f(n - 3) + 2f(n - 4) 
+
+f(n) = 5f(n - 4) + 3f(n - 3) 
+
+f(n) = 8f(n - 5) + 5 f(n - 6)
+
+and so on. 
+
+Rather than calculate the sum term wise, let us count the contribution of each element to the array. 
+
+A[i] is the first term of M series. 
+B[i] is the second term of M series. 
+
+We have calculated the contribution of the first and second term to the N-th term. 
+
+So the answer = Sum{ M( B[i]*F(n - 1) + A[i]*F(n) ) }
+              = M Sum{ B[i]*F(n - 1) + A[i]*F(n) }
+
+The case of N = 1 and N = 2 is special. 
+
+If N = 1, then it means only the first term. 
+So the sum of the first term - the array A. 
+
+If N = 1, then it is the sum of the array B.
+
+
+---------------------------------------------------
+
+void solve(vector <long long> &fibonacci)
+{
+    int no_of_elements, length_of_series;
+    scanf("%d %d", &no_of_elements, &length_of_series);
+
+    vector <int> A(no_of_elements + 1);
+    for(int i = 1; i <= no_of_elements; i++) scanf("%d", &A[i]);
+
+    vector <int> B(no_of_elements + 1);
+    for(int i = 1; i <= no_of_elements; i++) scanf("%d", &B[i]);
+
+    const int MOD = 1e9 + 7;
+    long long result = 0;
+
+    if(length_of_series == 1)
+    {
+        for(int i = 1; i <= no_of_elements; i++)
+        {
+            result += A[i];
+            result %= MOD;
+        }
+    }
+    else if(length_of_series == 2)
+    {
+        for(int i = 1; i <= no_of_elements; i++)
+        {
+            result += B[i];
+            result %= MOD;
+        }
+    }
+    else
+    {
+        for(int i = 1; i <= no_of_elements; i++)
+        {
+            result += B[i]*fibonacci[length_of_series - 1]; // F(2)F(n - 1)
+            result %= MOD;
+
+            result += A[i]*fibonacci[length_of_series - 2]; // F(1)F(n - 2)
+            result %= MOD;
+        }
+    }
+
+
+    result *= no_of_elements;
+    result %= MOD;
+
+    printf("%lld\n", result);
+}
+
+

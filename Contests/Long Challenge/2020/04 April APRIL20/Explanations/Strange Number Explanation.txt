@@ -1,0 +1,47 @@
+Let us look at the prime factorisation of an integer
+
+N = P1^a1 P2^a2 ... Pk^ak
+
+The number of factors = (a1 + 1)(a2 + 1)...(ak + 1)
+
+If a number has X divisors and K prime divisors, then we have to check if
+X can be written as the product of at least K integers > 1
+
+If X can be written as the product of K integers, then we can
+choose the exponents of the prime factors correspondingly
+
+For example if X = 2 x 3 x 2 x 2 and K = 3,
+
+Then, we can group the integers like this (2 x 3), (2), (2)
+
+And we can create an integer p1^5 p2 p3
+
+This will have (5 + 1)(1 + 1)(1 + 1) = (6)(2)(2) divisors
+
+-----
+
+void solve()
+{
+    int divisors, prime_divisors;
+    scanf("%d %d", &divisors, &prime_divisors);
+
+    int no_of_factors = 0;
+    for(int i = 2; i*1LL*i <= divisors; i++)
+    {
+        if(divisors%i == 0)
+        {
+            while(divisors%i == 0)
+            {
+                no_of_factors++;
+                divisors /= i;
+            }
+        }
+    }
+
+    if(divisors > 1)
+    {
+        no_of_factors++;
+    }
+
+    printf(no_of_factors >= prime_divisors ? "1\n" : "0\n");
+}

@@ -1,0 +1,51 @@
+Theorem - The minimum number of days is always N/2
+
+There are N/2 even numbers. Each even integer has to be on a different day.
+
+So, the number of days is N/2.
+
+Now, gcd(n, n + 1) is always 1
+
+So, everyday, we will print consecutive integers.
+
+If n is odd, then we will do (1, 2, n) on the first day.
+
+n is odd so gcd(2, n) = 1
+
+Every other day we will do (2i - 1, 2i)
+
+------
+
+void solve()
+{
+    int no_of_elements;
+    cin >> no_of_elements;
+
+    if(no_of_elements == 1)
+    {
+        cout << "1\n";
+
+        cout << "1 1" << "\n";
+
+        return;
+    }
+
+    int no_of_days = no_of_elements/2;
+    cout << no_of_days << "\n";
+
+    for(int i = 1; i <= no_of_days; i++)
+    {
+        if(i == 1 && no_of_elements%2 == 1)
+        {
+            cout << "3 ";
+
+            cout << "1 2 " << no_of_elements << "\n";
+
+            continue;
+        }
+
+        cout << "2 ";
+
+        cout << 2*i - 1 << " " << 2*i << "\n";
+    }
+}

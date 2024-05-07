@@ -1,0 +1,104 @@
+The numbers in each row and each column are increasing. 
+
+So, if a square of size L with top left corner (i, j) has average > K, then square of size L + 1 will also have this. 
+
+Since we are adding 2L + 1 integers > K into this square. 
+
+-----
+
+Iterate over each square and make this the top left square. 
+
+Binary search and find the smallest square L, such that a square of size L from (i, j) has average >= K 
+
+All legal squares >= L will have average >= k
+
+-----
+
+Precompute the sum of all numbers from (1, 1) to (i, j) 
+
+Let f(i, j) = A(i, j) + f(i - 1, j) + f(i, j - 1) - f(i - 1, j - 1) 
+
+We can get the sum of a square (R1, C1) -> (R2, C2) like this 
+
+f(R2, C2) - f(R1 - 1, C1) - f(R2, C1 - 1) + f(R2 - 1, C2 - 1) 
+
+(We can understand this by drawing it on a grid and adding f(R2 - 1, C2  - 1) because we are adding it twice.)
+
+------
+
+long long matrix_size(int R1, int C1, int R2, int C2)
+{
+    return (R2 - R1 + 1)*1LL*(C2 - C1 + 1);
+}
+
+void solve()
+{
+    int rows, columns;
+    long long k;
+    cin >> rows >> columns >> k;
+
+    vector <vector <long long> > matrix(rows + 1, vector <long long> (columns + 1));
+    for(int i = 1; i <= rows; i++)
+    {
+        for(int j = 1; j <= columns; j++)
+        {
+            cin >> matrix[i][j];
+        }
+    }
+
+    vector <vector <long long> > sum(rows + 1, vector <long long> (columns + 1));
+    for(int i = 1; i <= rows; i++)
+    {
+        for(int j = 1; j <= columns; j++)
+        {
+            sum[i][j] = matrix[i][j] + sum[i - 1][j] + sum[i][j - 1] - sum[i - 1][j - 1];
+
+            //cout << sum[i][j] << " ";
+        }//cout << "\n";
+    }
+
+    int no_of_worthy_matrices = 0;
+    for(int i = 1; i <= rows; i++)
+    {
+        for(int j = 1; j <= columns; j++)
+        {
+            int remaining = min(rows - i, columns - j);
+
+            int square_size = remaining + 1;
+            //cout << "Max Square = " << i + square_size - 1 << "," << j + square_size - 1 <<
+            //" Expected Sum = " << matrix_size(i, j, i + square_size - 1, j + square_size - 1)*k << " and actual = " <<
+            //get_sum(sum, i, j, i + square_size - 1, j + square_size - 1) << "\n";
+            if(get_sum(sum, i, j, i + square_size - 1, j + square_size - 1) < matrix_size(i, j, i + square_size - 1, j + square_size - 1)*k)
+            {
+                continue;
+            }
+            else if(matrix[i][j] >= k)
+            {
+                no_of_worthy_matrices += square_size;
+
+                continue;
+            }
+            //cout << "From (" << i << "," << j << ") Remaining = " << remaining << "\n";
+            //Square of size L is < K and R is >= K
+            int left = 1, right = square_size;
+            while(right - left > 1)
+            {
+                int mid = (left + right)/2; //cout << "Get Rectangle " << i << " " << j << " " << i + mid - 1 << " " << j + mid - 1 << "\n";
+
+                if(get_sum(sum, i, j, i + mid - 1, j + mid - 1) < matrix_size(i, j, i + mid - 1, j + mid - 1)*k)
+                {
+                    left = mid;
+                }
+                else
+                {
+                    right = mid;
+                }
+            }
+
+            //cout << "From (" << i << "," << j << ") Good Square Size = " << right << "\n";
+            no_of_worthy_matrices += (square_size - right + 1);
+        }
+    }
+
+    cout << no_of_worthy_matrices << "\n";
+}
